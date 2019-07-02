@@ -13,7 +13,7 @@ client.on('message', message => {
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
     } else if (/^off with his head/i.test(message.content)) {
-        message.channel.send("I'm hidding behind Fireball!");
+        message.channel.send('!mum @Galactic-Chicken#7183');
     } else if (/^\W*coffee$/i.test(message.content)) {
         message.channel.send('☕');
     }
