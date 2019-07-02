@@ -1,3 +1,4 @@
+console.log(process.env.BOT_TOKEN);
 const Discord = require('discord.js');
 
 const client = new Discord.Client();
