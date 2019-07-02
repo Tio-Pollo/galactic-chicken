@@ -13,19 +13,15 @@ client.on('ready', () => {
  
 
 client.on('message', message => {
-    console.log('received msg: ' + message.content);
-
-    if (message.content === 'ping') {
-
-       //message.reply('pong');
-      message.channel.send('pooong');
-
-       }
-
+ 
+    if (message.content == 'ping') {
+        //message.reply('pong');  message.channel.send()
+        message.reply('pong');
+    } elseif (message.content == 'say hi' || message.content == '@GalacticChicken say hi') {
+        message.reply('Hi!');
+    }
 });
 
  
-
-// THIS  MUST  BE  THIS  WAY
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret
