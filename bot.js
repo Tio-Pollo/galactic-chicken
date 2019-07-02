@@ -24,6 +24,12 @@ client.on('message', message => {
 });
 
 
+
+var schedule = require('node-schedule');
+
+var j = schedule.scheduleJob('0 0 * * *', function(){
+  console.log('The answer to life, the universe, and everything!');
+});
  
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret
