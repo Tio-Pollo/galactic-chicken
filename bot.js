@@ -23,6 +23,11 @@ client.on('message', message => {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (/^\W*coffee$/i.test(message.content)) {
         message.channel.send('☕');
+    } else if (message.content == 'test') {
+        const channel = client.channels.find('name', 'chicken-test');
+        if (channel) {
+            channel.send('test failed');
+        }
     }
 });
 
