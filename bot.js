@@ -19,6 +19,8 @@ client.on('message', message => {
         message.channel.send('pong');
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
+    } else if (/^off with his head/i.test(message.content)) {
+        message.channel.send('!corner');
     }
 });
 
