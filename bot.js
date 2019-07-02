@@ -1,4 +1,3 @@
-console.log(process.env.BOT_TOKEN);
 const Discord = require('discord.js');
 
 const client = new Discord.Client();
@@ -18,7 +17,8 @@ client.on('message', message => {
 
     if (message.content === 'ping') {
 
-       message.reply('pong');
+       //message.reply('pong');
+      message.channel.send('pooong');
 
        }
 
