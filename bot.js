@@ -10,13 +10,10 @@ client.on('message', message => {
     let m;
 
     if ((m = /^!ratio(?: +(\S.*))?/i.exec(message.content)) !== null) {
-        if (m[1]) {
-            message.channel.send('https://jeroenr.nl/gf-dt/ratio.png?q=' + encodeURIComponent(m[1]));
-        } else {
-            message.channel.send('https://jeroenr.nl/gf-dt/ratio.png?q=' + encodeURIComponent(message.author.username));
-        }
-    } else if (message.content == 'ping') {
+        const ratioURL = process.env.JEROENR_RATIO;
+        message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : message.author.username));
         //message.reply('pong');  message.channel.send()
+    } else if (message.content == 'ping') {
         message.channel.send('pong');
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
