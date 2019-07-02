@@ -20,7 +20,7 @@ client.on('message', message => {
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
     } else if (/^off with his head/i.test(message.content)) {
-        message.channel.send('!corner');
+        message.channel.send("I'm hidding behind Fireball!");
     }
 });
 
