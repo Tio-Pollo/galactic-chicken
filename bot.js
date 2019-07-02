@@ -1,11 +1,28 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
- 
-
 client.on('ready', () => {
+
     console.log('I am ready!');
+    eventStart();
 });
+
+
+
+const cron = require('cron');
+function eventStart() {
+    let scheduledMessage = new cron.CronJob('00 00 01 * * 2-4', () => {
+        // This runs every day at 01:00:00, you can do anything you want
+        const channel = client.channels.find('name', 'chicken-test');
+        if (channel) {
+            channel.send('Event starts now??');
+        }
+    });
+
+    // When you want to start it, use:
+    scheduledMessage.start()
+    console.log('I will announce events!!!');
+}
 
  
 
