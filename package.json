@@ -1,25 +1,17 @@
 {
-
   "name": "Galactic-Chicken",
-
   "description": "Cluck-cluck",
-
   "version": "0.0.1",
-
   "main": "bot.js",
-
   "scripts": {
-
     "start": "node bot.js"
-
   },
-
+    "engines": {
+    "node": "8.x",
+    "npm": "*"
+  },
   "dependencies": {
-
     "discord.js": "11.1.0",
-
     "request": "2.81.0"
-
   }
-
 }
