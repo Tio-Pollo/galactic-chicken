@@ -12,6 +12,8 @@ client.on('message', message => {
     if ((m = /^!ratio(?: +(\S.*))?/i.exec(message.content)) !== null) {
         if (m[1]) {
             message.channel.send('https://jeroenr.nl/gf-dt/ratio.png?q=' + encodeURIComponent(m[1]));
+        } else {
+            message.channel.send('https://jeroenr.nl/gf-dt/ratio.png?q=' + encodeURIComponent(message.author.username));
         }
     } else if (message.content == 'ping') {
         //message.reply('pong');  message.channel.send()
