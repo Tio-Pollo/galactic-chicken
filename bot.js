@@ -14,6 +14,7 @@ client.on('ready', () => {
  
 
 client.on('message', message => {
+    console.log('received msg: ' + message.content);
 
     if (message.content === 'ping') {
 
