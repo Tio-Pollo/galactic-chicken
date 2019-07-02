@@ -16,9 +16,9 @@ client.on('message', message => {
  
     if (message.content == 'ping') {
         //message.reply('pong');  message.channel.send()
-        message.reply('pong');
-    } else if (message.content == 'say hi' || message.content == '@Galactic-Chicken say hi') {
-        message.reply('Hi!');
+        message.channel.send('pong');
+    } else if (message.content == 'say hi') {
+        message.channel.send('Hi!');
     }
 });
 
