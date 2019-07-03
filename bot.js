@@ -51,7 +51,7 @@ client.on('message', message => {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-        message.channel.send('Hello ... ' + nick);
+        message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
@@ -59,10 +59,10 @@ client.on('message', message => {
         }
     } else if (msg.toLowerCase() == 'say hi') {
         message.channel.send('Hi!');
-    } else if (re.chicken.test(msg)) {
-        message.react('🐔');
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
+    } else if (re.chicken.test(msg)) {
+        message.react('🐔');
     } else if (re.coffee.test(message.content)) {
         message.channel.send('☕');
     }
