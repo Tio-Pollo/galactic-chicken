@@ -13,6 +13,18 @@ const re = {
     coffee: /^\W*coffee\W*(?:please\W*)?$/i
 };
 
+var fs = require('fs'),
+    request = require('request');
+
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
+
 client.on('message', message => {
 
     let m, nick, msg;
@@ -29,9 +41,18 @@ client.on('message', message => {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
 		let imgUrl = ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick);
-		message.channel.send({
-			files: [ imgUrl ]
+		
+		download(imgUrl, 'ratio.png', function(){
+			message.channel.send({
+				files: [{
+					attachment: 'ratio.png',
+					name: 'ratio.png'
+				}]
+			})
+			.catch(e){message.channel.send(e).catch(err){}};
 		});
+		
+		
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
