@@ -12,7 +12,7 @@ const re = {
 };
 
 client.on('ready', () => {
-    const buildMsg = 'Cluck cluck! 🐔');
+    const buildMsg = 'Cluck cluck! 🐔';
 	const channel = client.channels.find('name', 'chicken-test');
 	if (channel) {
 		channel.send(buildMsg);
