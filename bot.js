@@ -4,7 +4,6 @@ const client = new Client();
 
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
-    ratio2: /^!ratio2(?: +(\S.*))?$/i,
     eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
@@ -22,6 +21,7 @@ client.on('ready', () => {
 	}
 });
 
+/*
 var fs = require('fs'),
     request = require('request');
 
@@ -30,6 +30,7 @@ var download = function(uri, filename, callback){
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
+*/
 
 function jeroImg(baseUrl, query, message, prefix='') {
 	if (!query) {
@@ -42,15 +43,14 @@ function jeroImg(baseUrl, query, message, prefix='') {
 	    imgUrl = baseUrl + '?q=' + imgName,
 	    imgFilename = prefix + imgName + '.png';
 
-	download(imgUrl, imgFilename, function(){
-		message.channel.send({
-			files: [{
-				attachment: imgFilename,
-				name: imgFilename
-			}]
-		})
-		.catch();
-	});
+	const attachment = new Attachment(imgUrl);
+	message.channel.send({
+		files: [{
+			attachment: attachment,
+			name: imgFilename
+		}]
+	})
+	.catch();
 }
 
 client.on('message', message => {
