@@ -16,7 +16,7 @@ client.on('message', message => {
     } else if (message.content == 'ping') {
         message.channel.send('pong');
     } else if (message.content == 'nicktest') {
-        message.channel.send('Hello ' + message.member.display_name + ' - ' + message.member.nick);
+        message.channel.send('Hello ' + message.author.name + ' - ' + message.author.id + ' - ' + message.author.client + ' - ' + message.author.presence + ' - ' + message.author.tag);
     } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
