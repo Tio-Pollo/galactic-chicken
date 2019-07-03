@@ -1,7 +1,6 @@
 const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
-
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
     eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
@@ -21,17 +20,6 @@ client.on('ready', () => {
 	}
 });
 
-/*
-var fs = require('fs'),
-    request = require('request');
-
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-  });
-};
-*/
-
 function jeroImg(baseUrl, query, message, prefix='') {
 	if (!query) {
 		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
@@ -44,12 +32,9 @@ function jeroImg(baseUrl, query, message, prefix='') {
 	    imgFilename = prefix + imgName + '.png';
 
 	const attachment = new Attachment(imgUrl);
-	message.channel.send({
-		files: [{
-			attachment: attachment,
-			name: imgFilename
-		}]
-	})
+	message.channel.send(
+		attachment
+	)
 	.catch();
 }
 
@@ -64,11 +49,6 @@ client.on('message', message => {
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
     } else if ((m = re.eligible.exec(msg)) !== null) {
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
-	
-    } else if ((m = re.ratio2.exec(msg)) !== null) {
-        //jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
-		const attachment = new Attachment('https://i.imgur.com/w3duR07.png');
-        message.channel.send(attachment);
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
