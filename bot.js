@@ -7,6 +7,7 @@ client.on('ready', () => {
 
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
+    eligible: /^!eligible(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
     headoff: /^off with his head/i,
@@ -34,6 +35,24 @@ client.on('message', message => {
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
 		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
 			imgUrl = ratioURL + '?q=' + imgName,
+			imgFilename = imgName + '.png';
+		
+		download(imgUrl, imgFilename, function(){
+			message.channel.send({
+				files: [{
+					attachment: imgFilename,
+					name: imgFilename
+				}]
+			})
+			.catch();
+		});
+		
+		
+    } else if ((m = re.eligible.exec(msg)) !== null) {
+        const eligibleURL = process.env.JEROENR_ELIGIBLE;
+        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
+			imgUrl = eligibleURL + '?q=' + imgName,
 			imgFilename = imgName + '.png';
 		
 		download(imgUrl, imgFilename, function(){
