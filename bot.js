@@ -1,9 +1,10 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const { Client, Attachment } = require('discord.js');
+const client = new Client();
 
 
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
+    ratio2: /^!ratio2(?: +(\S.*))?$/i,
     eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
@@ -63,6 +64,11 @@ client.on('message', message => {
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
     } else if ((m = re.eligible.exec(msg)) !== null) {
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
+	
+    } else if ((m = re.ratio2.exec(msg)) !== null) {
+        //jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
+		const attachment = new Attachment('https://i.imgur.com/w3duR07.png');
+        message.channel.send(attachment);
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
