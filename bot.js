@@ -29,15 +29,15 @@ client.on('message', message => {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
 		let imgUrl = ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick);
-        message.channel.send({
+		message.channel.send({
 			embed: {
 				thumbnail: {
-					url: 'attachment://' + nick + '.png'
+					url: 'attachment://' + 'bKRNZB2z.jpg'
 				}
 		    },
 		    files: [{
-			    attachment: imgUrl,
-			    name: nick + '.png'
+			    attachment: './bKRNZB2z.jpg',
+			    name: 'bKRNZB2z.jpg'
 		    }]
 		});
     } else if (msg.toLowerCase() == 'ping') {
