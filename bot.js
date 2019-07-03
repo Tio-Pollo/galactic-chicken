@@ -32,11 +32,6 @@ client.on('message', message => {
     if ((m = re.ratio.exec(msg)) !== null) {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-        message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick));
-	
-    } else if ((m = /^!ratio2(?: +(\S.*))?$/i.exec(msg)) !== null) {
-        const ratioURL = process.env.JEROENR_RATIO;
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
 		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
 			imgUrl = ratioURL + '?q=' + imgName,
 			imgFilename = imgName + '.png';
