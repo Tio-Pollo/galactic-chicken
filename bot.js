@@ -4,7 +4,7 @@ const client = new Discord.Client();
 
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
-    eligible: /^!eligibl(?:e|ility)(?: +(\S.*))?$/i,
+    eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
     headoff: /^off with his head/i,
@@ -30,37 +30,16 @@ var download = function(uri, filename, callback){
   });
 };
 
-client.on('message', message => {
-
-    let m, nick, msg;
-    msg = message.content;
-
-    //message.reply('pong');  message.channel.send()
-    
-    if ((m = re.ratio.exec(msg)) !== null) {
-        const ratioURL = process.env.JEROENR_RATIO;
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
-			imgUrl = ratioURL + '?q=' + imgName,
-			imgFilename = imgName + '.png';
-		
-		download(imgUrl, imgFilename, function(){
-			message.channel.send({
-				files: [{
-					attachment: imgFilename,
-					name: imgFilename
-				}]
-			})
-			.catch();
-		});
-		
-		
-    } else if ((m = re.eligible.exec(msg)) !== null) {
-        const eligibleURL = process.env.JEROENR_ELIGIBLE;
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-	let imgName = encodeURIComponent(m[1] ? m[1] : nick),
-		imgUrl = eligibleURL + '?q=' + imgName,
-		imgFilename = imgName + '.png';
+function jeroImg(baseUrl, query, message, prefix='') {
+	if (!query) {
+		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+	}
+    if (prefix) {
+        prefix = prefix + '_';
+    }
+	let imgName = encodeURIComponent(query),
+	    imgUrl = baseUrl + '?q=' + imgName,
+	    imgFilename = prefix + imgName + '.png';
 
 	download(imgUrl, imgFilename, function(){
 		message.channel.send({
@@ -71,8 +50,19 @@ client.on('message', message => {
 		})
 		.catch();
 	});
-		
-		
+}
+
+client.on('message', message => {
+
+    let m, nick, msg;
+    msg = message.content;
+
+    //message.reply('pong');  message.channel.send()
+    
+    if ((m = re.ratio.exec(msg)) !== null) {
+        jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
+    } else if ((m = re.eligible.exec(msg)) !== null) {
+        jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
