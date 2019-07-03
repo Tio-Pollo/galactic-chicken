@@ -18,9 +18,6 @@ var fs = require('fs'),
 
 var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
-
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
@@ -40,13 +37,15 @@ client.on('message', message => {
     } else if ((m = /^!ratio2(?: +(\S.*))?$/i.exec(msg)) !== null) {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-		let imgUrl = ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick);
+		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
+			imgUrl = ratioURL + '?q=' + imgName,
+			imgFilename = imgName + '.png';
 		
-		download(imgUrl, 'ratio.png', function(){
+		download(imgUrl, imgFilename, function(){
 			message.channel.send({
 				files: [{
-					attachment: 'ratio.png',
-					name: 'ratio.png'
+					attachment: imgFilename,
+					name: imgFilename
 				}]
 			})
 			.catch();
