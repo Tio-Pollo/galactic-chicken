@@ -1,26 +1,34 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-client.on('ready', () => {
-    console.log('Cluck cluck! 🐔');
-});
 
 const re = {
     ratio: /^!ratio(?: +(\S.*))?$/i,
-    eligible: /^!eligible(?: +(\S.*))?$/i,
+    eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
     headoff: /^off with his head/i,
     coffee: /^\W*coffee\W*(?:please\W*)?$/i
 };
 
+client.on('ready', () => {
+	//Ready - Log msg
+	let buildMsg = 'Cluck cluck! 🐔';
+	const channel = client.channels.find('name', 'chicken-test');
+	if (channel) {
+		channel.send(buildMsg);
+	} else {
+	    console.log(buildMsg);
+	}
+});
+
 var fs = require('fs'),
     request = require('request');
 
 var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-  });
+	request.head(uri, function(err, res, body){
+		request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+	});
 };
 
 client.on('message', message => {
@@ -31,41 +39,9 @@ client.on('message', message => {
     //message.reply('pong');  message.channel.send()
     
     if ((m = re.ratio.exec(msg)) !== null) {
-        const ratioURL = process.env.JEROENR_RATIO;
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
-			imgUrl = ratioURL + '?q=' + imgName,
-			imgFilename = imgName + '.png';
-		
-		download(imgUrl, imgFilename, function(){
-			message.channel.send({
-				files: [{
-					attachment: imgFilename,
-					name: imgFilename
-				}]
-			})
-			.catch();
-		});
-		
-		
+		jeroImg(process.env.JEROENR_RATIO, m[1], 'ratio');
     } else if ((m = re.eligible.exec(msg)) !== null) {
-        const eligibleURL = process.env.JEROENR_ELIGIBLE;
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-		let imgName = encodeURIComponent(m[1] ? m[1] : nick),
-			imgUrl = eligibleURL + '?q=' + imgName,
-			imgFilename = imgName + '.png';
-		
-		download(imgUrl, imgFilename, function(){
-			message.channel.send({
-				files: [{
-					attachment: imgFilename,
-					name: imgFilename
-				}]
-			})
-			.catch();
-		});
-		
-		
+		jeroImg(process.env.JEROENR_ELIGIBLE, m[1], 'eligible');
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
@@ -91,3 +67,23 @@ client.on('message', message => {
  
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret
+
+
+function jeroImg(baseUrl, query, prefix='') {
+	if (!query) {
+		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+	}
+	let imgName = encodeURIComponent(query),
+		imgUrl = baseUrl + '?q=' + imgName,
+		imgFilename = prefix + '_' + imgName + '.png';
+
+	download(imgUrl, imgFilename, function(){
+		message.channel.send({
+			files: [{
+				attachment: imgFilename,
+				name: imgFilename
+			}]
+		})
+		.catch();
+	});
+}
