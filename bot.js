@@ -17,7 +17,7 @@ client.on('message', message => {
         message.channel.send('pong');
     } else if (message.content == 'nicktest') {
         let nick = message.author.tag.split('#')[0];
-        message.channel.send('Hello ' + nick + ' - ' + message.author);
+        message.channel.send('Hello ' + nick + ' - ' + JSON.stringify(message.author) + ' --- ' + JSON.stringify(message.member));
     } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
