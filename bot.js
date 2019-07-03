@@ -17,7 +17,7 @@ client.on('message', message => {
         message.channel.send('pong');
     } else if (message.content == 'nicktest') {
         let nick = ('' + message.member).split('#')[0].replace(/\W+/g,'');
-        message.channel.send('Hello ...' + nick + ' - ' + message.member + ' --- ' + message.member.nick + ' --- ' + message.author);
+        message.channel.send('Hello ...' + nick + ' - ' + message.member + ' --- ' + message.member.nick + ' --- ' + message.author + '+++ ' + message.channel.server.detailsOf(message.author).nick);
     } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
