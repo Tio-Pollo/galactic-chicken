@@ -7,12 +7,12 @@ const re = {
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
     headoff: /^off with his head/i,
-    coffee: /^\W*coffee\W*(?:please\W*)?$/i
+    coffee: /^(?:\W*I need (?:a |some )?)?\W*coffee\W*(?:please\W*)?$/i
 };
 
 client.on('ready', () => {
     const buildMsg = 'Cluck cluck! 🐔';
-	const channel = client.channels.find('name', 'chicken-test');
+	const channel = client.channels.find(ch => ch.name === 'chicken-test');
 	if (channel) {
 		channel.send(buildMsg);
 	} else {
@@ -55,7 +55,7 @@ client.on('message', message => {
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
-        const channel = client.channels.find('name', m[1]);
+        const channel = client.channels.find(ch => ch.name.toLowerCase().startsWith(m[1].toLowerCase()));
         if (channel) {
             channel.send(m[2]);
         }
