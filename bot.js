@@ -31,7 +31,7 @@ function jeroImg(baseUrl, query, message, prefix='') {
 	    imgUrl = baseUrl + '?q=' + imgName,
 	    imgFilename = prefix + imgName + '.png';
 
-	const attachment = new Attachment(imgUrl);
+	const attachment = new Attachment(imgUrl, imgFilename);
 	message.channel.send(
 		attachment
 	)
