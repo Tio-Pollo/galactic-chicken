@@ -15,6 +15,13 @@ client.on('message', message => {
         //message.reply('pong');  message.channel.send()
     } else if (message.content == 'ping') {
         message.channel.send('pong');
+    } else if (message.content == 'nicktest') {
+        message.channel.send('Hello ' + message.author.nick);
+    } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
+        const channel = client.channels.find('name', m[1]);
+        if (channel) {
+            channel.send(m[2]);
+        }
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
     } else if (/^off with his head/i.test(message.content)) {
