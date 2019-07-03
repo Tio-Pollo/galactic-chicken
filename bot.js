@@ -32,12 +32,12 @@ client.on('message', message => {
 		message.channel.send({
 			embed: {
 				thumbnail: {
-					url: 'attachment://' + 'bKRNZB2z.jpg'
+					url: 'attachment://' + nick + '.png'
 				}
 		    },
 		    files: [{
-			    attachment: './bKRNZB2z.jpg',
-			    name: 'bKRNZB2z.jpg'
+			    attachment: imgUrl,
+			    name: nick + '.png'
 		    }]
 		});
     } else if (msg.toLowerCase() == 'ping') {
