@@ -16,8 +16,13 @@ client.on('message', message => {
     } else if (message.content == 'ping') {
         message.channel.send('pong');
     } else if (message.content == 'nicktest') {
-        let nick = ('' + message.member).split('#')[0].replace(/\W+/g,'');
-        message.channel.send('Hello ...' + nick + ' - ' + message.member + ' --- ' + message.member.nick + ' --- ' + message.author + '+++ ' + (message.channel.server.detailsOfUser(message.author).nickname || 'nope'));
+        //let nick = ('' + message.member).split('#')[0].replace(/\W+/g,'');
+        let nick = 'nope';
+        try {
+            nick = message.guild.member(message.author).nickname;
+        } catch (e) {
+        }
+        message.channel.send('Hello ... ' + nick);
     } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
@@ -25,6 +30,8 @@ client.on('message', message => {
         }
     } else if (message.content == 'say hi') {
         message.channel.send('Hi!');
+    } else if (/\bchicken\b/i.test(message.content)) {
+        message.react('🐔');
     } else if (/^off with his head/i.test(message.content)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (/^\W*coffee$/i.test(message.content)) {
