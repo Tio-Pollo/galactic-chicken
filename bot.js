@@ -11,12 +11,13 @@ client.on('message', message => {
 
     if ((m = /^!ratio(?: +(\S.*))?/i.exec(message.content)) !== null) {
         const ratioURL = process.env.JEROENR_RATIO;
-        message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : message.author.username));
+        message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : message.author.tag.split('#')[0]));
         //message.reply('pong');  message.channel.send()
     } else if (message.content == 'ping') {
         message.channel.send('pong');
     } else if (message.content == 'nicktest') {
-        message.channel.send('Hello ' + message.author.name + ' - ' + message.author.id + ' - ' + message.author.client + ' - ' + message.author.presence + ' - ' + message.author.tag);
+        let nick = message.author.tag.split('#')[0];
+        message.channel.send('Hello ' + nick);
     } else if ((m = /^!sendmsg +(\S+) (.+)/i.exec(message.content)) !== null) {
         const channel = client.channels.find('name', m[1]);
         if (channel) {
