@@ -6,7 +6,7 @@ client.on('ready', () => {
 });
 
 const re = {
-    ratio: /^!ratio(?: +(\S.*))?/i,
+    ratio: /^!ratio(?: +(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     chicken: /\bchicken\b/i,
     headoff: /^off with his head/i,
@@ -25,7 +25,7 @@ client.on('message', message => {
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
         message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick));
 	
-    } else if ((m = /^!ratio2(?: +(\S.*))?/i.exec(msg)) !== null) {
+    } else if ((m = /^!ratio2(?: +(\S.*))?$/i.exec(msg)) !== null) {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
 		let imgUrl = ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick);
