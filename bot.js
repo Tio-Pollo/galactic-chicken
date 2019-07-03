@@ -49,7 +49,7 @@ client.on('message', message => {
 					name: 'ratio.png'
 				}]
 			})
-			.catch(e){message.channel.send(e).catch(err){}};
+			.catch(e) { message.channel.send('Error: ' + e).catch(err) { } };
 		});
 		
 		
