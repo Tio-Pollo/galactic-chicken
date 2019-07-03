@@ -24,6 +24,15 @@ client.on('message', message => {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
         message.channel.send(ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick));
+	
+    } else if ((m = /^!ratio2(?: +(\S.*))?/i.exec(msg)) !== null) {
+        const ratioURL = process.env.JEROENR_RATIO;
+        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+        message.channel.send({
+			files: [
+				ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick))
+			]
+		});
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
