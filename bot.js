@@ -28,10 +28,17 @@ client.on('message', message => {
     } else if ((m = /^!ratio2(?: +(\S.*))?/i.exec(msg)) !== null) {
         const ratioURL = process.env.JEROENR_RATIO;
         nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+		let imgUrl = ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick);
         message.channel.send({
-			files: [
-				ratioURL + '?q=' + encodeURIComponent(m[1] ? m[1] : nick))
-			]
+			embed: {
+				thumbnail: {
+					url: 'attachment://' + nick + '.png'
+				}
+		    },
+		    files: [{
+			    attachment: imgUrl,
+			    name: nick + '.png'
+		    }]
 		});
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
