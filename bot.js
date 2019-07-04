@@ -16,8 +16,6 @@ client.on('message', message => {
 
     let m, nick, msg;
     msg = message.content;
-
-    //message.reply('pong');  message.channel.send()
     
     if ((m = re.ratio.exec(msg)) !== null) {
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
@@ -26,10 +24,10 @@ client.on('message', message => {
     } else if (msg.toLowerCase() == 'ping') {
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
-        nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+        nick = getNick(message);
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
-        const channel = client.channels.find(ch => ch.name.toLowerCase().startsWith(m[1].toLowerCase()));
+        const channel = findChan(m[1]);
         if (channel) {
             channel.send(m[2]);
         }
@@ -44,16 +42,27 @@ client.on('message', message => {
     }
 });
 
-function jeroImg(baseUrl, query, message, prefix='') {
-	if (!query) {
-		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+function getNick(message) {
+	let nick = '{nick}'
+	try {
+		nick = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+	} catch (e) {
+		nick = message.author.tag.split('#')[0] || message.author.username || '';
 	}
-    if (prefix) {
-        prefix = prefix + '_';
-    }
+	return nick;
+}
+
+function findChan(str) {
+	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
+}
+
+function jeroImg(baseUrl, query, message, prefix='') {
+	if (!query) query = getNick(message);
+    if (prefix) prefix = prefix + '_';
+	
 	let imgName = encodeURIComponent(query),
-	    imgUrl = baseUrl + '?q=' + imgName,
-	    imgFilename = prefix + imgName + '.png';
+		imgUrl = baseUrl + '?q=' + imgName,
+		imgFilename = prefix + imgName + '.png';
 
 	const attachment = new Attachment(imgUrl, imgFilename);
 	message.channel.send(
@@ -64,7 +73,7 @@ function jeroImg(baseUrl, query, message, prefix='') {
 
 client.on('ready', () => {
     const buildMsg = 'Cluck cluck! 🐔';
-	const channel = client.channels.find(ch => ch.name === 'chicken-test');
+	const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
 	if (channel) {
 		channel.send(buildMsg);
 	} else {
