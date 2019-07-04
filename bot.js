@@ -35,7 +35,7 @@ client.on('message', message => {
         message.channel.send('Hi!');
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
-    } else if (re.chicken.test(msg)) {
+    } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
         message.react('🐔');
     } else if (re.coffee.test(message.content)) {
         message.channel.send('☕');
@@ -54,6 +54,10 @@ function getNick(message) {
 
 function findChan(str) {
 	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
+}
+
+function findUser(strId, channel) {
+	return channel
 }
 
 function jeroImg(baseUrl, query, message, prefix='') {
