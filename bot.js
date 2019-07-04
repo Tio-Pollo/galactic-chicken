@@ -39,6 +39,8 @@ function jeroImg(baseUrl, query, message, prefix='') {
 }
 
 client.on('message', message => {
+	if (message.author.id == client.id) //own message
+		return;
 
     let m, nick, msg;
     msg = message.content;
@@ -70,4 +72,4 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret
+client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
