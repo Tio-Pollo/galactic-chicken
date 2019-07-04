@@ -18,6 +18,8 @@ client.on('ready', () => {
 	} else {
 		console.log(buildMsg);
 	}
+	
+	client.user.setActivity('Latest build: ' + (new Date().toLocaleString()));
 });
 
 function jeroImg(baseUrl, query, message, prefix='') {
