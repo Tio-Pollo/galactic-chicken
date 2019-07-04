@@ -10,38 +10,8 @@ const re = {
     coffee: /^(?:\W*I need (?:a |some )?)?\W*coffee\W*(?:please\W*)?$/i
 };
 
-client.on('ready', () => {
-    const buildMsg = 'Cluck cluck! 🐔';
-	const channel = client.channels.find(ch => ch.name === 'chicken-test');
-	if (channel) {
-		channel.send(buildMsg);
-	} else {
-		console.log(buildMsg);
-	}
-	
-	client.user.setActivity('Latest build: ' + (new Date().toLocaleString()));
-});
-
-function jeroImg(baseUrl, query, message, prefix='') {
-	if (!query) {
-		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
-	}
-    if (prefix) {
-        prefix = prefix + '_';
-    }
-	let imgName = encodeURIComponent(query),
-	    imgUrl = baseUrl + '?q=' + imgName,
-	    imgFilename = prefix + imgName + '.png';
-
-	const attachment = new Attachment(imgUrl, imgFilename);
-	message.channel.send(
-		attachment
-	)
-	.catch();
-}
-
 client.on('message', message => {
-	if (message.author.id == client.id) //own message
+	if (message.author == client.user) //own message
 		return;
 
     let m, nick, msg;
@@ -72,6 +42,36 @@ client.on('message', message => {
     } else if (re.coffee.test(message.content)) {
         message.channel.send('☕');
     }
+});
+
+function jeroImg(baseUrl, query, message, prefix='') {
+	if (!query) {
+		query = (message.guild.member(message.author).nickname || message.author.tag.split('#')[0]);
+	}
+    if (prefix) {
+        prefix = prefix + '_';
+    }
+	let imgName = encodeURIComponent(query),
+	    imgUrl = baseUrl + '?q=' + imgName,
+	    imgFilename = prefix + imgName + '.png';
+
+	const attachment = new Attachment(imgUrl, imgFilename);
+	message.channel.send(
+		attachment
+	)
+	.catch();
+}
+
+client.on('ready', () => {
+    const buildMsg = 'Cluck cluck! 🐔';
+	const channel = client.channels.find(ch => ch.name === 'chicken-test');
+	if (channel) {
+		channel.send(buildMsg);
+	} else {
+		console.log(buildMsg);
+	}
+	
+	client.user.setActivity('Built ' + (new Date().toLocaleDateString()));
 });
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
