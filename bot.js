@@ -81,7 +81,10 @@ client.on('ready', () => {
 	}
 	
 	const now = new Date();
-	client.user.setActivity('since ' + now.getUTCDay() + '/' + now.getUTCMonth() + ' ' + now.getUTCHours() + 'hs', {type: "WATCHING"});
+	client.user.setActivity('since '
+		+ now.getUTCDay() + '/' + (now.getUTCMonth() + 1)
+		+ ' ' + now.getUTCHours() + ':' + now.getUTCMinutes.padStart(2, '0')
+	, {type: "WATCHING"});
 });
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
