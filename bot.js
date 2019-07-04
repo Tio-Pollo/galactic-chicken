@@ -80,7 +80,7 @@ client.on('ready', () => {
 		console.log(buildMsg);
 	}
 	
-	client.user.setActivity('Built ' + (new Date().toLocaleDateString()));
+	client.user.setActivity('Built ' + (new Date().toLocaleString()));
 });
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
