@@ -2,12 +2,13 @@ const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
 const re = {
-    ratio: /^!ratio(?: +(\S.*))?$/i,
-    eligible: /^!eligib(?:le|ility)(?: +(\S.*))?$/i,
+    ratio: /^!ratio(?: +@?(\S.*))?$/i,
+    eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
-    chicken: /\bchicken\b/i,
-    headoff: /^off with his head/i,
-    coffee: /^(?:\W*I need (?:a |some )?)?\W*coffee\W*(?:please\W*)?$/i
+    headoff: /^\W*off with his head/i,
+	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*\W*(?:<@[0-9A-F]+>\W*)?$/i,
+    coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+) (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
+    chicken: /\bchicken\b/i
 };
 
 client.on('message', message => {
@@ -30,15 +31,19 @@ client.on('message', message => {
         const channel = findChan(m[1]);
         if (channel) {
             channel.send(m[2]);
-        }
+        } else {
+			message.channel.send(m[1] + ' ' + m[2]);
+		}
     } else if (msg.toLowerCase() == 'say hi') {
         message.channel.send('Hi!');
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
-    } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
-        message.react('🐔');
     } else if (re.coffee.test(message.content)) {
         message.channel.send('☕');
+    } else if (message.isMemberMentioned(client.user) && re.thankyou.test(message.content)) {
+        message.react('🐔');
+    } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
+        message.react('🐔');
     }
 });
 
@@ -56,15 +61,11 @@ function findChan(str) {
 	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
 }
 
-function findUser(strId, channel) {
-	return channel
-}
-
 function jeroImg(baseUrl, query, message, prefix='') {
 	if (!query) query = getNick(message);
     if (prefix) prefix = prefix + '_';
 	
-	let imgName = encodeURIComponent(query),
+	let imgName = encodeURIComponent(query.trim()),
 		imgUrl = baseUrl + '?q=' + imgName,
 		imgFilename = prefix + imgName + '.png';
 
