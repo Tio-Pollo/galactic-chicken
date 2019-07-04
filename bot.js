@@ -15,7 +15,7 @@ client.on('message', message => {
 		return;
 
     let m, nick, msg;
-    msg = message.content;
+    msg = message.cleanContent;
     
     if ((m = re.ratio.exec(msg)) !== null) {
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
