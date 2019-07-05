@@ -6,7 +6,7 @@ const re = {
     eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
-	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*\W*(?:<@[0-9A-F]+>\W*)?$/i,
+	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*(?:lot|(?:very|so) much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+) (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
     chicken: /\bchicken\b/i
 };
@@ -41,7 +41,14 @@ client.on('message', message => {
     } else if (re.coffee.test(message.content)) {
         message.channel.send('☕');
     } else if (message.isMemberMentioned(client.user) && re.thankyou.test(message.content)) {
-        message.react('🐔');
+		let arrAnswer = [
+				'no problem!', "don't mention it :thumbsup:", "you're welcome!", 'anytime! :ok_hand:',
+				"you're quite welcome, pal", ':chicken::thumbsup:', "that's alright", 'no prob', 'happy to help',
+				'happy to help :robot:', "it's my pleasure", 'no worries! :ok_hand:', 'No, thank YOU',
+				'it was the least I could do', 'glad to help', 'sure!', 'you got it, mate'
+			],
+			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
+        message.reply(answer);
     } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
         message.react('🐔');
     }
