@@ -29,12 +29,10 @@ client.on('message', message => {
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
 		const channel = findChan(m[1]);
-		let allowed = false;
-		if (message.member) {
-			allowed = message.member.hasPermission('BAN_MEMBERS');
-		} else if (channel) {
-			message.reply('m guild: ' + message.guild + ' -- c guild: ' + channel.guild);
-		}
+		let allowed = 
+			(message.member && message.member.hasPermission('BAN_MEMBERS'))
+			|| (channel.guild && channel.guild.member(message.author) && channel.guild.member(message.author).hasPermission('BAN_MEMBERS'))
+			|| false;
 		if (allowed) {
 			if (channel) {
 				channel.send(m[2]);
