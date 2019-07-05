@@ -45,7 +45,7 @@ client.on('message', message => {
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
-        message.channel.send('☕');
+        message.channel.send(':coffee:');
     } else if (message.isMemberMentioned(client.user) && re.thankyou.test(message.content)) {
 		let arrAnswer = [
 				'no problem!', "don't mention it :thumbsup:", "you're welcome!", 'anytime! :ok_hand:',
@@ -56,7 +56,7 @@ client.on('message', message => {
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
         message.channel.send(answer);
     } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
-        message.react('🐔');
+        message.react(':chicken:');
     }
 });
 
@@ -90,7 +90,7 @@ function jeroImg(baseUrl, query, message, prefix='') {
 }
 
 client.on('ready', () => {
-    const buildMsg = 'Cluck cluck! 🐔';
+    const buildMsg = 'Cluck cluck! :chicken:';
 	const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
 	if (channel) {
 		channel.send(buildMsg);
