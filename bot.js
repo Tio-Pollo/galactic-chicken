@@ -35,7 +35,7 @@ client.on('message', message => {
 		} elseif (channel) {
 			message.reply('m guild: ' + message.guild + ' -- c guild: ' + channel.guild);
 		}
-		if ((message.member && ) || (channel && channel.)) {
+		if (allowed) {
 			if (channel) {
 				channel.send(m[2]);
 			} else {
