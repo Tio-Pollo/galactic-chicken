@@ -4,6 +4,7 @@ const client = new Client();
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
     eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
+	daily: /^\W*(?:<@[0-9A-F]+>\W*)?daily$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
@@ -25,6 +26,26 @@ client.on('message', message => {
     } else if ((m = re.eligible.exec(msg)) !== null) {
 		// !eligible
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
+    } else if (re.daily.test(msg)) {
+		//!daily
+		let quests = [	'1500 gold bars',
+						'1 million coins',
+						'3000 amber insulation',
+						'550 insulated wire',
+						'800 batteries',
+						'800 graphite',
+						'80 circuits',
+						'200 lamps'
+					],
+			weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+			today = new Date(),
+			index = Math.floor(today/8.64e7) % 8,
+			dow = today.getUTCDate();
+        message.channel.send(
+			'**' + weekday[(dow+6)%7] + '** ' + quests[(index+7)%8] +
+			' **' + weekday[dow] + '** ' + quests[index] +
+			' **' + weekday[(dow+1)%7] + '** ' + quests[(index+1)%8]
+		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
         message.channel.send('pong');
@@ -91,6 +112,10 @@ function jeroImg(baseUrl, query, message, prefix='') {
 		attachment
 	)
 	.catch();
+}
+
+function weekDay(dayNum) {
+	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum];
 }
 
 client.on('ready', () => {
