@@ -9,7 +9,8 @@ const re = {
 	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+) (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
     chicken: /\bchicken\b/i
-};
+},
+chicken = '🐔';
 
 client.on('message', message => {
 	if (message.author == client.user) //own message
@@ -56,7 +57,7 @@ client.on('message', message => {
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
         message.channel.send(answer);
     } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
-        message.react('chicken');
+        message.react(chicken);
     }
 });
 
