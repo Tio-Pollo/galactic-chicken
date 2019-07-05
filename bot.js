@@ -32,7 +32,7 @@ client.on('message', message => {
 		let allowed = false;
 		if (message.member) {
 			allowed = message.member.hasPermission('BAN_MEMBERS');
-		} elseif (channel) {
+		} else if (channel) {
 			message.reply('m guild: ' + message.guild + ' -- c guild: ' + channel.guild);
 		}
 		if (allowed) {
