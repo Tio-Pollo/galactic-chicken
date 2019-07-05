@@ -56,7 +56,7 @@ client.on('message', message => {
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
         message.channel.send(answer);
     } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
-        message.react(':chicken:');
+        message.react('chicken');
     }
 });
 
