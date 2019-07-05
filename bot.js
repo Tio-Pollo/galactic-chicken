@@ -20,15 +20,20 @@ client.on('message', message => {
     msg = message.cleanContent;
     
     if ((m = re.ratio.exec(msg)) !== null) {
+		// !ratio
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
     } else if ((m = re.eligible.exec(msg)) !== null) {
+		// !eligible
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
     } else if (msg.toLowerCase() == 'ping') {
+		// ping
         message.channel.send('pong');
     } else if (msg.toLowerCase() == 'nicktest') {
+		// nicktest
         nick = getNick(message);
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
+		// !sendmsg
 		const channel = findChan(m[1]);
 		let allowed = 
 			(message.member && message.member.hasPermission('BAN_MEMBERS'))
@@ -41,8 +46,6 @@ client.on('message', message => {
 				message.channel.send(m[1] + ' ' + m[2]);
 			}
 		}
-    } else if (msg.toLowerCase() == 'say hi') {
-        message.channel.send('Hi!');
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
