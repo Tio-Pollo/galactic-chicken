@@ -6,7 +6,7 @@ const re = {
     eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
-	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*(?:lot|(?:very|so) much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
+	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+) (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
     chicken: /\bchicken\b/i
 };
@@ -28,11 +28,13 @@ client.on('message', message => {
         nick = getNick(message);
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
-        const channel = findChan(m[1]);
-        if (channel) {
-            channel.send(m[2]);
-        } else {
-			message.channel.send(m[1] + ' ' + m[2]);
+		if (message.member.hasPermission('BAN_MEMBERS')) {
+			const channel = findChan(m[1]);
+			if (channel) {
+				channel.send(m[2]);
+			} else {
+				message.channel.send(m[1] + ' ' + m[2]);
+			}
 		}
     } else if (msg.toLowerCase() == 'say hi') {
         message.channel.send('Hi!');
@@ -48,7 +50,7 @@ client.on('message', message => {
 				'it was the least I could do', 'glad to help', 'sure!', 'you got it, mate'
 			],
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
-        message.reply(answer);
+        message.channel.send(answer);
     } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
         message.react('🐔');
     }
