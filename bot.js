@@ -43,8 +43,8 @@ client.on('message', message => {
 			dow = today.getUTCDate();
         message.channel.send(
 			'**' + weekday[(dow+6)%7] + '** ' + quests[(index+7)%8] +
-			' **' + weekday[dow] + '** ' + quests[index] +
-			' **' + weekday[(dow+1)%7] + '** ' + quests[(index+1)%8]
+			', **' + weekday[dow] + '** ' + quests[index] +
+			', **' + weekday[(dow+1)%7] + '** ' + quests[(index+1)%8]
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
