@@ -6,7 +6,7 @@ const re = {
     eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
-	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*thank[ syoua]*(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
+	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+) (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
     chicken: /\bchicken\b/i
 };
@@ -28,8 +28,14 @@ client.on('message', message => {
         nick = getNick(message);
         message.channel.send('Hello ' + nick);
     } else if ((m = re.sendmsg.exec(msg)) !== null) {
-		if (message.member.hasPermission('BAN_MEMBERS')) {
-			const channel = findChan(m[1]);
+		const channel = findChan(m[1]);
+		let allowed = false;
+		if (message.member) {
+			allowed = message.member.hasPermission('BAN_MEMBERS');
+		} elseif (channel) {
+			message.reply('m guild: ' + message.guild + ' -- c guild: ' + channel.guild);
+		}
+		if ((message.member && ) || (channel && channel.)) {
 			if (channel) {
 				channel.send(m[2]);
 			} else {
