@@ -38,7 +38,7 @@ client.on('message', message => {
 						'200 lamps'
 					],
 			weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Anchorage'})),
+			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 			index = Math.floor(alaska/8.64e7) % 8,
 			dow = alaska.getUTCDate();
         message.channel.send(
