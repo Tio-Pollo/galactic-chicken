@@ -69,6 +69,8 @@ client.on('message', message => {
 			} else {
 				message.channel.send(m[1] + ' ' + m[2]);
 			}
+		} else {
+			message.react(na);
 		}
 	} else if (re.ruokhal.test(msg)) {
 		message.channel.send(`Look, ${message.author}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
