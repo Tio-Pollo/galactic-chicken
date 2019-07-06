@@ -13,7 +13,8 @@ const re = {
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purgebot(?: (\d+))?$/i,
     chicken: /\bchicken\b/i
 },
-chicken = '🐔';
+chicken = '🐔',
+na = '⛔';
 
 client.on('message', message => {
 	if (message.author == client.user) //own message
@@ -93,7 +94,11 @@ client.on('message', message => {
 			(message.member && message.member.hasPermission('BAN_MEMBERS'))
 			|| (channel.guild && channel.guild.member(message.author) && channel.guild.member(message.author).hasPermission('BAN_MEMBERS'))
 			|| false;
-		if (allowed) message.delete().catch((err)=>{console.log(err)});
+		if (allowed) {
+			message.delete().catch((err)=>{console.log(err)});
+		} else {
+			message.react(na);
+		}
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
