@@ -88,17 +88,7 @@ client.on('message', message => {
     } else if ((m = re.purgebot.exec(msg)) !== null) {
 		// !purgebot [N]
 		let limit = m[1] || 2;
-		message.channel
-			.fetchMessages({limit: 100})
-			.then(chanMsg => {
-				chanMsg = chanMsg.filter(m => m.author == client.user).array().slice(0, limit);
-				if (chanMsg.length) {
-					message.channel
-						.bulkDelete(chanMsg)
-						.catch((e) => {console.log('Bulk Delete error: ' + e)});
-				}
-			})
-			.catch((e) => {console.log('Fetch Messages error: ' + e)});
+		purgeMsg(message.channel, client.user, limit);
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
@@ -120,6 +110,21 @@ function quote(user) {
 
 function findChan(str) {
 	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
+}
+
+function purgeMsg(channel, user, limit) {
+	const max = 100; //max allowed limit without a MessageCollector
+	channel
+	.fetchMessages({limit: max})
+	.then(chanMsg => {
+		chanMsg = chanMsg.filter(m => m.author == user).array().slice(0, (limit||max));
+		if (chanMsg.length) {
+			channel
+			.bulkDelete(chanMsg)
+			.catch((e) => {console.log('Bulk Delete error: ' + e)});
+		}
+	})
+	.catch((e) => {console.log('Fetch Messages error: ' + e)});
 }
 
 function jeroImg(baseUrl, query, message, prefix='') {
