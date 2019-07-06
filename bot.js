@@ -71,7 +71,7 @@ client.on('message', message => {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
         message.channel.send(':coffee:');
-    } else if (message.isMemberMentioned(client.user) && re.thankyou.test(message.content)) {
+    } else if (message.isMentioned(client.user) && re.thankyou.test(message.content)) {
 		let arrAnswer = [
 				'no problem!', "don't mention it :thumbsup:", "you're welcome!", 'anytime! :ok_hand:',
 				"you're quite welcome, pal", ':chicken::thumbsup:', "that's alright", 'no prob', 'happy to help',
@@ -80,7 +80,7 @@ client.on('message', message => {
 			],
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
         message.channel.send(answer);
-    } else if (message.isMemberMentioned(client.user) || re.chicken.test(msg)) {
+    } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
 });
