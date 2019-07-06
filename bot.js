@@ -91,7 +91,7 @@ client.on('message', message => {
 		message.channel
 			.fetchMessages({limit: 100})
 			.then(chanMsg => {
-				chanMsg = chanMsg.filter(m => m.author == client.user).slice(limit);
+				chanMsg = chanMsg.filter(m => m.author == client.user).array().slice(limit);
 				if (chanMsg.length) {
 					message.channel
 						.bulkDelete()
