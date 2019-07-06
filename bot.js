@@ -89,15 +89,16 @@ client.on('message', message => {
 		// !purgebot [N]
 		let limit = m[1] || 2;
 		message.channel
-			.fetchMessages({limit: 1000})
+			.fetchMessages({limit: 100})
 			.then(chanMsg => {
 				chanMsg = chanMsg.filter(m => m.author == client.user).slice(limit);
 				if (chanMsg.length) {
 					message.channel
 						.bulkDelete()
-						.catch();
+						.catch((e) => {console.log('Bulk Delete error: ' + e)});
 				}
-			});
+			})
+			.catch((e) => {console.log('Fetch Messages error: ' + e)});
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
