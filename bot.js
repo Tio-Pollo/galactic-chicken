@@ -10,6 +10,7 @@ const re = {
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
 	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
+	purgebot: /^\W*(?:<@[0-9A-F]+>\W*)?purgebot(?: (\d+))?$/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔';
@@ -69,12 +70,13 @@ client.on('message', message => {
 			}
 		}
 	} else if (re.ruokhal.test(msg)) {
-		message.channel.send(`Look, ${quote(message.author)}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
+		message.channel.send(`Look, ${message.author}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
         message.channel.send(':coffee:');
     } else if (message.isMentioned(client.user) && re.thankyou.test(message.content)) {
+		// Thank you @bot
 		let arrAnswer = [
 				'no problem!', "don't mention it :thumbsup:", "you're welcome!", 'anytime! :ok_hand:',
 				"you're quite welcome, pal", ':chicken::thumbsup:', "that's alright", 'no prob', 'happy to help',
@@ -83,6 +85,16 @@ client.on('message', message => {
 			],
 			answer = arrAnswer[Math.floor(Math.random() * arrAnswer.length)];
         message.channel.send(answer);
+    } else if ((m = re.purgebot.exec(msg)) !== null) {
+		// !purgebot [N]
+		let limit = m[1] || 2;
+		message.channel
+			.fetchMessages({limit: limit})
+			.then(chanMsg => {
+				message.channel
+					.bulkDelete(chanMsg.filter(m => m.author == client.user))
+					.catch();
+			});
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
@@ -99,7 +111,7 @@ function getNick(message) {
 }
 
 function quote(user) {
-	return '<@' + user.id + '>';
+	return '<@' + user.id + '>' || user;
 }
 
 function findChan(str) {
