@@ -43,8 +43,8 @@ client.on('message', message => {
 			dow = alaska.getUTCDate();
         message.channel.send(
 			'**`' + weekday[dow] + '`** ' + quests[index] +
-			', **`' + weekday[(dow+1)%7] + '`** ' + quests[(index+1)%8] +
-			', **`' + weekday[(dow+2)%7] + '`** ' + quests[(index+2)%8]
+			' | **`' + weekday[(dow+1)%7] + '`** ' + quests[(index+1)%8] +
+			' | **`' + weekday[(dow+2)%7] + '`** ' + quests[(index+2)%8]
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
