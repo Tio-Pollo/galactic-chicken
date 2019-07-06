@@ -38,13 +38,13 @@ client.on('message', message => {
 						'200 lamps'
 					],
 			weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
-			today = new Date(),
-			index = Math.floor(today/8.64e7) % 8,
-			dow = today.getUTCDate();
+			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Anchorage})),
+			index = Math.floor(alaska/8.64e7) % 8,
+			dow = alaska.getUTCDate();
         message.channel.send(
-			'**' + weekday[(dow+6)%7] + '** ' + quests[(index+7)%8] +
-			', **' + weekday[dow] + '** ' + quests[index] +
-			', **' + weekday[(dow+1)%7] + '** ' + quests[(index+1)%8]
+			'**`' + weekday[dow] + '`** ' + quests[index] +
+			', **`' + weekday[(dow+1)%7] + '`** ' + quests[(index+1)%8] +
+			', **`' + weekday[(dow+2)%7] + '`** ' + quests[(index+2)%8]
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
