@@ -7,7 +7,7 @@ const re = {
 	daily: /^\W*(?:<@[0-9A-F]+>\W*)?daily$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
-	ruokhal, /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
+	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
 	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
     chicken: /\bchicken\b/i
@@ -43,9 +43,9 @@ client.on('message', message => {
 			index = Math.floor(alaska/8.64e7) % 8,
 			dow = alaska.getUTCDate();
         message.channel.send(
-			'**`' + weekday[dow] + '`** ' + quests[index] +
-			' | **`' + weekday[(dow+1)%7] + '`** ' + quests[(index+1)%8] +
-			' | **`' + weekday[(dow+2)%7] + '`** ' + quests[(index+2)%8]
+			'**`' + weekday[dow] + '`**  ' + quests[index] +
+			' | **`' + weekday[(dow+1)%7] + '`**  ' + quests[(index+1)%8] +
+			' | **`' + weekday[(dow+2)%7] + '`**  ' + quests[(index+2)%8]
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
