@@ -90,11 +90,7 @@ client.on('message', message => {
 		// !purgebot [N]
 		let limit = m[1] || 2;
 		purgeMsg(message.channel, client.user, limit);
-		let allowed = 
-			(message.member && message.member.hasPermission('BAN_MEMBERS'))
-			|| (channel.guild && channel.guild.member(message.author) && channel.guild.member(message.author).hasPermission('BAN_MEMBERS'))
-			|| false;
-		if (allowed) {
+		if ((message.member && message.member.hasPermission('BAN_MEMBERS')) || false) {
 			message.delete().catch((err)=>{console.log(err)});
 		} else {
 			message.react(na);
