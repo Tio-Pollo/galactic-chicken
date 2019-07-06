@@ -69,7 +69,7 @@ client.on('message', message => {
 			}
 		}
 	} else if (re.ruokhal.test(msg)) {
-		message.channel.send(`Look, ${message.author.tag}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
+		message.channel.send(`Look, ${quote(message.author)}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
@@ -96,6 +96,10 @@ function getNick(message) {
 		nick = message.author.tag.split('#')[0] || message.author.username || '';
 	}
 	return nick;
+}
+
+function quote(user) {
+	return '<@' + user.id + '>';
 }
 
 function findChan(str) {
