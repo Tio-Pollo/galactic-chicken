@@ -93,7 +93,7 @@ client.on('message', message => {
 			(message.member && message.member.hasPermission('BAN_MEMBERS'))
 			|| (channel.guild && channel.guild.member(message.author) && channel.guild.member(message.author).hasPermission('BAN_MEMBERS'))
 			|| false;
-		if (allowed) message.delete().catch(()=>{});
+		if (allowed) message.delete().catch((err)=>{console.log(err)});
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
