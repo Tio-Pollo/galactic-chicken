@@ -94,7 +94,7 @@ client.on('message', message => {
 				chanMsg = chanMsg.filter(m => m.author == client.user).array().slice(limit);
 				if (chanMsg.length) {
 					message.channel
-						.bulkDelete()
+						.bulkDelete(chanMsg)
 						.catch((e) => {console.log('Bulk Delete error: ' + e)});
 				}
 			})
