@@ -4,13 +4,13 @@ const client = new Client();
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
     eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
-	daily: /^\W*(?:<@[0-9A-F]+>\W*)?daily$/i,
+	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
-	thankyou: /^(?:\W*<@[0-9A-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[0-9A-F]+>\W*)?$/i,
-    coffee: /^(?:\W*<@[0-9A-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[0-9A-F]+>\W*)*$/i,
-	purgebot: /^\W*(?:<@[0-9A-F]+>\W*)?purgebot(?: (\d+))?$/i,
+	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
+    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
+	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purgebot(?: (\d+))?$/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔';
@@ -89,11 +89,14 @@ client.on('message', message => {
 		// !purgebot [N]
 		let limit = m[1] || 2;
 		message.channel
-			.fetchMessages({limit: limit})
+			.fetchMessages({limit: 1000})
 			.then(chanMsg => {
-				message.channel
-					.bulkDelete(chanMsg.filter(m => m.author == client.user))
-					.catch();
+				chanMsg = chanMsg.filter(m => m.author == client.user).slice(limit);
+				if (chanMsg.length) {
+					message.channel
+						.bulkDelete()
+						.catch();
+				}
 			});
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
