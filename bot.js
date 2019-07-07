@@ -91,7 +91,7 @@ client.on('message', message => {
     } else if ((m = re.purgebot.exec(msg)) !== null) {
 		// !purgebot [N]
 		let limit = m[1] || 2;
-		purgeMsg(message.channel, client.user, limit);
+		purgeMsg(message.channel, true, limit);
 		if ((message.member && message.member.hasPermission('BAN_MEMBERS')) || false) {
 			message.delete().catch((err)=>{console.log(err)});
 		} else {
@@ -125,7 +125,11 @@ function purgeMsg(channel, user, limit) {
 	channel
 	.fetchMessages({limit: max})
 	.then(chanMsg => {
-		chanMsg = chanMsg.filter(m => m.author == user).array().slice(0, (limit||max));
+		if (user === true) {
+			chanMsg = chanMsg.filter(m => m.author.bot).array().slice(0, (limit||max));
+		} else {
+			chanMsg = chanMsg.filter(m => m.author == user).array().slice(0, (limit||max));
+		}
 		if (chanMsg.length) {
 			channel
 			.bulkDelete(chanMsg)
