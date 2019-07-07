@@ -8,6 +8,7 @@ const re = {
     sendmsg: /^!sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
+	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+ect/i,
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purgebot(?: (\d+))?$/i,
@@ -74,6 +75,8 @@ client.on('message', message => {
 		}
 	} else if (re.ruokhal.test(msg)) {
 		message.channel.send(`Look, ${message.author}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
+	} else if (re.openthebay.test(msg)) {
+		message.channel.send(`Alright, ${message.author}. I'll go in through the emergency airlock.`);
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
