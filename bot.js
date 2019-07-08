@@ -36,10 +36,10 @@ client.on('message', message => {
 						'1 million coins',
 						'3000 amber insulation',
 						'550 insulated wire',
-						'800 batteries',
 						'800 graphite',
 						'80 circuits',
-						'200 lamps'
+						'200 lamps',
+						'800 batteries'
 					],
 			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 			index = Math.floor(alaska/8.64e7) % 8,
