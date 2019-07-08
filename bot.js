@@ -44,7 +44,7 @@ client.on('message', message => {
 			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 			index = Math.floor(alaska/8.64e7) % 8,
 			dow = alaska.getUTCDate(),
-			sep = "\n"; // ' | ';
+			sep = ' | ';
         message.channel.send(
 			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index]       + sep +
 			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%8] + sep +
