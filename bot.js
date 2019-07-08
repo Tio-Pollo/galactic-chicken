@@ -3,14 +3,14 @@ const client = new Client();
 
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
-    eligible: /^!eligib(?:le|ility)(?: +@?(\S.*))?$/i,
+    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S.*))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
-    sendmsg: /^!sendmsg +(\S+) (.+)/i,
+    sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
-	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+ect/i,
+	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
-    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I(?:'?[ld]+)? (?:need|want|like|got ?t[ao] get) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
+    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purgebot(?: (\d+))?$/i,
     chicken: /\bchicken\b/i
 },
