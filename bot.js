@@ -172,7 +172,7 @@ client.on('ready', () => {
 	
 	const now = new Date();
 	client.user.setActivity('since '
-		+ now.getUTCDay() + '/' + (now.getUTCMonth() + 1)
+		+ now.getUTCDate() + '/' + (now.getUTCMonth() + 1)
 		+ ' ' + now.getUTCHours() + ':' + ('' + now.getUTCMinutes()).padStart(2, '0')
 	, {type: "WATCHING"});
 });
