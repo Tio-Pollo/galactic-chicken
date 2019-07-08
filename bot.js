@@ -43,11 +43,12 @@ client.on('message', message => {
 					],
 			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 			index = Math.floor(alaska/8.64e7) % 8,
-			dow = alaska.getUTCDate();
+			dow = alaska.getUTCDate(),
+			sep = "\n"; // ' | ';
         message.channel.send(
-			'**`' + weekDay(dow%7) + '`**  ' + quests[index] +
-			' | **`' + weekDay((dow+1)%7) + '`**  ' + quests[(index+1)%8] +
-			' | **`' + weekDay((dow+2)%7) + '`**  ' + quests[(index+2)%8]
+			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index]       + sep +
+			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%8] + sep +
+			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[(index+2)%8]
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
@@ -157,7 +158,7 @@ function jeroImg(baseUrl, query, message, prefix='') {
 }
 
 function weekDay(dayNum) {
-	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum];
+	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
 }
 
 client.on('ready', () => {
