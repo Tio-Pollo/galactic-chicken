@@ -52,7 +52,7 @@ client.on('message', message => {
 		);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
-        message.channel.send('pong');
+        message.channel.send(':ping_pong: pong');
     } else if (msg.toLowerCase() == 'nicktest') {
 		// nicktest
         nick = getNick(message);
