@@ -209,13 +209,14 @@ function giphy(query, message) {
 							files: [{ attachment: imgUrl, name: imgFilename }] 
 						}
 					)
-					.catch();
+					.catch(()=>{});
 				} else {
 					console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
 				}
 			}
 		}
-	);
+	)
+	.catch((err)=>{console.log(err)});
 }
 
 function weekDay(dayNum) {
