@@ -197,9 +197,9 @@ function giphy(query, message) {
 				console.log('Giphy response status:', res.statusCode);
 			} else {
 				// data is already parsed as JSON:
-				if (data.data && data.data.fixed_height_small_url) {
+				if (data.data && data.data.image_url) {
 					const 
-						imgUrl = data.data.fixed_height_small_url,
+						imgUrl = data.data.image_url,
 						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
 						/*,
 						attachment = new Attachment(imgUrl, imgFilename);*/
@@ -209,7 +209,9 @@ function giphy(query, message) {
 						/*{file: imgUrl}*/
 						{
 							embed: {
-								description: '__' + query + '__: ' + (data.data.title || '') + '(' + imgFilename + ')',
+								color: 0xe2f5ec,
+								title: '__' + query + '__'
+								description: (data.data.title || ''),
 								image: {
 									url: 'attachment://' + imgFilename
 								}
