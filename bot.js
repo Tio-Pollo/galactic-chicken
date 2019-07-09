@@ -209,7 +209,7 @@ function giphy(query, message) {
 					.catch();
 					//message.channel.send(data.data.embed_url);
 				} else {
-					console.log("Giphy - No embed URL:\n" JSON.stringify(data));
+					console.log("Giphy - No embed URL:\n" + JSON.stringify(data));
 				}
 			}
 		}
