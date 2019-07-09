@@ -3,9 +3,9 @@ const client = new Client();
 
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
-    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S.*))?$/i,
+    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
-	giphy: /^\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
+	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
