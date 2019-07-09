@@ -173,50 +173,52 @@ function giphy(query, message) {
 		rating = 'PG-13',
 		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${queryString}&rating=${rating}`;
 	
-
-	request.get(
-		{
-			url: giphyUrl,
-			json: true,
-			headers: {'User-Agent': 'request'}
-		}, 
-		(err, res, data) => {
-			if (err) {
-				console.log('Error in giphy request:', err);
-				if (message) message.react(na);
-			} else if (res.statusCode !== 200) {
-				if (message) message.react(res.statusCode == 429 ? wait : na);
-				console.log('Giphy response status:', res.statusCode);
-			} else {
-				// data is already parsed as JSON:
-				if (data.data && data.data.image_url) {
-					const 
-						imgUrl = data.data.image_url,
-						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
-					message.channel.send(
-						{
-							embed: {
-								color: borderColor,
-								title: query,
-								/*description: (data.data.title || ''),*/
-								image: {
-									url: 'attachment://' + imgFilename
-								},
-								footer: {
-									text: (data.data.title || '')
-								}
-							},
-							files: [{ attachment: imgUrl, name: imgFilename }] 
-						}
-					)
-					.catch(()=>{});
+	try {
+		request.get(
+			{
+				url: giphyUrl,
+				json: true,
+				headers: {'User-Agent': 'request'}
+			}, 
+			(err, res, data) => {
+				if (err) {
+					console.log('Error in giphy request:', err);
+					if (message) message.react(na);
+				} else if (res.statusCode !== 200) {
+					if (message) message.react(res.statusCode == 429 ? wait : na);
+					console.log('Giphy response status:', res.statusCode);
 				} else {
-					console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
+					// data is already parsed as JSON:
+					if (data.data && data.data.image_url) {
+						const 
+							imgUrl = data.data.image_url,
+							imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
+						message.channel.send(
+							{
+								embed: {
+									color: borderColor,
+									title: query,
+									/*description: (data.data.title || ''),*/
+									image: {
+										url: 'attachment://' + imgFilename
+									},
+									footer: {
+										text: (data.data.title || '')
+									}
+								},
+								files: [{ attachment: imgUrl, name: imgFilename }] 
+							}
+						)
+						.catch(()=>{});
+					} else {
+						console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
+					}
 				}
 			}
-		}
-	)
-	.catch((err)=>{console.log(err)});
+		);
+	} catch (err) {
+		console.log('Giphy error', err);
+	}
 }
 
 function weekDay(dayNum) {
