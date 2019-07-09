@@ -164,22 +164,14 @@ function jeroImg(baseUrl, query, message, prefix='') {
 }
 
 function giphy(query, message) {
-	/*
-	https://giphy.com/embed/4JY3dqJH0ZuqeoLWIX
-	*/
-	
 	let queryString = encodeURIComponent(query);
 	
-	/*
-	const attachment = new Attachment(imgUrl, imgFilename);
-	message.channel.send(
-		attachment
-	)
-	.catch();
-	*/
 	
-	const request = require('request'),
-		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${queryString}&rating=PG`;
+	const
+		request = require('request'),
+		borderColor = 0xe0bc1b,
+		rating = 'PG-13'.
+		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${queryString}&rating=${rating}`;
 	
 
 	request.get(
@@ -201,15 +193,10 @@ function giphy(query, message) {
 					const 
 						imgUrl = data.data.image_url,
 						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
-						/*,
-						attachment = new Attachment(imgUrl, imgFilename);*/
 					message.channel.send(
-						/*'__' + query + '__: ' + (data.data.title || ''),*/
-						/*attachment*/
-						/*{file: imgUrl}*/
 						{
 							embed: {
-								color: 0x0099ff, /*0xE2F5EC,*/
+								color: borderColor,
 								title: query,
 								/*description: (data.data.title || ''),*/
 								image: {
@@ -223,7 +210,6 @@ function giphy(query, message) {
 						}
 					)
 					.catch();
-					//message.channel.send(data.data.embed_url);
 				} else {
 					console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
 				}
