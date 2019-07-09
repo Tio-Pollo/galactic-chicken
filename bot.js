@@ -168,7 +168,7 @@ function giphy(query, message) {
 	https://giphy.com/embed/4JY3dqJH0ZuqeoLWIX
 	*/
 	
-	query = encodeURIComponent(query);
+	let queryString = encodeURIComponent(query);
 	
 	/*
 	const attachment = new Attachment(imgUrl, imgFilename);
@@ -179,7 +179,7 @@ function giphy(query, message) {
 	*/
 	
 	const request = require('request'),
-		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${query}&rating=PG`;
+		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${queryString}&rating=PG`;
 	
 
 	request.get(
@@ -197,7 +197,20 @@ function giphy(query, message) {
 				console.log('Giphy response status:', res.statusCode);
 			} else {
 				// data is already parsed as JSON:
-				message.channel.send(data.data.embed_url || '```' + JSON.stringify(data) + '```' || 'Not found');
+				if (data.data && data.data.embed_url) {
+					const 
+						imgUrl = data.data.embed_url,
+						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif'),
+						attachment = new Attachment(imgUrl, imgFilename);
+					message.channel.send(
+						'__'query + '__: ' + (data.data.title || ''),
+						attachment
+					)
+					.catch();
+					//message.channel.send(data.data.embed_url);
+				} else {
+					console.log("Giphy - No embed URL:\n" JSON.stringify(data);
+				}
 			}
 		}
 	);
