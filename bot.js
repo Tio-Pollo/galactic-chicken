@@ -192,7 +192,7 @@ function giphy(query, message) {
 					// data is already parsed as JSON:
 					if (data.data && data.data.image_url) {
 						const 
-							imgUrl = data.data.image_url,
+							imgUrl = (data.data.image_url || data.data.images.fixed_height.url || data.data.images.downsized.url),
 							imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
 						message.channel.send(
 							{
