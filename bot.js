@@ -211,7 +211,8 @@ function giphy(query, message) {
 						)
 						.catch(()=>{});
 					} else {
-						console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
+						console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,180));
+						message.react(wait);
 					}
 				}
 			}
