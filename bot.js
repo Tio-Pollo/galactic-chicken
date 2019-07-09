@@ -209,11 +209,14 @@ function giphy(query, message) {
 						/*{file: imgUrl}*/
 						{
 							embed: {
-								color: 0xe2f5ec,
-								title: '__' + query + '__',
-								description: (data.data.title || ''),
+								color: 0x0099ff, /*0xE2F5EC,*/
+								title: query,
+								/*description: (data.data.title || ''),*/
 								image: {
 									url: 'attachment://' + imgFilename
+								}
+								footer: {
+									text: (data.data.title || '')
 								}
 							},
 							files: [{ attachment: imgUrl, name: imgFilename }] 
@@ -222,7 +225,7 @@ function giphy(query, message) {
 					.catch();
 					//message.channel.send(data.data.embed_url);
 				} else {
-					console.log("Giphy - No embed URL:\n" + JSON.stringify(data));
+					console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,50));
 				}
 			}
 		}
