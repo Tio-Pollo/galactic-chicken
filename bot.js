@@ -190,36 +190,40 @@ function giphy(query, message) {
 					console.log('Giphy response status:', res.statusCode);
 				} else {
 					// data is already parsed as JSON:
-					if (data.data && data.data.image_url) {
-						const 
-							imgUrl = (data.data.image_url || data.data.images.fixed_height.url || data.data.images.downsized.url),
-							imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
-						message.channel.send(
-							{
-								embed: {
-									color: borderColor,
-									title: query,
-									/*description: (data.data.title || ''),*/
-									image: {
-										url: 'attachment://' + imgFilename
+					if (data.data) {
+						const imgUrl = (data.data.image_url || data.data.images.fixed_height.url || data.data.images.downsized.url || null);
+						if (imgUrl) {
+							const imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
+							message.channel.send(
+								{
+									embed: {
+										color: borderColor,
+										title: query,
+										/*description: (data.data.title || ''),*/
+										image: {
+											url: 'attachment://' + imgFilename
+										},
+										footer: {
+											text: (data.data.title || '')
+										}
 									},
-									footer: {
-										text: (data.data.title || '')
-									}
-								},
-								files: [{ attachment: imgUrl, name: imgFilename }] 
-							}
-						)
-						.catch(()=>{});
+									files: [{ attachment: imgUrl, name: imgFilename }] 
+								}
+							)
+							.catch(()=>{});
+						} else {
+							message.react(na);
+						}
 					} else {
 						console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,180));
-						message.react(wait);
+						message.react(na);
 					}
 				}
 			}
 		);
 	} catch (err) {
 		console.log('Giphy error', err);
+		messager.react(wait);
 	}
 }
 
