@@ -203,7 +203,7 @@ function giphy(query, message) {
 						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif'),
 						attachment = new Attachment(imgUrl, imgFilename);
 					message.channel.send(
-						'__'query + '__: ' + (data.data.title || ''),
+						'__' + query + '__: ' + (data.data.title || ''),
 						attachment
 					)
 					.catch();
