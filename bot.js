@@ -204,9 +204,17 @@ function giphy(query, message) {
 						/*,
 						attachment = new Attachment(imgUrl, imgFilename);*/
 					message.channel.send(
-						'__' + query + '__: ' + (data.data.title || ''),
+						/*'__' + query + '__: ' + (data.data.title || ''),*/
 						/*attachment*/
-						{file: imgUrl}
+						/*{file: imgUrl}*/
+						{embed: {
+								description: '__' + query + '__: ' + (data.data.title || ''),
+								image: {
+									url: 'attachment://' + imgFilename
+								}
+							},
+							files: [{ attachment: imgUrl, name: imgFilename }] 
+						}
 					)
 					.catch();
 					//message.channel.send(data.data.embed_url);
