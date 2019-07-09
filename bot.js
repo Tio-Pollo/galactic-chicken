@@ -210,7 +210,7 @@ function giphy(query, message) {
 						{
 							embed: {
 								color: 0xe2f5ec,
-								title: '__' + query + '__'
+								title: '__' + query + '__',
 								description: (data.data.title || ''),
 								image: {
 									url: 'attachment://' + imgFilename
