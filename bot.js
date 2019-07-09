@@ -177,8 +177,9 @@ function giphy(query, message) {
 		request.get(
 			{
 				url: giphyUrl,
-				json: true,
-				headers: {'User-Agent': 'request'}
+				json: true
+				/*,
+				headers: {'User-Agent': 'request'} */
 			}, 
 			(err, res, data) => {
 				if (err) {
