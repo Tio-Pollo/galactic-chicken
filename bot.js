@@ -170,7 +170,7 @@ function giphy(query, message) {
 	const
 		request = require('request'),
 		borderColor = 0xe0bc1b,
-		rating = 'PG-13'.
+		rating = 'PG-13',
 		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${queryString}&rating=${rating}`;
 	
 
