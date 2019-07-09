@@ -200,11 +200,13 @@ function giphy(query, message) {
 				if (data.data && data.data.embed_url) {
 					const 
 						imgUrl = data.data.embed_url,
-						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif'),
-						attachment = new Attachment(imgUrl, imgFilename);
+						imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
+						/*,
+						attachment = new Attachment(imgUrl, imgFilename);*/
 					message.channel.send(
 						'__' + query + '__: ' + (data.data.title || ''),
-						attachment
+						/*attachment*/
+						{file: imgUrl}
 					)
 					.catch();
 					//message.channel.send(data.data.embed_url);
