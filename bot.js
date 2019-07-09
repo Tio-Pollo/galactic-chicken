@@ -5,6 +5,7 @@ const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S.*))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
+	giphy: /^\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
@@ -15,7 +16,8 @@ const re = {
     chicken: /\bchicken\b/i
 },
 chicken = '🐔',
-na = '⛔';
+na = '⛔',
+wait = '⏳';
 
 client.on('message', message => {
 	if (message.author == client.user) //own message
@@ -50,6 +52,10 @@ client.on('message', message => {
 			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%8] + sep +
 			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[(index+2)%8]
 		);
+	} else if ((m = re.giphy.exec(msg)) !== null) {
+		//  !giphy  | !have
+		
+		giphy(m[1], message);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
         message.channel.send(':ping_pong: pong');
@@ -155,6 +161,46 @@ function jeroImg(baseUrl, query, message, prefix='') {
 		attachment
 	)
 	.catch();
+}
+
+function giphy(query, message) {
+	/*
+	https://giphy.com/embed/4JY3dqJH0ZuqeoLWIX
+	*/
+	
+	query = encodeURIComponent(query);
+	
+	/*
+	const attachment = new Attachment(imgUrl, imgFilename);
+	message.channel.send(
+		attachment
+	)
+	.catch();
+	*/
+	
+	const request = require('request'),
+		giphyUrl = `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_APIKEY}&tag=${query}&rating=PG`;
+	
+
+	request.get(
+		{
+			url: giphyUrl,
+			json: true,
+			headers: {'User-Agent': 'request'}
+		}, 
+		(err, res, data) => {
+			if (err) {
+				console.log('Error in giphy request:', err);
+				if (message) message.react(na);
+			} else if (res.statusCode !== 200) {
+				if (message) message.react(res.statusCode == 429 ? wait : na);
+				console.log('Giphy response status:', res.statusCode);
+			} else {
+				// data is already parsed as JSON:
+				message.channel.send(data.data.embed_url || '```' + JSON.stringify(data) + '```' || 'Not found');
+			}
+		}
+	);
 }
 
 function weekDay(dayNum) {
