@@ -214,7 +214,7 @@ function giphy(query, message) {
 								/*description: (data.data.title || ''),*/
 								image: {
 									url: 'attachment://' + imgFilename
-								}
+								},
 								footer: {
 									text: (data.data.title || '')
 								}
