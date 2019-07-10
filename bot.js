@@ -102,9 +102,13 @@ client.on('message', message => {
 		let me = m[1].toLowerCase() == 'me', 
 			limit = m[2] || (me ? 10 : 2),
 			target = (me ? message.author : true);
-		purgeMsg(message.channel, target, limit);
 		if ((message.member && message.member.hasPermission('BAN_MEMBERS')) || false) {
-			message.delete().catch((err)=>{console.log(err)});
+			message
+			.delete()
+			.catch((err)=>{console.log(err)})
+			.finally( () => {
+				purgeMsg(message.channel, target, limit)
+			});
 		} else {
 			message.react(na);
 		}
