@@ -30,7 +30,7 @@ client.on('message', message => {
     if ((m = re.ratio.exec(msg)) !== null) {
 		// !ratio
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
-    if ((m = re.ratio2.exec(msg)) !== null) {
+    } else if ((m = re.ratio2.exec(msg)) !== null) {
 		// !ratio2
         jeroImg2(process.env.JEROENR_RATIO, m[1], message, 'ratio', true);
     } else if ((m = re.eligible.exec(msg)) !== null) {
