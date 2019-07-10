@@ -36,7 +36,7 @@ client.on('message', message => {
 			user;
 		if (!query) {
 			user = message.author;
-		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]>\s*$/i.test(m[1])) {
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
 		}
@@ -205,6 +205,7 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 		};
 	if (withThumb) {
 		embed.embed.author = { name: query, icon_url: withThumb.displayAvatarURL };
+		console.log("Adding " + query + "   URL: " + withThumb.displayAvatarURL);
 	}
 
 	message.channel
