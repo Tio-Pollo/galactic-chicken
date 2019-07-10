@@ -12,7 +12,7 @@ const re = {
 	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
-	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purgebot(?: (\d+))?$/i,
+	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔',
@@ -99,8 +99,10 @@ client.on('message', message => {
         message.channel.send(answer);
     } else if ((m = re.purgebot.exec(msg)) !== null) {
 		// !purgebot [N]
-		let limit = m[1] || 2;
-		purgeMsg(message.channel, true, limit);
+		let me = m[1].toLowerCase() == 'me', 
+			limit = m[2] || (me ? 10 : 2),
+			target = (me ? message.author : true);
+		purgeMsg(message.channel, target, limit);
 		if ((message.member && message.member.hasPermission('BAN_MEMBERS')) || false) {
 			message.delete().catch((err)=>{console.log(err)});
 		} else {
