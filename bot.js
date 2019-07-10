@@ -190,20 +190,12 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 		{
 			embed: {
 				color: borderColor,
-				title: 'Ratio',
-				description: query,
-				author: {
-					name: query,
-					icon: 'attachment://avatar.png',
-				},
+				author: { name: query, icon: user.displayAvatarURL },
 				image: {
 					url: 'attachment://' + imgFilename
 				}
 			},
-			files: [
-				{ attachment: imgUrl, name: imgFilename },
-				{ attachment: user.displayAvatarURL, name: 'avatar.png' }
-			] 
+			files: [{ attachment: imgUrl, name: imgFilename }] 
 		}
 	)
 	.catch(() => {});
