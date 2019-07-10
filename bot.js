@@ -3,6 +3,7 @@ const client = new Client();
 
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
+    ratio2: /^!ratio2(?: +@?(\S.*))?$/i,
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
@@ -29,6 +30,9 @@ client.on('message', message => {
     if ((m = re.ratio.exec(msg)) !== null) {
 		// !ratio
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
+    if ((m = re.ratio2.exec(msg)) !== null) {
+		// !ratio2
+        jeroImg2(process.env.JEROENR_RATIO, m[1], message, 'ratio', true);
     } else if ((m = re.eligible.exec(msg)) !== null) {
 		// !eligible
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
@@ -169,6 +173,31 @@ function jeroImg(baseUrl, query, message, prefix='') {
 	.catch();
 }
 
+function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
+	if (!query) query = getNick(message);
+    if (prefix) prefix = prefix + '_';
+	
+	const imgName = encodeURIComponent(query.trim()),
+		imgUrl = baseUrl + '?q=' + imgName,
+		imgFilename = prefix + imgName + '.png',
+		borderColor = 0xe0bc1b,
+		user = message.mentions.users.first() || message.author;
+
+	message.channel.send(
+		{
+			embed: {
+				color: borderColor,
+				thumbnail: (withThumb ? user.avatarURL : undefined),
+				image: {
+					url: 'attachment://' + imgFilename
+				}
+			},
+			files: [{ attachment: imgUrl, name: imgFilename }] 
+		}
+	)
+	.catch(() => {});
+}
+
 function giphy(query, message) {
 	let queryString = encodeURIComponent(query);
 	
@@ -237,7 +266,7 @@ function weekDay(dayNum) {
 	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
 }
 
-client.on('ready', () => {
+client.once('ready', () => {
     const buildMsg = 'Cluck cluck! :chicken:';
 	const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
 	if (channel) {
