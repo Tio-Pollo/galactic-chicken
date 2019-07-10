@@ -32,7 +32,15 @@ client.on('message', message => {
         jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
     } else if ((m = re.ratio2.exec(msg)) !== null) {
 		// !ratio2
-        jeroImg2(process.env.JEROENR_RATIO, m[1], message, 'ratio', true);
+		let query = m[1],
+			user;
+		if (!query) {
+			user = message.author;
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]>\s*$/i.test(m[1])) {
+			user = message.mentions.users.first() || false;
+			query = message.guild.member(user).nickname || query;
+		}
+        jeroImg2(process.env.JEROENR_RATIO, query, message, 'ratio', user);
     } else if ((m = re.eligible.exec(msg)) !== null) {
 		// !eligible
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
@@ -183,25 +191,24 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 	const imgName = encodeURIComponent(query.trim()),
 		imgUrl = baseUrl + '?q=' + imgName,
 		imgFilename = prefix + imgName + '.png',
-		borderColor = 0xe0bc1b,
-		user = message.mentions.users.first() || message.author;
-
-	message.channel.send(
-		{
+		borderColor = 0xe0bc1b; /*,
+		user = message.mentions.users.first() || message.author;*/
+	
+	let embed = {
 			embed: {
 				color: borderColor,
-				author: { name: query, icon_url: user.displayAvatarURL },
-				/*title: 'ratios should be > 1',*/
-				/*thumbnail: {
-					url: user.displayAvatarURL
-				},*/
 				image: {
 					url: 'attachment://' + imgFilename
 				}
 			},
 			files: [{ attachment: imgUrl, name: imgFilename }] 
-		}
-	)
+		};
+	if (withThumb) {
+		embed.embed.author = { name: query, icon_url: withThumb.displayAvatarURL };
+	}
+
+	message.channel
+	.send(embed)
 	.catch(() => {});
 }
 
