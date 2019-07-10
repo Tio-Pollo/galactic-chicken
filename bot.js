@@ -192,12 +192,15 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 				color: borderColor,
 				title: 'Ratio',
 				description: query,
-				thumbnail: (withThumb ? user.avatarURL : undefined),
+				thumbnail: 'attachment://avatar.png',
 				image: {
 					url: 'attachment://' + imgFilename
 				}
 			},
-			files: [{ attachment: imgUrl, name: imgFilename }] 
+			files: [
+				{ attachment: imgUrl, name: imgFilename },
+				{ attachment: user.displayAvatarURL, name: 'avatar.png' }
+			] 
 		}
 	)
 	.catch(() => {});
