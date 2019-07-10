@@ -38,7 +38,7 @@ console.log('content', message.content);
 console.log('query', query);
 		if (!query) {
 			user = message.author;
-		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
+		} else if (((m = re.ratio2.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
 console.log('nickname', query);
