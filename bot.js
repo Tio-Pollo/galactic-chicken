@@ -34,11 +34,14 @@ client.on('message', message => {
 		// !ratio2
 		let query = m[1],
 			user;
+console.log('content', message.content);
+console.log('query', query);
 		if (!query) {
 			user = message.author;
 		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
+console.log('nickname', query);
 		}
         jeroImg2(process.env.JEROENR_RATIO, query, message, 'ratio', user);
     } else if ((m = re.eligible.exec(msg)) !== null) {
