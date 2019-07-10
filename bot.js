@@ -191,6 +191,7 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 			embed: {
 				color: borderColor,
 				author: { name: query, icon: user.displayAvatarURL },
+				title: 'ratios should be > 1',
 				image: {
 					url: 'attachment://' + imgFilename
 				}
