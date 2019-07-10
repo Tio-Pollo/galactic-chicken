@@ -63,6 +63,9 @@ client.on('message', message => {
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
         message.channel.send(':ping_pong: pong');
+    } else if (msg.toLowerCase() == '!avatar') {
+		// !avatar
+        message.channel.send((message.mentions.users.first() || message.author).avatarURL);
     } else if (msg.toLowerCase() == 'nicktest') {
 		// nicktest
         nick = getNick(message);
@@ -187,6 +190,8 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 		{
 			embed: {
 				color: borderColor,
+				title: 'Ratio',
+				description: query,
 				thumbnail: (withThumb ? user.avatarURL : undefined),
 				image: {
 					url: 'attachment://' + imgFilename
