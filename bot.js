@@ -192,7 +192,10 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 				color: borderColor,
 				title: 'Ratio',
 				description: query,
-				thumbnail: 'attachment://avatar.png',
+				author: {
+					name: query,
+					icon: 'attachment://avatar.png',
+				},
 				image: {
 					url: 'attachment://' + imgFilename
 				}
