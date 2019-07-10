@@ -40,7 +40,16 @@ client.on('message', message => {
         jeroImg(process.env.JEROENR_RATIO, query, message, 'ratio', user);
     } else if ((m = re.eligible.exec(msg)) !== null) {
 		// !eligible
-        jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
+		let query = m[1],
+			user;
+		
+		if (!query) {
+			user = message.author;
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
+			user = message.mentions.users.first() || false;
+			query = message.guild.member(user).nickname || query;
+		}
+        jeroImg(process.env.JEROENR_ELIGIBLE, query, message, 'eligible', user);
     } else if (re.daily.test(msg)) {
 		//!daily
 		let quests = [	'1500 gold bars',
