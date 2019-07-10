@@ -3,7 +3,6 @@ const client = new Client();
 
 const re = {
     ratio: /^!ratio(?: +@?(\S.*))?$/i,
-    ratio2: /^!ratio2(?: +@?(\S.*))?$/i,
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
@@ -29,21 +28,16 @@ client.on('message', message => {
     
     if ((m = re.ratio.exec(msg)) !== null) {
 		// !ratio
-        jeroImg(process.env.JEROENR_RATIO, m[1], message, 'ratio');
-    } else if ((m = re.ratio2.exec(msg)) !== null) {
-		// !ratio2
 		let query = m[1],
 			user;
-console.log('content', message.content);
-console.log('query', query);
+		
 		if (!query) {
 			user = message.author;
-		} else if (((m = re.ratio2.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
-console.log('nickname', query);
 		}
-        jeroImg2(process.env.JEROENR_RATIO, query, message, 'ratio', user);
+        jeroImg(process.env.JEROENR_RATIO, query, message, 'ratio', user);
     } else if ((m = re.eligible.exec(msg)) !== null) {
 		// !eligible
         jeroImg(process.env.JEROENR_ELIGIBLE, m[1], message, 'eligible');
@@ -172,30 +166,15 @@ function purgeMsg(channel, user, limit) {
 	.catch((e) => {console.log('Fetch Messages error: ' + e)});
 }
 
-function jeroImg(baseUrl, query, message, prefix='') {
-	if (!query) query = getNick(message);
-    if (prefix) prefix = prefix + '_';
-	
-	let imgName = encodeURIComponent(query.trim()),
-		imgUrl = baseUrl + '?q=' + imgName,
-		imgFilename = prefix + imgName + '.png';
-
-	const attachment = new Attachment(imgUrl, imgFilename);
-	message.channel.send(
-		attachment
-	)
-	.catch();
-}
-
-function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
+function jeroImg(baseUrl, query, message, prefix='', withThumb = false) {
 	if (!query) query = getNick(message);
     if (prefix) prefix = prefix + '_';
 	
 	const imgName = encodeURIComponent(query.trim()),
 		imgUrl = baseUrl + '?q=' + imgName,
 		imgFilename = prefix + imgName + '.png',
-		borderColor = 0xe0bc1b; /*,
-		user = message.mentions.users.first() || message.author;*/
+		borderColor = 0xe0bc1b,
+		icon = withThumb.displayAvatarURL || (message.mentions.users.first() || message.author).displayAvatarURL;
 	
 	let embed = {
 			embed: {
@@ -207,8 +186,7 @@ function jeroImg2(baseUrl, query, message, prefix='', withThumb = false) {
 			files: [{ attachment: imgUrl, name: imgFilename }] 
 		};
 	if (withThumb) {
-		embed.embed.author = { name: query, icon_url: withThumb.displayAvatarURL };
-		console.log("Adding " + query + "   URL: " + withThumb.displayAvatarURL);
+		embed.embed.author = { name: query, icon_url: icon};
 	}
 
 	message.channel
