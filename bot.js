@@ -107,8 +107,11 @@ client.on('message', message => {
 		message.channel.send(`Alright, ${message.author}. I'll go in through the emergency airlock.`);
 	} else if (re.beerfireball.test(msg)) {
 		message.channel
-		.send(`Don't pay attention to ${message.author}, he's so uptight!\nBeer is the cause of and solution to all life's problems! Here, have one on me!`)
-		.then((sentMsg) => {
+		.send(
+			`Don't pay attention to ${message.author}, he's so uptight!\n` +
+			`Beer is the cause of and solution to all life's problems!\n` +
+			`Here, have one on me! :beers:`
+		).then((sentMsg) => {
 			giphy('beer', sentMsg);
 		})
 		.catch((e) => console.log('Beer error',e));
