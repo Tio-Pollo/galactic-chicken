@@ -2,7 +2,7 @@ const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
 const re = {
-    ratio: /^!ratio(?: +@?(\S.*))?$/i,
+    ratio: /^\W*ratio(?: +@?(\S.*))?$/i,
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
@@ -10,6 +10,7 @@ const re = {
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
 	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
+	beerfireball: /^Sorry no beer here[\s\S]*I only drink Valvoline Valtorque C4 Transmission Fluid/,
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
@@ -104,6 +105,13 @@ client.on('message', message => {
 		message.channel.send(`Look, ${message.author}, I can see you're really upset about this. I honestly think you ought to sit down calmly, take a stress pill, and think things over.`);
 	} else if (re.openthebay.test(msg)) {
 		message.channel.send(`Alright, ${message.author}. I'll go in through the emergency airlock.`);
+	} else if (re.beerfireball.test(msg)) {
+		message.channel
+		.send(`Don't pay attention to ${message.author}, he's so uptight!\nBeer is the cause of and solution to all life's problems! Here, have one on me!`)
+		.then((sentMsg) => {
+			giphy('beer', sentMsg);
+		})
+		.catch((e) => console.log('Beer error',e));
     } else if (re.headoff.test(msg)) {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
