@@ -3,14 +3,28 @@ const client = new Client();
 
 const help = [
 	{
+		name: 'ratio',
 		trigger: '!ratio [*optional* user]', 
-		desc: "Shows a user donations / received donations.\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
+		desc: "Shows a user sent / received donations.\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
 		react: '📊'
 	},
 	{
+		name: 'eligible',
 		trigger: '!eligible [*optional* user]',
 		desc: "Eligibility score to become the next focus for fireballing (i.e. receiving solar panels to max energy),\nIn order to prevent leeching, only users with a score > 50 become eligible.\nCheck <#443293220605263873> and make sure to have your info updated in the sheet.",
 		react: '🛰'
+	},
+	{
+		name: 'daily',
+		trigger: '?daily',
+		desc: "Items required on the daily event with current dates.",
+		react: '📆'
+	},
+	{
+		name: 'giphy',
+		trigger: '?giphy <term>',
+		desc: "Replies with a random meme. Powered by Giphy.",
+		react: '🎞'
 	}
 ]
 
@@ -303,9 +317,12 @@ function weekDay(dayNum) {
 
 function helpCmd(index) {
 	const cmd = help[index%(help.length-1)];
+	const allcmds = help.map((item) =>item.react+' '+item.name)
+						.join(' | ');
 	
-	return '*`' + cmd.trigger + '`*'
-		+ "\n" + cmd.desc;
+	return '' + cmd.trigger + ''
+		+ "\n" + cmd.desc
+		+ "\n\nCommands: " + allcmds;
 }
 
 function replyHelp(message) {
@@ -314,8 +331,9 @@ function replyHelp(message) {
 	.then(sentMsg => {
 		sentMsg
 		.react(help[0].react)
-		.then(sentR => sentMsg.react(help[1].react));
-	});
+		.then(sentR => sentMsg.react(help[1].react).catch(e => console.log('2nd react error:',e)));
+	})
+	.catch(e => console.log('Reply help error:'e));
 }
 
 client.once('ready', () => {
