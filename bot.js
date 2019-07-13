@@ -333,7 +333,7 @@ function replyHelp(message) {
 		.react(help[0].react)
 		.then(sentR => sentMsg.react(help[1].react).catch(e => console.log('2nd react error:',e)));
 	})
-	.catch(e => console.log('Reply help error:'e));
+	.catch(e => console.log('Reply help error:', e));
 }
 
 client.once('ready', () => {
