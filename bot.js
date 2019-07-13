@@ -325,7 +325,7 @@ function helpCmd(index) {
 		+ "\n\nCommands: " + allcmds;
 }
 
-function async reactInOrder(message, arrReactions) {
+async function reactInOrder(message, arrReactions) {
 	for (let r of arrReactions) {
 		if (r) {
 			await message.react(r).catch(e => console.log('Error in reactIO:', e));
