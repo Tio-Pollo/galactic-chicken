@@ -320,19 +320,23 @@ function helpCmd(index) {
 	const allcmds = help.map((item) =>item.react+' '+item.name)
 						.join(' | ');
 	
-	return '' + cmd.trigger + ''
+	return '**' + cmd.trigger + '**'
 		+ "\n" + cmd.desc
 		+ "\n\nCommands: " + allcmds;
+}
+
+function async reactInOrder(message, arrReactions) {
+	for (let r of arrReactions) {
+		if (r) {
+			await message.react(r).catch(e => console.log('Error in reactIO:', e));
+		}
+	}
 }
 
 function replyHelp(message) {
 	message.channel
 	.send(helpCmd(0))
-	.then(sentMsg => {
-		sentMsg
-		.react(help[0].react)
-		.then(sentR => sentMsg.react(help[1].react).catch(e => console.log('2nd react error:',e)));
-	})
+	.then(sentMsg => reactInOrder(sentMsg, help.map(i => (i.react || ''))))
 	.catch(e => console.log('Reply help error:', e));
 }
 
