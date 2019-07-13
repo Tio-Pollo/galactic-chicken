@@ -1,11 +1,25 @@
 const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
+const help = [
+	{
+		trigger: '!ratio [*optional* user]', 
+		desc: "Shows a user donations / received donations.\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
+		react: '📊'
+	},
+	{
+		trigger: '!eligible [*optional* user]',
+		desc: "Eligibility score to become the next focus for fireballing (i.e. receiving solar panels to max energy),\nIn order to prevent leeching, only users with a score > 50 become eligible.\nCheck <#443293220605263873> and make sure to have your info updated in the sheet.",
+		react: '🛰'
+	}
+]
+
 const re = {
     ratio: /^\W*ratio(?: +@?(\S.*))?$/i,
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
+	help: /^(?:\W*(?:[^!\w*\s]|(<@[\dA-F]+>))\W*)help$/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
@@ -75,6 +89,11 @@ client.on('message', message => {
 		//  !giphy  | !have
 		
 		giphy(m[1], message);
+	} else if ((m = re.help.exec(msg)) !== null) {
+		// ?help
+		if ($m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
+		
+		replyHelp(message);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
         message.channel.send(':ping_pong: pong');
@@ -109,7 +128,7 @@ client.on('message', message => {
 		message.channel
 		.send(
 			`Don't pay attention to ${message.author}, he's so uptight!\n` +
-			`Beer is the cause of and solution to all life's problems!\n` +
+			`*Beer is the cause of and solution to all life's problems*\n` +
 			`Here, have one on me! :beers:`
 		).then((sentMsg) => {
 			giphy('beer', sentMsg);
@@ -280,6 +299,23 @@ function giphy(query, message) {
 
 function weekDay(dayNum) {
 	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
+}
+
+function helpCmd(index) {
+	const cmd = help[index%(help.length-1)];
+	
+	return '*`' + cmd.trigger + '`*'
+		+ "\n" + cmd.desc;
+}
+
+function replyHelp(message) {
+	message.channel
+	.send(helpCmd(0))
+	.then(sentMsg => {
+		sentMsg
+		.react(help[0].react)
+		.then(sentR => sentMsg.react(help[1].react));
+	});
 }
 
 client.once('ready', () => {
