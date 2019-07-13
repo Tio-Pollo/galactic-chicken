@@ -91,7 +91,7 @@ client.on('message', message => {
 		giphy(m[1], message);
 	} else if ((m = re.help.exec(msg)) !== null) {
 		// ?help
-		if ($m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
+		if (m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
 		
 		replyHelp(message);
     } else if (msg.toLowerCase() == 'ping') {
