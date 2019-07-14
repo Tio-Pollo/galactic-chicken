@@ -6,7 +6,7 @@ const re = {
     eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
-	help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help$/i,
+	help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head\b/i,
 	ruokhal: /\bI know everything has\W*n\W*t been quite \w* ?right with me\b/i,
@@ -114,7 +114,7 @@ client.on('message', message => {
 		// ?help
 		if (m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
 		
-		replyHelp(message);
+		replyHelp(message, m[2]);
     } else if (msg.toLowerCase() == 'ping') {
 		// ping
         message.channel.send(':ping_pong: pong');
@@ -340,9 +340,23 @@ function helpCmd(index) {
 		+ (index ? "\n\n__Commands__:\n" + allcmds : '');
 }
 
-function replyHelp(message) {
+function replyHelp(message, term) {
+	let helpIndex = 0;
+	if (term) {
+		term = term.toLowerCase();
+		helpIndex = help.findIndex(item => item.name.toLowerCase() == term);
+		if (helpIndex<0) {
+			helpIndex = help.findIndex(item => item.name.toLowerCase().startsWith(term));
+			if (helpIndex<0) {
+				helpIndex = help.findIndex(item => item.name.toLowerCase().includes(term));
+				if (helpIndex<0) helpIndex = 0;
+			}
+		}
+	}
+		
+	
 	message.channel
-	.send(helpCmd(0))
+	.send(helpCmd(helpIndex))
 	.then(async sentMsg => {
 		for (let r of help.map(i => (i.react || ''))) {
 			if (r) {
