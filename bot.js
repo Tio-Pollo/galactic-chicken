@@ -3,8 +3,8 @@ const client = new Client();
 
 const help = [
 	{
-		name: 'help',
-		trigger: 'Commands', 
+		name: 'commands',
+		trigger: 'Help', 
 		desc: "Shows all available commands",
 		react: '❓'
 	},
@@ -36,8 +36,8 @@ const help = [
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 
 const re = {
-    ratio: /^\W*ratio(?: +@?(\S.*))?$/i,
-    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3}))?$/i,
+    ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
+    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
 	help: /^(?:\W*(?:[^!\w*\s]|(<@[\dA-F]+>))\W*)help$/i,
@@ -110,7 +110,7 @@ client.on('message', message => {
 		//  !giphy  | !have
 		
 		giphy(m[1], message);
-	} else if ((m = re.help.exec(msg)) !== null) {
+	} else if ((m = re.help.exec(message.content)) !== null) {
 		// ?help
 		if (m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
 		
@@ -337,7 +337,7 @@ function helpCmd(index) {
 	
 	return '**' + cmd.trigger + '**'
 		+ "\n" + cmd.desc
-		+ "\n\nCommands: " + allcmds;
+		+ (index ? "\n\n__Commands__:\n" + allcmds : '');
 }
 
 function replyHelp(message) {
