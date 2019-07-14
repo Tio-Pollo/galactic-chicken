@@ -33,7 +33,7 @@ const help = [
 		react: '🎞'
 	}
 ];
-help.map((item) => item.react+' '+item.trigger).join("\n");
+help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 
 const re = {
     ratio: /^\W*ratio(?: +@?(\S.*))?$/i,
