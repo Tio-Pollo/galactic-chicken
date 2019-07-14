@@ -374,7 +374,7 @@ client.on('raw', async raw => {
 */
 client.on('messageReactionAdd', (reaction, user) => {
 	if (!reaction.me && reaction.count > 1 && help.some(item => item.react == reaction.emoji.name) && reaction.users.has(client.user.id)) {
-		reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`;
+		reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`);
 	}
 });
 
