@@ -3,10 +3,16 @@ const client = new Client();
 
 const help = [
 	{
+		name: 'help',
+		trigger: 'Commands', 
+		desc: "Shows all available commands",
+		react: '❓'
+	},
+	{
 		name: 'ratio',
 		trigger: '!ratio [*optional* user]', 
 		desc: "Shows a user's ratio (sent / received donations).\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
-		react: '📊'
+		react: '⚖'
 	},
 	{
 		name: 'eligible',
@@ -26,7 +32,8 @@ const help = [
 		desc: "Replies with a random meme. Powered by Giphy.",
 		react: '🎞'
 	}
-]
+];
+help.map((item) => item.react+' '+item.trigger).join("\n");
 
 const re = {
     ratio: /^\W*ratio(?: +@?(\S.*))?$/i,
@@ -200,6 +207,14 @@ function findChan(str) {
 	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
 }
 
+async function reactInOrder(message, arrReactions) {
+	for (let r of arrReactions) {
+		if (r) {
+			await message.react(r).catch(e => console.log('Error in reactIO:', e));
+		}
+	}
+}
+
 function purgeMsg(channel, user, limit) {
 	const max = 100; //max allowed limit without a MessageCollector
 	channel
@@ -316,21 +331,13 @@ function weekDay(dayNum) {
 }
 
 function helpCmd(index) {
-	const cmd = help[index%(help.length-1)];
+	const cmd = help[index%(help.length)];
 	const allcmds = help.map((item) =>item.react+' '+item.name)
 						.join(' | ');
 	
 	return '**' + cmd.trigger + '**'
 		+ "\n" + cmd.desc
 		+ "\n\nCommands: " + allcmds;
-}
-
-async function reactInOrder(message, arrReactions) {
-	for (let r of arrReactions) {
-		if (r) {
-			await message.react(r).catch(e => console.log('Error in reactIO:', e));
-		}
-	}
 }
 
 function replyHelp(message) {
@@ -347,8 +354,18 @@ function replyHelp(message) {
 	.catch(e => console.log('Reply help error:', e));
 }
 
-/*
-//listen to all reactions
+client.on('messageReactionAdd', (reaction, user) => {
+	helpIndex = help.findIndex(item => item.react == reaction.emoji.name);
+	if (reaction.me && user !== client.user && reaction.count > 1 && helpIndex>=0) {
+		//reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`);
+		reaction.message
+		.edit(helpCmd(helpIndex))
+		.catch(e => console.log('Error editing', e));
+	} else {
+		console.log(reaction.me, user !== client.user, reaction.count > 1, help.some(item => item.react == reaction.emoji.name), reaction.users.has(client.user.id));
+	}	
+});
+
 const rawEvents = {
 	MESSAGE_REACTION_ADD: 'messageReactionAdd'
 	//, MESSAGE_REACTION_REMOVE: 'messageReactionRemove'
@@ -360,24 +377,20 @@ client.on('raw', async raw => {
 	const user = client.users.get(data.user_id);
 	const channel = client.channels.get(data.channel_id) || await user.createDM();
 	
-	//if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
+	if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
 	
-	const message = await channel.fetchMessages(data.message_id);
+	const message = await channel.fetchMessage(data.message_id);
 	const emojiKey = data.emoji.id ? data.emoji.name + ':' + data.emoji.id : data.emoji.name;
-	const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
-	//if (!reaction) { //if last reaction removed
-	//	const emoji ) new Discord.Emoji(client.guilds.get(data.guild_id), data.emoji);
-	//	reaction = new Discord.MessageReaction(message, emoji, 1, data_user_id === client.user.id);
-	//}
+	let reaction;
+	if (message.reactions) { 
+		reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+	}
+	if (!reaction) { //if last reaction removed
+		const emoji = new Emoji(client.guilds.get(data.guild_id), data.emoji);
+		reaction = new MessageReaction(message, emoji, 1, data.user_id === client.user.id);
+	}
 	client.emit(rawEvents[raw.t], reaction, user);
 });
-*/
-client.on('messageReactionAdd', (reaction, user) => {
-	if (!reaction.me && reaction.count > 1 && help.some(item => item.react == reaction.emoji.name) && reaction.users.has(client.user.id)) {
-		reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`);
-	}
-});
-
 
 client.once('ready', () => {
     const buildMsg = 'Cluck cluck! :chicken:';
