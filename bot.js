@@ -1,6 +1,26 @@
 const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
+const re = {
+    ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
+    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
+	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
+	giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
+	help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help$/i,
+    sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
+    headoff: /^\W*off with his head\b/i,
+	ruokhal: /\bI know everything has\W*n\W*t been quite \w* ?right with me\b/i,
+	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
+	beerfireball: /^Sorry no beer here[\s\S]*I only drink Valvoline Valtorque C4 Transmission Fluid/,
+	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
+    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
+	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
+    chicken: /\bchicken\b/i
+},
+chicken = '🐔',
+na = '⛔',
+wait = '⏳';
+
 const help = [
 	{
 		name: 'commands',
@@ -34,26 +54,6 @@ const help = [
 	}
 ];
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
-
-const re = {
-    ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
-    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
-	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
-	giphy: /^\W+(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
-	help: /^(?:\W*(?:[^!\w*\s]|(<@[\dA-F]+>))\W*)help$/i,
-    sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
-    headoff: /^\W*off with his head/i,
-	ruokhal: /\bI know everything has\W*n\W*t been quite \w*right with me\b/i,
-	openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
-	beerfireball: /^Sorry no beer here[\s\S]*I only drink Valvoline Valtorque C4 Transmission Fluid/,
-	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
-    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
-	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
-    chicken: /\bchicken\b/i
-},
-chicken = '🐔',
-na = '⛔',
-wait = '⏳';
 
 client.on('message', message => {
 	if (message.author == client.user) //own message
