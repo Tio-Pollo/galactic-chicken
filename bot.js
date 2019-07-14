@@ -5,7 +5,7 @@ const help = [
 	{
 		name: 'ratio',
 		trigger: '!ratio [*optional* user]', 
-		desc: "Shows a user sent / received donations.\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
+		desc: "Shows a user's ratio (sent / received donations).\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
 		react: '📊'
 	},
 	{
@@ -336,9 +336,48 @@ async function reactInOrder(message, arrReactions) {
 function replyHelp(message) {
 	message.channel
 	.send(helpCmd(0))
-	.then(sentMsg => reactInOrder(sentMsg, help.map(i => (i.react || ''))))
+	.then(async sentMsg => {
+		for (let r of help.map(i => (i.react || ''))) {
+			if (r) {
+				await sentMsg.react(r)
+					.catch(e => console.log('Error in reactHelp:', e));
+			}
+		}
+	})
 	.catch(e => console.log('Reply help error:', e));
 }
+
+/*
+//listen to all reactions
+const rawEvents = {
+	MESSAGE_REACTION_ADD: 'messageReactionAdd'
+	//, MESSAGE_REACTION_REMOVE: 'messageReactionRemove'
+};
+client.on('raw', async raw => {
+	if (!rawEvents.hasOwnProperty(raw.t)) return;
+	
+	const {d: data} = raw;
+	const user = client.users.get(data.user_id);
+	const channel = client.channels.get(data.channel_id) || await user.createDM();
+	
+	//if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
+	
+	const message = await channel.fetchMessages(data.message_id);
+	const emojiKey = data.emoji.id ? data.emoji.name + ':' + data.emoji.id : data.emoji.name;
+	const reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+	//if (!reaction) { //if last reaction removed
+	//	const emoji ) new Discord.Emoji(client.guilds.get(data.guild_id), data.emoji);
+	//	reaction = new Discord.MessageReaction(message, emoji, 1, data_user_id === client.user.id);
+	//}
+	client.emit(rawEvents[raw.t], reaction, user);
+});
+*/
+client.on('messageReactionAdd', (reaction, user) => {
+	if (!reaction.me && reaction.count > 1 && help.some(item => item.react == reaction.emoji.name) && reaction.users.has(client.user.id)) {
+		reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`;
+	}
+});
+
 
 client.once('ready', () => {
     const buildMsg = 'Cluck cluck! :chicken:';
