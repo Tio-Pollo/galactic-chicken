@@ -343,7 +343,7 @@ function helpCmd(index) {
 function replyHelp(message, term) {
 	let helpIndex = 0;
 	if (term) {
-		term = term.toLowerCase();
+		term = term.replace(/^\s+|[^- \w]+|\s+$|(\s)\s+/g,'$1').toLowerCase();
 		helpIndex = help.findIndex(item => item.name.toLowerCase() == term);
 		if (helpIndex<0) {
 			helpIndex = help.findIndex(item => item.name.toLowerCase().startsWith(term));
