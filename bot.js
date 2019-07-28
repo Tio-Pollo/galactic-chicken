@@ -197,7 +197,7 @@ client.on('message', message => {
 			message.react(na);
 		}
     } else if (re.chicken_env.test(msg)) {
-		message.channel.send(EnvName + ' from ' + (BuildDay || '??') + ' (active from ' + StartDay + ' to ' + EndDay + ')');
+		message.channel.send(EnvName + ' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
@@ -440,9 +440,13 @@ client.once('ready', () => {
 	, {type: "WATCHING"});
 });
 
-function activeBot(grace = 0) {
-	const utcDate = new Date().getUTCDate();
-	return utcDate + grace >= StartDay && utcDate - grace < EndDay;
+function activeBot(grace = 0) { //1, 14, 15, 31
+	const utcDate = new Date();
+	const plusGrace = utcDate;  plusGrace.setDate(plusGrace.getDate() + grace);
+	const fromDate = Math.max(utcDate.getUTCDate(), plusGrace.getUTCDate());
+	const toDate   = utcDate.getUTCDate();
+	
+	return fromDate >= StartDay && Math.min(toDate, fromDate) < EndDay;
 }
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
