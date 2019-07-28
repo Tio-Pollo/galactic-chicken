@@ -5,7 +5,7 @@ const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
 
 if (!activeBot(haltOffset)) {
-	throw new Error('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
+	throw('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
 }
 
 const { Client, Attachment } = require('discord.js');
