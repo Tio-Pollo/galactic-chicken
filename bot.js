@@ -442,7 +442,7 @@ client.once('ready', () => {
 
 function activeBot(grace = 0) { //1, 14, 15, 31
 	const utcDate = new Date();
-	const plusGrace = utcDate;  plusGrace.setDate(plusGrace.getDate() + grace);
+	const plusGrace = new Date(utcDate);  plusGrace.setDate(plusGrace.getDate() + grace);
 	const fromDate = Math.max(utcDate.getUTCDate(), plusGrace.getUTCDate());
 	const toDate   = utcDate.getUTCDate();
 	
