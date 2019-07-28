@@ -1,3 +1,13 @@
+const EnvName  = (process.env.ENV_NAME || 'unidentified environment');
+const StartDay = (process.env.ACTIVE_STARTDAY || 99);
+const EndDay   = (process.env.ACTIVE_ENDDAY || 0);
+const haltOffset = 2;
+const BuildDay = new Date().getUTCDate();
+
+if (BuildDay + haltOffset >= StartDay && BuildDay - haltOffset < EndDay) {
+	throw new Error('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay);
+}
+
 const { Client, Attachment } = require('discord.js');
 const client = new Client();
 
@@ -15,6 +25,7 @@ const re = {
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
+	chicken_env: /^\W*chicken[^a-z]*env\W*$/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔',
@@ -56,6 +67,7 @@ const help = [
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 
 client.on('message', message => {
+	if (!activeBot()) return;
 	if (message.author == client.user) //own message
 		return;
 
@@ -184,6 +196,8 @@ client.on('message', message => {
 		} else {
 			message.react(na);
 		}
+    } else if (re.chicken_env.test(msg)) {
+		message.channel.send(EnvName + ' from ' + BuildDay);
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
@@ -369,6 +383,7 @@ function replyHelp(message, term) {
 }
 
 client.on('messageReactionAdd', (reaction, user) => {
+	if (!activeBot()) return;
 	helpIndex = help.findIndex(item => item.react == reaction.emoji.name);
 	if (reaction.me && user !== client.user && reaction.count > 1 && helpIndex>=0) {
 		//reaction.message.channel.send(`${user} reacted with ${reaction.emoji.name}`);
@@ -385,6 +400,7 @@ const rawEvents = {
 	//, MESSAGE_REACTION_REMOVE: 'messageReactionRemove'
 };
 client.on('raw', async raw => {
+	if (!activeBot()) return;
 	if (!rawEvents.hasOwnProperty(raw.t)) return;
 	
 	const {d: data} = raw;
@@ -407,7 +423,9 @@ client.on('raw', async raw => {
 });
 
 client.once('ready', () => {
-    const buildMsg = 'Cluck cluck! :chicken:';
+	if (!activeBot()) return;
+	
+    const buildMsg = 'Cluck cluck! :chicken: ' + EnvName;
 	const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
 	if (channel) {
 		channel.send(buildMsg);
@@ -421,5 +439,10 @@ client.once('ready', () => {
 		+ ' ' + now.getUTCHours() + ':' + ('' + now.getUTCMinutes()).padStart(2, '0')
 	, {type: "WATCHING"});
 });
+
+function activeBot() {
+	const utcDate = new Date().getUTCDate();
+	return utcDate >= StartDay && utcDate < EndDay;
+}
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
