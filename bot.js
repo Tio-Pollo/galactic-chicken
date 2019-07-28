@@ -304,7 +304,7 @@ function giphy(query, message) {
 				} else {
 					// data is already parsed as JSON:
 					if (data.data) {
-						const imgUrl = (data.data.image_url || data.data.images.fixed_height.url || data.data.images.downsized.url || null);
+						const imgUrl = (data.data.image_url || (data.data.images.fixed_height || data.data.images.downsized || {url: null}).url);
 						if (imgUrl) {
 							const imgFilename = query.replace(/\W+/g,'-') + '.' + (data.data.type || '.gif');
 							message.channel.send(
