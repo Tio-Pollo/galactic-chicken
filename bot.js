@@ -197,7 +197,7 @@ client.on('message', message => {
 			message.react(na);
 		}
     } else if (re.chicken_env.test(msg)) {
-		message.channel.send(EnvName + ' from ' + BuildDay);
+		message.channel.send(EnvName + ' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + EndDay + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
