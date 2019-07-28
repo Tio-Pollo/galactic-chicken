@@ -1,6 +1,7 @@
 const EnvName  = (process.env.ENV_NAME || 'unidentified environment');
 const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99);
 const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);
+const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
 
 if (!activeBot(haltOffset)) {
