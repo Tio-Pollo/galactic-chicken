@@ -25,7 +25,7 @@ const re = {
 	thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
-	chicken_env: /^\W*chicken[^a-z]*env\W*$/i,
+	chicken_env: /^\W*chicken[^a-z]*env\w*\W*$/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔',
@@ -42,7 +42,7 @@ const help = [
 	{
 		name: 'ratio',
 		trigger: '!ratio [*optional* user]', 
-		desc: "Shows a user's ratio (sent / received donations).\nUpdated every week, about a day after the event ends.\nYou should try to keep a ratio of at least 1 or more.",
+		desc: "Shows a user's ratio (sent / received donations).\nUpdated every week, about a day after the event ends.\nAlso shows date of last update.\nYou should try to keep a ratio of at least 1 or more.",
 		react: '⚖'
 	},
 	{
@@ -390,8 +390,8 @@ client.on('messageReactionAdd', (reaction, user) => {
 		reaction.message
 		.edit(helpCmd(helpIndex))
 		.catch(e => console.log('Error editing', e));
-	} else {
-		console.log(reaction.me, user !== client.user, reaction.count > 1, help.some(item => item.react == reaction.emoji.name), reaction.users.has(client.user.id));
+	// } else {
+	//	console.log(reaction.me, user !== client.user, reaction.count > 1, help.some(item => item.react == reaction.emoji.name), reaction.users.has(client.user.id));
 	}	
 });
 
