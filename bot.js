@@ -277,7 +277,7 @@ function jeroImg(baseUrl, query, message, prefix='', withThumb = false) {
 }
 
 function giphy(query, message) {
-	let queryString = encodeURIComponent(query);
+	let queryString = encodeURIComponent(query).replace(/%20/g, ' ');
 	
 	
 	const
