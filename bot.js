@@ -1,11 +1,10 @@
 const EnvName  = (process.env.ENV_NAME || 'unidentified environment');
-const StartDay = (process.env.ACTIVE_STARTDAY || 99);
-const EndDay   = (process.env.ACTIVE_ENDDAY || 0);
+const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99);
+const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);
 const haltOffset = 2;
-const BuildDay = new Date().getUTCDate();
 
-if (BuildDay + haltOffset >= StartDay && BuildDay - haltOffset < EndDay) {
-	throw new Error('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay);
+if (!activeBot(haltOffset)) {
+	throw new Error('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
 }
 
 const { Client, Attachment } = require('discord.js');
@@ -440,9 +439,9 @@ client.once('ready', () => {
 	, {type: "WATCHING"});
 });
 
-function activeBot() {
+function activeBot(grace = 0) {
 	const utcDate = new Date().getUTCDate();
-	return utcDate >= StartDay && utcDate < EndDay;
+	return utcDate + grace >= StartDay && utcDate - grace < EndDay;
 }
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
