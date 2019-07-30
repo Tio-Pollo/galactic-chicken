@@ -26,6 +26,7 @@ const re = {
     coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
 	purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
 	chicken_env: /^\W*chicken[^a-z]*env\w*\W*$/i,
+	logline: /^\W\W*log (.+)/i,
     chicken: /\bchicken\b/i
 },
 chicken = '🐔',
@@ -127,7 +128,7 @@ client.on('message', message => {
 		if (m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
 		
 		replyHelp(message, m[2]);
-    } else if (msg.toLowerCase() == 'ping') {
+    } else if (msg.toLowerCase().replace(/[^a-z]+/ig,'') == 'ping') {
 		// ping
         message.channel.send(':ping_pong: pong');
     } else if (msg.toLowerCase() == '!avatar') {
@@ -196,6 +197,9 @@ client.on('message', message => {
 		} else {
 			message.react(na);
 		}
+    } else if ((m = re.logline.exec(msg)) !== null) {
+		// !log ...
+		console.log(m[1]);
     } else if (re.chicken_env.test(msg)) {
 		message.channel.send(EnvName + ' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
@@ -446,7 +450,20 @@ function activeBot(grace = 0) { //1, 14, 15, 31
 	const fromDate = Math.max(utcDate.getUTCDate(), plusGrace.getUTCDate());
 	const toDate   = utcDate.getUTCDate();
 	
-	return fromDate >= StartDay && Math.min(toDate, fromDate) < EndDay;
+	let itsActive = fromDate >= StartDay && Math.min(toDate, fromDate, plusGrace.getUTCDate()) < EndDay;
+	if (!itsActive && client && !activeBot(haltOffset)) {
+		try {
+			console.log('destroying client...');
+			client
+			.destroy()
+			.catch( (e) => {
+				console.log('Error on destroy promise',e)
+			});
+		} catch (err) {
+			console.log('Error destroying', err);
+		}
+	}
+	return itsActive;
 }
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
