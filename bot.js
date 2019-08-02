@@ -102,14 +102,14 @@ client.on('message', message => {
     } else if (re.daily.test(msg)) {
 		//!daily
 		let quests = [
-				'800 batteries',
-				'1500 gold bars',
 				'1 million coins',
 				'3000 amber insulation',
 				'550 insulated wire',
 				'800 graphite',
 				'80 circuits',
-				'200 lamps'
+				'200 lamps',
+				'800 batteries',
+				'1500 gold bars'
 			],
 			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 			index = Math.floor(alaska/8.64e7) % 8,
