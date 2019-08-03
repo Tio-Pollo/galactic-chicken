@@ -9,6 +9,10 @@ const haltOffset = 2;
 if (!activeBot(haltOffset)) {
 	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
 } else {
+	
+	if ( !activeBot() ) {
+		console.log('Ducking ' + EnvName + ' during grace period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
+	}
 
 	const { Client, Attachment } = require('discord.js');
 	client = new Client();
@@ -70,6 +74,11 @@ const help = [
 	}
 ];
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
+
+
+
+// --------->
+// --------->
 
 if (client) {
 	
@@ -455,6 +464,13 @@ client.once('ready', () => {
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
 
 }
+
+
+// <---------
+// <---------
+
+
+
 
 function activeBot(grace = 0, onRecursion = false) { //1, 14, 15, 31
 	const utcDate = new Date();
