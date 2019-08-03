@@ -7,11 +7,13 @@ const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
 
 if (!activeBot(haltOffset)) {
-	throw('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
-}
+	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
+} else {
 
-const { Client, Attachment } = require('discord.js');
-client = new Client();
+	const { Client, Attachment } = require('discord.js');
+	client = new Client();
+	
+}
 
 const re = {
     ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
@@ -69,6 +71,8 @@ const help = [
 ];
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 
+if (client) {
+	
 client.on('message', message => {
 	if (!activeBot()) return;
 	if (message.author == client.user) //own message
@@ -447,14 +451,19 @@ client.once('ready', () => {
 	, {type: "WATCHING"});
 });
 
-function activeBot(grace = 0) { //1, 14, 15, 31
+
+client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
+
+}
+
+function activeBot(grace = 0, onRecursion = false) { //1, 14, 15, 31
 	const utcDate = new Date();
 	const plusGrace = new Date(utcDate);  plusGrace.setDate(plusGrace.getDate() + grace);
 	const fromDate = Math.max(utcDate.getUTCDate(), plusGrace.getUTCDate());
 	const toDate   = utcDate.getUTCDate();
 	
 	let itsActive = fromDate >= StartDay && Math.min(toDate, fromDate, plusGrace.getUTCDate()) < EndDay;
-	if (!itsActive && client && !activeBot(haltOffset)) {
+	if (!itsActive && !onRecursion && client && !activeBot(haltOffset, true)) {
 		try {
 			console.log('destroying client...');
 			client
@@ -468,5 +477,3 @@ function activeBot(grace = 0) { //1, 14, 15, 31
 	}
 	return itsActive;
 }
-
-client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
