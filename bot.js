@@ -86,7 +86,7 @@ client.on('message', message => {
 	let msg = message.cleanContent;
 	
     let botIsActive = activeBot();
-    if (!botIsActive && msg.toLowerCase() != '!chicken-env') return;
+    if (!botIsActive && client && msg.toLowerCase() != '!chicken-env') return;
     if (message.author == client.user) //own message
 	return;
 
