@@ -1,13 +1,13 @@
 var client;
 
 const EnvName  = (process.env.ENV_NAME || 'unidentified environment');
-const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99);
-const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);
+const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99); // 15
+const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);    // 32
 const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
 
 if (!activeBot(haltOffset)) {
-	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + EndDay + ')');
+	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
 } else {
 
 	const { Client, Attachment } = require('discord.js');
