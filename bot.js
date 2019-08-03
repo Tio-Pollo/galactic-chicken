@@ -83,9 +83,10 @@ help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 if (client) {
 	
 client.on('message', message => {
-	if (!activeBot()) return;
-	if (message.author == client.user) //own message
-		return;
+    let botIsActive = activeBot();
+    if (!botIsActive && message.toLowerCase() != '!chicken-env') return;
+    if (message.author == client.user) //own message
+	return;
 
     let m, nick, msg;
     msg = message.cleanContent;
@@ -217,7 +218,7 @@ client.on('message', message => {
 		// !log ...
 		console.log(m[1]);
     } else if (re.chicken_env.test(msg)) {
-		message.channel.send(EnvName + ' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
+		message.channel.send(EnvName + (botIsActive ? '' : ' on hold and waiting ') +' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     }
