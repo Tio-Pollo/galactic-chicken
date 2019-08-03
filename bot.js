@@ -1,3 +1,5 @@
+var client;
+
 const EnvName  = (process.env.ENV_NAME || 'unidentified environment');
 const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99);
 const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);
@@ -9,7 +11,7 @@ if (!activeBot(haltOffset)) {
 }
 
 const { Client, Attachment } = require('discord.js');
-const client = new Client();
+client = new Client();
 
 const re = {
     ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
