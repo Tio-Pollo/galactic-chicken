@@ -83,13 +83,14 @@ help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
 if (client) {
 	
 client.on('message', message => {
+	let msg = message.cleanContent;
+	
     let botIsActive = activeBot();
-    if (!botIsActive && message.toLowerCase() != '!chicken-env') return;
+    if (!botIsActive && msg.toLowerCase() != '!chicken-env') return;
     if (message.author == client.user) //own message
 	return;
 
-    let m, nick, msg;
-    msg = message.cleanContent;
+    let m, nick;
     
     if ((m = re.ratio.exec(msg)) !== null) {
 		// !ratio
