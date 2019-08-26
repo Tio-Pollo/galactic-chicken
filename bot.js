@@ -20,8 +20,8 @@ if (!activeBot(haltOffset)) {
 }
 
 const re = {
-    ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
-    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,3})\s*)?$/i,
+    ratio: /^\W*ratio(?: +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
+    eligible: /^\W*eligib(?:le|ility)(?: +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
 	daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
 	giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
 	help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
