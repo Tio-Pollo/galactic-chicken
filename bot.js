@@ -272,11 +272,12 @@ function purgeMsg(channel, user, limit) {
 
 function jeroImg(baseUrl, query, message, prefix='', withThumb = false) {
 	if (!query) query = getNick(message);
-    if (prefix) prefix = prefix + '_';
+        query = query.trim();
+        if (prefix) prefix = prefix + '_';
 	
-	const imgName = encodeURIComponent(query.trim()),
+	const imgName = encodeURIComponent(query),
 		imgUrl = baseUrl + '?q=' + imgName,
-                imgSafeName = imgName.replace(/\W+/g, ''),
+                imgSafeName = query.replace(/\W+/g, '_'),
 		imgFilename = prefix + imgSafeName + '.png',
 		borderColor = 0xe0bc1b,
 		icon = withThumb.displayAvatarURL || (message.mentions.users.first() || message.author).displayAvatarURL;
