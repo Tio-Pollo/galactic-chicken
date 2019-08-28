@@ -276,7 +276,8 @@ function jeroImg(baseUrl, query, message, prefix='', withThumb = false) {
 	
 	const imgName = encodeURIComponent(query.trim()),
 		imgUrl = baseUrl + '?q=' + imgName,
-		imgFilename = prefix + imgName + '.png',
+                imgSafeName = imgName.replace(/\W+/g, ''),
+		imgFilename = prefix + imgSafeName + '.png',
 		borderColor = 0xe0bc1b,
 		icon = withThumb.displayAvatarURL || (message.mentions.users.first() || message.author).displayAvatarURL;
 	
