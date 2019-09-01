@@ -117,25 +117,26 @@ client.on('message', message => {
 		}
         jeroImg(process.env.JEROENR_ELIGIBLE, query, message, 'eligible', user);
     } else if (re.daily.test(msg)) {
-		//!daily
-		let quests = [
-				'1 million coins',
-				'3000 amber insulation',
-				'550 insulated wire',
-				'800 graphite',
-				'80 circuits',
-				'200 lamps',
-				'800 batteries',
-				'1500 gold bars'
-			],
-			alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
-			index = Math.floor(alaska/8.64e7) % 8,
-			dow = alaska.getUTCDay(),
-			sep = ' | ';
-        message.channel.send(
-			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index]       + sep +
-			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%8] + sep +
-			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[(index+2)%8]
+	    //!daily
+	    let quests = [
+			'80 circuits',
+			'200 lamps',
+			'800 batteries',
+			'1500 gold bars',
+			'1 million coins',
+			'3000 amber insulation',
+			'550 insulated wire',
+			'800 graphite'
+		],
+		len = quests.length,
+		alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
+		index = Math.floor(alaska.getUTCDate()) % len,
+		dow = alaska.getUTCDay(),
+		sep = ' | ';
+            message.channel.send(
+			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index]         + sep +
+			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%len] + sep +
+			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[(index+2)%len]
 		);
 	} else if ((m = re.giphy.exec(msg)) !== null) {
 		//  !giphy  | !have
