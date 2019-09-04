@@ -128,15 +128,17 @@ client.on('message', message => {
 			'550 insulated wire',
 			'800 graphite'
 		],
-		len = quests.length,
-		alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
-		index = Math.floor(alaska.getUTCDate()) % len,
-		dow = alaska.getUTCDay(),
-		sep = ' | ';
+	    len = quests.length,
+	    alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
+	    index  = Math.floor(alaska.getUTCDate()) % len,
+	    index2 = Math.floor(addDays(alaska, 1).getUTCDate()) % len,
+	    index3 = Math.floor(addDays(alaska, 2).getUTCDate()) % len,
+	    dow = alaska.getUTCDay(),
+	    sep = ' | ';
             message.channel.send(
-			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index]         + sep +
-			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[(index+1)%len] + sep +
-			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[(index+2)%len]
+			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index ] + sep +
+			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[index2] + sep +
+			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[index3]
 		);
 	} else if ((m = re.giphy.exec(msg)) !== null) {
 		//  !giphy  | !have
@@ -366,7 +368,13 @@ function giphy(query, message) {
 }
 
 function weekDay(dayNum) {
-	return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
+}
+
+function addDays(date, days) {
+  let result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 }
 
 function helpCmd(index) {
