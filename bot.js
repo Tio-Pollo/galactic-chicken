@@ -88,7 +88,11 @@ client.on('message', message => {
     let botIsActive = activeBot();
     if (!botIsActive && (!client || msg.toLowerCase() != '!chicken-env')) return;
     if (message.author == client.user) //own message
-	return;
+		return;
+	
+	//ignored users
+	if (message.member && message.member.roles && message.member.roles.some(role => /\bSquib\b/i.test(role.name)))
+		return;
 
     let m, nick;
     
