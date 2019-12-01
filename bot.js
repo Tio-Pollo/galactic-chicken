@@ -434,7 +434,6 @@ function getDTG(message) {
 								 // <--
 								message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes.getNamedItem('id'));
 								let trs = tbl.querySelectorAll('tbody > tr');  // <--
-								message.channel.send('Found rows: ' + trs.length); // <--
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
 									let name = tr.querySelector('td').textContent.trim() || null;
@@ -455,7 +454,8 @@ function getDTG(message) {
 							}*/
 							
 							// <--
-							message.channel.send(DTG.reduce((acc,add) => acc + ',' + add.name, ''));
+							message.channel.send('Found rows: ' + DTG.length);
+							message.channel.send(DTG.map(x => x.name).join(','));
 						} else {
 							console.log("Get DTG - No Data");
 							message.react(na);
