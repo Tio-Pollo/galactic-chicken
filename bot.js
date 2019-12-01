@@ -21,6 +21,10 @@ if (!activeBot(haltOffset)) {
 	
 }
 
+function initVars() {
+	getDTG();
+}
+
 const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
@@ -379,16 +383,18 @@ function giphy(query, message) {
 function getDTG(message) {
 	//let queryString = encodeURIComponent(query).replace(/%20/g, ' ');
 	
-	
 	const
 		request = require('request'),
 		jsdom = require("jsdom"),
 		{ JSDOM } = jsdom,
 		dtgUrls = [
+			'https://deeptownguide.com/Buildings',
 			'https://deeptownguide.com/Items'
 		];
 	
 	try {
+		DTG.length = 0;
+		
 		for (let dtgPage of dtgUrls) {
 			request.get(
 				{
@@ -431,34 +437,36 @@ function getDTG(message) {
 							
 							const { document } = (new JSDOM(data)).window;
 							for (let tbl of document.querySelectorAll('table')) {
-								 // <--
-								message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes.getNamedItem('id'));
+								// <--
+								//if (message) message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes.getNamedItem('id'));
 								let trs = tbl.querySelectorAll('tbody > tr');  // <--
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
 									let name = tr.querySelector('td').textContent.trim() || null;
 									let href = tr.querySelector('td a').getAttribute('href').trim() || null;
 									let img = tr.querySelector('td img').getAttribute('data-src').trim() || null;
-									DTG.push({
-										name: name,
-										href: href,
-										img: img
-									});
+									if (name != null && href != null) {
+										DTG.push({
+											name: name,
+											href: href,
+											img: img
+										});
+									}
 								}
 								
 								 // <--
-								message.channel.send('Name: ' + DTG[0].name + ' --- href: ' + DTG[0].href + ' --- img: ' + DTG[0].img);
+								//if (message) message.channel.send('Name: ' + DTG[0].name + ' --- href: ' + DTG[0].href + ' --- img: ' + DTG[0].img);
 							}
 							/*} else {
 								message.react(na);
 							}*/
 							
 							// <--
-							message.channel.send('Found rows: ' + DTG.length);
-							message.channel.send(DTG.map(x => x.name).join(',').substring(0,1999));
+							if (message) message.channel.send('Found rows: ' + DTG.length);
+							if (message) message.channel.send(DTG.map(x => x.name).join(',').substring(0,1999));
 						} else {
 							console.log("Get DTG - No Data");
-							message.react(na);
+							if (message) message.react(na);
 						}
 					}
 				}
@@ -578,6 +586,8 @@ client.once('ready', () => {
 
 
 client.login(process.env.BOT_TOKEN);//BOT_TOKEN is the Client Secret from https://discordapp.com/developers/applications/me
+
+initVars();
 
 }
 
