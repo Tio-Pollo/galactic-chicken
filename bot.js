@@ -430,8 +430,8 @@ function getDTG(message) {
 							
 							const { document } = (new JSDOM(data)).window;
 							for (let tbl of document.querySelectorAll('table')) {
-								message.channel.send('Found table: ' + tbl.id);
-								message.channel.send('Found rows: ' + tbl.querySelectorAll('tbody > tr').count);
+								message.channel.send('Found table: ' + tbl.getAttribute('id'));
+								message.channel.send('Found rows: ' + tbl.querySelectorAll('tbody > tr').length);
 							}
 							/*} else {
 								message.react(na);
