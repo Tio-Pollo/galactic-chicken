@@ -524,7 +524,7 @@ function searchDTG(message, term) {
 							const { document } = (new JSDOM(data)).window;
 							let txt = '';
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$/g,'') || '';
+								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$/g,'').trim() || '';
 								if (txt_line.length > 0) {
 									txt = txt + txt_line + "\n";
 								}
