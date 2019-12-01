@@ -420,10 +420,10 @@ function getDTG(message) {
 									}
 								)
 								.catch(()=>{});*/
-								message.channel.send(data.substring(0,200));
-							} else {
+							message.channel.send(data.substring(0,200));
+							/*} else {
 								message.react(na);
-							}
+							}*/
 						} else {
 							console.log("Get DTG - No Data");
 							message.react(na);
