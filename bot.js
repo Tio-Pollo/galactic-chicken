@@ -455,7 +455,7 @@ function getDTG(message) {
 							
 							// <--
 							message.channel.send('Found rows: ' + DTG.length);
-							message.channel.send(DTG.map(x => x.name).join(','));
+							message.channel.send(DTG.map(x => x.name).join(',').substring(0,1999));
 						} else {
 							console.log("Get DTG - No Data");
 							message.react(na);
