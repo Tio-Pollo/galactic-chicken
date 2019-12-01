@@ -431,17 +431,17 @@ function getDTG(message) {
 							
 							const { document } = (new JSDOM(data)).window;
 							for (let tbl of document.querySelectorAll('table')) {
-								message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes);
+								message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes.getNamedItem('id'));
 								let trs = tbl.querySelectorAll('tbody > tr')
 								message.channel.send('Found rows: ' + trs.length);
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
 									let href = tr.querySelector('td a').getAttribute('href').trim() || null;
-									let img = tr.querySelector('td img').getAttribute('src').trim() || null;
+									let img = tr.querySelector('td img').getAttribute('data-src').trim() || null;
 									let name = tr.querySelector('td').textContent.trim() || null;
 									DTG.push({
-										href: href,
 										name: name,
+										href: href,
 										img: img
 									});
 								}
