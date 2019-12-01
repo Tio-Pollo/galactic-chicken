@@ -420,7 +420,11 @@ function getDTG(message) {
 									}
 								)
 								.catch(()=>{});*/
-							message.channel.send(data.substring(0,200));
+							if (message && message.channel) {
+								message.channel.send(data.substring(0,200));
+							} else {
+								console.log(data);
+							}
 							/*} else {
 								message.react(na);
 							}*/
