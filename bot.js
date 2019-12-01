@@ -436,15 +436,17 @@ function getDTG(message) {
 								message.channel.send('Found rows: ' + trs.length);
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
+									let href = tr.querySelector('td a').getAttribute('href').trim() || null;
 									let img = tr.querySelector('td img').getAttribute('src').trim() || null;
 									let name = tr.querySelector('td').textContent.trim() || null;
 									DTG.push({
-										img: img,
-										name: name
+										href: href,
+										name: name,
+										img: img
 									});
 								}
 								
-								message.channel.send('Name: ' + DTG[0].name + ' --- img: ' + DTG[0].img);
+								message.channel.send('Name: ' + DTG[0].name + ' --- href: ' + DTG[0].href + ' --- img: ' + DTG[0].img);
 							}
 							/*} else {
 								message.react(na);
