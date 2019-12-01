@@ -386,8 +386,7 @@ function getDTG(message) {
 		];
 	
 	try {
-		let dtgPage;
-		for dtgPage of dtgUrls {
+		for (let dtgPage of dtgUrls) {
 			request.get(
 				{
 					url: dtgPage,
