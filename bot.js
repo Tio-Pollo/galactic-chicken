@@ -490,18 +490,17 @@ function getDTG(message) {
 }
 
 function searchDTG(message, term) {
-console.log('searching',term);
 	const baseUrl = 'https://deeptownguide.com',
 		  borderColor = 0x000000;
 	term = term.toLowerCase();
 	let found = DTG.find(x => x.name == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term));
-console.log(found);
 	if (!found) {
 		message.react(na);
 	} else {
-		const itemImg = baseUrl + found.img,
+		const itemUrl = baseUrl + found.href,
+			  itemImg = baseUrl + found.img,
 			  imgFilename = 'img_' + found.name.replace(/\W+/g,'-') +'.png';
 		message.channel.send(
 			{
@@ -512,7 +511,7 @@ console.log(found);
 						icon_url: itemImg
 					},
 					title: found.name,
-					url: found.href,
+					url: itemUrl,
 					/*description: (data.data.title || ''),*/
 					image: {
 						url: 'attachment://' + imgFilename
