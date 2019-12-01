@@ -526,7 +526,7 @@ function searchDTG(message, term) {
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
 								let txt_line = div.textContent.trim() || '';
 								if (txt_line.length) {
-									txt = txt +  + "\n";
+									txt = txt + txt_line + "\n";
 								}
 							}
 							
