@@ -502,36 +502,117 @@ function searchDTG(message, term) {
 		const itemUrl = baseUrl + found.href,
 			  itemImg = baseUrl + found.img,
 			  imgFilename = 'img_' + found.name.replace(/\W+/g,'-') +'.png';
-		message.channel.send(
-			{
-				embed: {
-					color: borderColor,
-					/*author: { 
-						name: found.name, 
-						icon_url: itemImg
-					},*/
-					title: found.name,
+		
+		const
+			request = require('request'),
+			jsdom = require("jsdom"),
+			{ JSDOM } = jsdom;
+		
+		try {
+			request.get(
+				{
 					url: itemUrl,
-					description: '<Some data here>',
-					thumbnail: {
-						url: 'attachment://' + imgFilename,
-					},
-					/*image: {
-						url: 'attachment://' + imgFilename
-					},*/
-					footer: {
-						text: 'DeepTownGuide.com',
-						icon_url: 'attachment://deeptownguide.ico'
+					json: false
+				}, 
+				(err, res, data) => {
+					if (err) {
+						console.log('Error in Get DTG_info request:', err);
+					} else if (res.statusCode !== 200) {
+						console.log('Get DTG_info response status:', res.statusCode);
+					} else {
+						if (data) {
+							const { document } = (new JSDOM(data)).window;
+							let txt = '';
+							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
+								let txt_line = div.textContent.trim() || '';
+								if (txt_line.length) {
+									txt = txt +  + "\n";
+								}
+							}
+							
+							
+							message.channel.send(
+								{
+									embed: {
+										color: borderColor,
+										/*author: { 
+											name: found.name, 
+											icon_url: itemImg
+										},*/
+										title: found.name,
+										url: itemUrl,
+										description: txt,
+										thumbnail: {
+											url: 'attachment://' + imgFilename,
+										},
+										/*image: {
+											url: 'attachment://' + imgFilename
+										},*/
+										footer: {
+											text: 'DeepTownGuide.com',
+											icon_url: 'attachment://deeptownguide.png'
+										}
+									},
+									files: [
+										{ attachment: itemImg, name: imgFilename },
+										{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.png'}
+									] 
+								}
+							)
+							.catch((e)=>{console.error(e)});
+							
+							
+						} else {
+							console.log("Get DTG_info - No Data");
+						}
 					}
-				},
-				files: [
-					{ attachment: itemImg, name: imgFilename },
-					{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.ico'}
-				] 
-			}
-		)
-		.catch((e)=>{console.error(e)});
+				}
+			);
+		} catch (err) {
+			console.log('Get DTG_info error', err);
+		}
 	}
+}
+
+function getDTG_info(dtgPage) {
+	const
+		request = require('request'),
+		jsdom = require("jsdom"),
+		{ JSDOM } = jsdom;
+	
+	try {
+		request.get(
+			{
+				url: dtgPage,
+				json: false
+			}, 
+			(err, res, data) => {
+				if (err) {
+					console.log('Error in Get DTG_info request:', err);
+				} else if (res.statusCode !== 200) {
+					console.log('Get DTG_info response status:', res.statusCode);
+				} else {
+					if (data) {
+						const { document } = (new JSDOM(data)).window;
+						let txt = '';
+						for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
+							let txt_line = div.textContent.trim() || '';
+							if (txt_line.length) {
+								txt = txt +  + "\n";
+							}
+						}
+						
+						return txt;
+					} else {
+						console.log("Get DTG_info - No Data");
+					}
+				}
+			}
+		);
+	} catch (err) {
+		console.log('Get DTG_info error', err);
+	}
+	return null;
 }
 
 function weekDay(dayNum) {
