@@ -453,7 +453,7 @@ function getDTG(message) {
 								let trs = tbl.querySelectorAll('tbody > tr');  // <--
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
-									let name = tr.querySelector('td').textContent.replace(/^\s+|\s+$/g,'') || null;
+									let name = tr.querySelector('td').textContent.replace(/^[\s\xA0]+|[\s\xA0]+$/g,'') || null;
 									let href = tr.querySelector('td a').getAttribute('href').trim() || null;
 									let img = tr.querySelector('td img').getAttribute('data-src').trim() || null;
 									if (name != null && href != null) {
@@ -492,7 +492,7 @@ function getDTG(message) {
 function searchDTG(message, term) {
 	const baseUrl = 'https://deeptownguide.com',
 		  borderColor = 0x000000;
-	term = term.toLowerCase().replace(/^\s+|\s+$/g,'');
+	term = term.toLowerCase()replace(/^[\s\xA0]+|[\s\xA0]+$/g,'');
 	let found = DTG.find(x => x.name.toLowerCase() == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term));
@@ -524,7 +524,7 @@ function searchDTG(message, term) {
 							const { document } = (new JSDOM(data)).window;
 							let txt = '';
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-								let txt_line = div.textContent.replace(/^\s+|\s+$/g,'') || '';
+								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$/g,'') || '';
 								if (txt_line.length > 0) {
 									txt = txt + txt_line + "\n";
 								}
@@ -574,46 +574,6 @@ function searchDTG(message, term) {
 	}
 }
 
-function getDTG_info(dtgPage) {
-	const
-		request = require('request'),
-		jsdom = require("jsdom"),
-		{ JSDOM } = jsdom;
-	
-	try {
-		request.get(
-			{
-				url: dtgPage,
-				json: false
-			}, 
-			(err, res, data) => {
-				if (err) {
-					console.log('Error in Get DTG_info request:', err);
-				} else if (res.statusCode !== 200) {
-					console.log('Get DTG_info response status:', res.statusCode);
-				} else {
-					if (data) {
-						const { document } = (new JSDOM(data)).window;
-						let txt = '';
-						for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-							let txt_line = div.textContent.trim() || '';
-							if (txt_line.length) {
-								txt = txt +  + "\n";
-							}
-						}
-						
-						return txt;
-					} else {
-						console.log("Get DTG_info - No Data");
-					}
-				}
-			}
-		);
-	} catch (err) {
-		console.log('Get DTG_info error', err);
-	}
-	return null;
-}
 
 function weekDay(dayNum) {
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
