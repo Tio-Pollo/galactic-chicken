@@ -506,22 +506,28 @@ function searchDTG(message, term) {
 			{
 				embed: {
 					color: borderColor,
-					author: { 
+					/*author: { 
 						name: found.name, 
 						icon_url: itemImg
-					},
+					},*/
 					title: found.name,
 					url: itemUrl,
-					/*description: (data.data.title || ''),*/
-					image: {
-						url: 'attachment://' + imgFilename
+					description: '<Some data here>',
+					thumbnail: {
+						url: 'attachment://' + imgFilename,
 					},
+					/*image: {
+						url: 'attachment://' + imgFilename
+					},*/
 					footer: {
 						text: 'DeepTownGuide.com',
-						icon_url: 'https://deeptownguide.com/favicon.ico'
+						icon_url: 'attachment://deeptownguide.ico'
 					}
 				},
-				files: [{ attachment: itemImg, name: imgFilename }] 
+				files: [
+					{ attachment: itemImg, name: imgFilename },
+					{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.ico'}
+				] 
 			}
 		)
 		.catch((e)=>{console.error(e)});
