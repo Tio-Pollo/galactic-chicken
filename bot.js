@@ -437,12 +437,14 @@ function getDTG(message) {
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
 									let img = tr.querySelector('td img').getAttribute('src').trim() || null;
-									let name = tr.querySelector('td').innerText.trim() || null;
+									let name = tr.querySelector('td').textContent.trim() || null;
 									DTG.push({
 										img: img,
 										name: name
 									});
 								}
+								
+								message.channel.send('Name: ' + DTG[0].name + ' --- img: ' + DTG[0].img);
 							}
 							/*} else {
 								message.react(na);
