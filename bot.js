@@ -17,6 +17,7 @@ if (!activeBot(haltOffset)) {
 	const { Client, Attachment } = require('discord.js');
 	client = new Client();
 	
+	
 }
 
 const re = {
@@ -229,7 +230,9 @@ client.on('message', message => {
 		message.channel.send(EnvName + (botIsActive ? '' : ' on hold and waiting ') +' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
-    }
+    } else if (/^getdtg/i.test(msg)) {
+		
+	}
 });
 
 function getNick(message) {
@@ -367,7 +370,72 @@ function giphy(query, message) {
 		);
 	} catch (err) {
 		console.log('Giphy error', err);
-		messager.react(wait);
+		message.react(wait);
+	}
+}
+
+
+function getDTG(message) {
+	//let queryString = encodeURIComponent(query).replace(/%20/g, ' ');
+	
+	
+	const
+		request = require('request'),
+		dtgUrls = [
+			'https://deeptownguide.com/Items'
+		];
+	
+	try {
+		let dtgPage;
+		for dtgPage of dtgUrls {
+			request.get(
+				{
+					url: dtgPage,
+					json: false
+					/*,
+					headers: {'User-Agent': 'request'} */
+				}, 
+				(err, res, data) => {
+					if (err) {
+						console.log('Error in Get DTG request:', err);
+						if (message) message.react(na);
+					} else if (res.statusCode !== 200) {
+						if (message) message.react(res.statusCode == 429 ? wait : na);
+						console.log('Get DTG response status:', res.statusCode);
+					} else {
+						if (data) {
+								/*message.channel.send(
+									{
+										embed: {
+											color: borderColor,
+											title: query,
+											/*description: (data.data.title || ''),  *  /
+											image: {
+												url: 'attachment://' + imgFilename
+											},
+											footer: {
+												text: (data.data.title || '')
+											}
+										},
+										files: [{ attachment: imgUrl, name: imgFilename }] 
+									}
+								)
+								.catch(()=>{});*/
+								message.channel.send(data.substring(0,200));
+							} else {
+								message.react(na);
+							}
+						} else {
+							console.log("Get DTG - No Data");
+							message.react(na);
+						}
+					}
+				}
+			);
+		}
+	} catch (err) {
+		console.log('Get DTG error', err);
+		message.react(wait);
 	}
 }
 
