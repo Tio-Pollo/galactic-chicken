@@ -490,12 +490,14 @@ function getDTG(message) {
 }
 
 function searchDTG(message, term) {
+console.log('searching',term);
 	const baseUrl = 'https://deeptownguide.com',
 		  borderColor = 0x000000;
 	term = term.toLowerCase();
 	let found = DTG.find(x => x.name == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term));
+console.log(found);
 	if (!found) {
 		message.react(na);
 	} else {
@@ -523,7 +525,7 @@ function searchDTG(message, term) {
 				files: [{ attachment: itemImg, name: imgFilename }] 
 			}
 		)
-		.catch(()=>{});
+		.catch((e)=>{console.error(e)});
 	}
 }
 
