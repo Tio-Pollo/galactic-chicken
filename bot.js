@@ -453,7 +453,7 @@ function getDTG(message) {
 								let trs = tbl.querySelectorAll('tbody > tr');  // <--
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
-									let name = tr.querySelector('td').textContent.trim() || null;
+									let name = tr.querySelector('td').textContent.replace(/^\s+|\s+$/,'') || null;
 									let href = tr.querySelector('td a').getAttribute('href').trim() || null;
 									let img = tr.querySelector('td img').getAttribute('data-src').trim() || null;
 									if (name != null && href != null) {
@@ -492,7 +492,7 @@ function getDTG(message) {
 function searchDTG(message, term) {
 	const baseUrl = 'https://deeptownguide.com',
 		  borderColor = 0x000000;
-	term = term.toLowerCase();
+	term = term.toLowerCase().replace(/^\s+|\s+$/,'');
 	let found = DTG.find(x => x.name == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term));
@@ -524,7 +524,7 @@ function searchDTG(message, term) {
 							const { document } = (new JSDOM(data)).window;
 							let txt = '';
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-								let txt_line = div.textContent.trim() || '';
+								let txt_line = div.textContent.replace(/^\s+|\s+$/,'') || '';
 								if (txt_line.length) {
 									txt = txt + txt_line + "\n";
 								}
