@@ -455,7 +455,7 @@ function getDTG(message) {
 							}*/
 							
 							// <--
-							message.channel.send(DTG.reduce((acc,add) => acc + ',' + add.name, '');
+							message.channel.send(DTG.reduce((acc,add) => acc + ',' + add.name, ''));
 						} else {
 							console.log("Get DTG - No Data");
 							message.react(na);
