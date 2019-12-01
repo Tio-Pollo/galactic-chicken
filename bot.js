@@ -230,8 +230,8 @@ client.on('message', message => {
 		message.channel.send(EnvName + (botIsActive ? '' : ' on hold and waiting ') +' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
-    } else if (/^getdtg/i.test(msg)) {
-		
+    } else if (/^\W*getdtg/i.test(msg)) {
+		getDTG(msg);
 	}
 });
 
