@@ -29,6 +29,7 @@ const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
+    guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
@@ -77,6 +78,12 @@ const help = [
 		trigger: '?giphy <term>',
 		desc: "Replies with a random meme. Powered by Giphy.",
 		react: '🎞'
+	},
+	{
+		name: 'guide',
+		trigger: '?guide <item|building>',
+		desc: "Scrapes info from DeepTownGuide.",
+		react: '🔖'
 	}
 ];
 help[0].desc = help.map((item) => item.react+' '+item.trigger).join("\n");
@@ -154,6 +161,10 @@ client.on('message', message => {
 		//  !giphy  | !have
 		
 		giphy(m[1], message);
+	} else if ((m = re.guide.exec(msg)) !== null) {
+		//  ?guide
+		
+		searchDTG(message, m[1]);
 	} else if ((m = re.help.exec(message.content)) !== null) {
 		// ?help
 		if (m[1] && message.mentions.users.first() != client.user) return; //if @user isn't bot
@@ -475,6 +486,44 @@ function getDTG(message) {
 	} catch (err) {
 		console.log('Get DTG error', err);
 		message.react(wait);
+	}
+}
+
+function searchDTG(message, term) {
+	const baseUrl = 'https://deeptownguide.com',
+		  borderColor = 0x000000;
+	term = term.toLowerCase();
+	let found = DTG.find(x => x.name == term)
+			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
+			 || DTG.find(x => x.name.toLowerCase().includes(term));
+	if (!found) {
+		message.react(na);
+	} else {
+		const itemImg = baseUrl + found.img,
+			  imgFilename = 'img_' + found.name.replace(/\W+/g,'-') +'.png';
+		message.channel.send(
+			{
+				embed: {
+					color: borderColor,
+					author: { 
+						name: found.name, 
+						icon_url: itemImg
+					},
+					title: found.name,
+					url: found.href,
+					/*description: (data.data.title || ''),*/
+					image: {
+						url: 'attachment://' + imgFilename
+					},
+					footer: {
+						text: 'DeepTownGuide.com',
+						icon_url: 'https://deeptownguide.com/favicon.ico'
+					}
+				},
+				files: [{ attachment: itemImg, name: imgFilename }] 
+			}
+		)
+		.catch(()=>{});
 	}
 }
 
