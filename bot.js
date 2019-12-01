@@ -231,7 +231,7 @@ client.on('message', message => {
     } else if (message.isMentioned(client.user) || re.chicken.test(msg)) {
         message.react(chicken);
     } else if (/^\W*getdtg/i.test(msg)) {
-		getDTG(msg);
+		getDTG(message);
 	}
 });
 
@@ -381,6 +381,8 @@ function getDTG(message) {
 	
 	const
 		request = require('request'),
+		jsdom = require("jsdom"),
+		{ JSDOM } = jsdom,
 		dtgUrls = [
 			'https://deeptownguide.com/Items'
 		];
@@ -420,10 +422,16 @@ function getDTG(message) {
 									}
 								)
 								.catch(()=>{});*/
-							if (message && message.channel) {
+							/*if (message && message.channel) {
 								message.channel.send(data.substring(0,200));
 							} else {
 								console.log(data);
+							}*/
+							
+							const { document } = (new JSDOM(data)).window;
+							for (let tbl of document.querySelectorAll('table')) {
+								message.channel.send('Found table: ' + tbl.id);
+								message.channel.send('Found rows: ' + tbl.querySelectorAll('tbody > tr').count);
 							}
 							/*} else {
 								message.react(na);
