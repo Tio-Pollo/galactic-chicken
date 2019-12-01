@@ -5,6 +5,7 @@ const StartDay = (parseInt(process.env.ACTIVE_STARTDAY,10) || 99); // 15
 const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);    // 32
 const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
+const DTG = [];
 
 if (!activeBot(haltOffset)) {
 	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
@@ -435,8 +436,12 @@ function getDTG(message) {
 								message.channel.send('Found rows: ' + trs.length);
 								
 								for (let tr of tbl.querySelectorAll('tbody > tr')) {
-									let img = tr.querySelector('td img').getAttribute('src') || null;
-									let name = tr.querySelector('td').innerText || null;
+									let img = tr.querySelector('td img').getAttribute('src').trim() || null;
+									let name = tr.querySelector('td').innerText.trim() || null;
+									DTG.push({
+										img: img,
+										name: name
+									});
 								}
 							}
 							/*} else {
