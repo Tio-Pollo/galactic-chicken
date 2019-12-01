@@ -430,8 +430,14 @@ function getDTG(message) {
 							
 							const { document } = (new JSDOM(data)).window;
 							for (let tbl of document.querySelectorAll('table')) {
-								message.channel.send('Found table: ' + tbl.getAttribute('id'));
-								message.channel.send('Found rows: ' + tbl.querySelectorAll('tbody > tr').length);
+								message.channel.send('Found table: ' + tbl.getAttribute('id') + '  aaa ' + tbl.attributes);
+								let trs = tbl.querySelectorAll('tbody > tr')
+								message.channel.send('Found rows: ' + trs.length);
+								
+								for (let tr of tbl.querySelectorAll('tbody > tr')) {
+									let img = tr.querySelector('td img').getAttribute('src') || null;
+									let name = tr.querySelector('td').innerText || null;
+								}
 							}
 							/*} else {
 								message.react(na);
