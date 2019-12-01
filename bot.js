@@ -492,7 +492,7 @@ function getDTG(message) {
 function searchDTG(message, term) {
 	const baseUrl = 'https://deeptownguide.com',
 		  borderColor = 0x000000;
-	term = term.toLowerCase()replace(/^[\s\xA0]+|[\s\xA0]+$/g,'');
+	term = term.toLowerCase().replace(/^[\s\xA0]+|[\s\xA0]+$/g,'');
 	let found = DTG.find(x => x.name.toLowerCase() == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term));
