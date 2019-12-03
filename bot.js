@@ -554,7 +554,7 @@ function searchDTG(message, term) {
 										},*/
 										footer: {
 											text: 'https://DeepTownGuide.com',
-											icon_url: 'https://i.stack.imgur.com/0OttH.png'
+											icon_url: 'https://i.stack.imgur.com/9icMf.png'
 										}
 									},
 									files: [
