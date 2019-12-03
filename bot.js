@@ -550,7 +550,7 @@ function searchDTG(message, term) {
 											url: 'attachment://' + imgFilename
 										},*/
 										footer: {
-											text: 'DeepTownGuide.com',
+											text: 'https://DeepTownGuide.com',
 											icon_url: 'attachment://deeptownguide.ico'
 										}
 									},
