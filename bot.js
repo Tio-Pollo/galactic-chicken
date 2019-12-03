@@ -577,7 +577,7 @@ function searchDTG(message, term) {
 										name: thisTbl.h4_name,
 										value: panelResult.join("\n"),
 										inline: true
-									}
+									});
 								}
 							}
 							
