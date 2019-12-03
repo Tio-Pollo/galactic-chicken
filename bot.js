@@ -491,8 +491,10 @@ function getDTG(message) {
 
 function searchDTG(message, term) {
 	const baseUrl = 'https://deeptownguide.com',
-		  borderColor = 0x000000;
-	term = term.toLowerCase().replace(/^[\s\xA0]+|[\s\xA0]+$/g,'');
+		  borderColor = 0x000000,
+		  trim = /^[\s\xA0]+|[\s\xA0]+$/g,
+		  trimRE = /^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g;
+	term = term.toLowerCase().replace(trim,'');
 	let found = DTG.find(x => x.name.toLowerCase() == term)
 			 || DTG.find(x => x.name.toLowerCase().startsWith(term))
 			 || DTG.find(x => x.name.toLowerCase().includes(term))
@@ -527,7 +529,7 @@ function searchDTG(message, term) {
 							
 							//top of page
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1') || '';
+								let txt_line = div.textContent.replace(trimRE,'$1') || '';
 								if (txt_line.length > 0) {
 									txt = txt + txt_line + "\n";
 								}
@@ -542,12 +544,16 @@ function searchDTG(message, term) {
 									h4_name: 'Recipe',
 									onlyTitle: false,
 									excludeItems: /^Building Name$/i,
+									parse: /^Items Required\s*/mi,
+									parseRepl: "\n",
 									inline: false
 								},
 								{
 									h4_match: /is used to create these items\s*$/i,
 									h4_name: 'Precursor to',
 									onlyTitle: true,
+									parse: /((?:^|, )([ \w]+) [IVX]{1,3}(?:, $1 [IVX]{1,3})+/g,
+									parseRepl: '$1 ##'
 									inline: false
 								}
 							];
@@ -572,13 +578,21 @@ function searchDTG(message, term) {
 								let panelResult = [];
 								if (thisTbl.onlyTitle) { //only first row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type')) {
-										panelResult.push((panelItem.textContent || '').replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
+										let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
+										if (thisTbl.parse) {
+											panelItemText = panelItemText.replace(thisTbl.parse, thisTbl.parseRepl);
+										}
+										panelResult.push(panelItemText);
 									}
 								} else { //from each row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
-											panelResult.push('`' + dataTH + '` ' + (panelItem.textContent || '').replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
+											let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
+											if (thisTbl.parse) {
+												panelItemText = panelItemText.replace(thisTbl.parse, thisTbl.parseRepl);
+											}
+											panelResult.push('`' + dataTH + '` ' + panelItemText);
 										}
 									}
 								}
