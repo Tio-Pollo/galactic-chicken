@@ -538,10 +538,15 @@ function searchDTG(message, term) {
 							//tables with info
 							const getTables = [
 								{
-									h4_match: /is created from this recipe\s*$/ig,
+									h4_match: /is created from this recipe\s*$/i,
 									h4_name: 'Recipe',
 									onlyTitle: false,
 									excludeItems: /^Building Name$/i
+								},
+								{
+									h4_match: /is used to create these items\s*$/i,
+									h4_name: 'Precursor to',
+									onlyTitle: true
 								}
 							];
 							let fieldsResult = [];
@@ -564,7 +569,9 @@ function searchDTG(message, term) {
 								//get the info
 								let panelResult = [];
 								if (thisTbl.onlyTitle) { //only first row
-									
+									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type')) {
+										panelResult.push((panelItem.textContent || '').replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
+									}
 								} else { //from each row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
@@ -577,7 +584,7 @@ function searchDTG(message, term) {
 								if (panelResult.length) {
 									fieldsResult.push({
 										name: thisTbl.h4_name,
-										value: panelResult.join("\n"),
+										value: panelResult.join(thisTbl.onlyTitle ? ', ' : "\n"),
 										inline: true
 									});
 								}
