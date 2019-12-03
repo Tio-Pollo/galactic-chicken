@@ -552,8 +552,9 @@ function searchDTG(message, term) {
 									h4_match: /is used to create these items\s*$/i,
 									h4_name: 'Precursor to',
 									onlyTitle: true,
-									parse: /((?:^|, )([ \w]+)) [IVX]{1,3}(?:, $1 [IVX]{1,3})+/g,
-									parseRepl: '$2 ##',
+									sort: true,
+									parse: /((?:^|, )([ \w]+)) [IVX]{1,4}(?:, \2 [IVX]{1,4})+/g,
+									parseRepl: '$1 ##',
 									inline: false
 								}
 							];
@@ -591,6 +592,7 @@ function searchDTG(message, term) {
 								//add to result
 								if (panelResult.length) {
 									//format text in result
+									if (thisTbl.sort) panelResult.sort();
 									let fieldsResultText = panelResult.join(thisTbl.onlyTitle ? ', ' : "\n");
 									if (thisTbl.parse) {
 										fieldsResultText = fieldsResultText.replace(thisTbl.parse, thisTbl.parseRepl);
