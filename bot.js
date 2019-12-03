@@ -568,7 +568,7 @@ function searchDTG(message, term) {
 								} else { //from each row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
-										if (!thisTbl.excludeItems.test(dataTH)) { //except excluded
+										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
 											panelResult.push('**' + dataTH + '**: ' + dataTH.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
 										}
 									}
