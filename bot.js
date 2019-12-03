@@ -553,7 +553,7 @@ function searchDTG(message, term) {
 									h4_name: 'Precursor to',
 									onlyTitle: true,
 									parse: /((?:^|, )([ \w]+) [IVX]{1,3}(?:, $1 [IVX]{1,3})+/g,
-									parseRepl: '$1 ##'
+									parseRepl: '$1 ##',
 									inline: false
 								}
 							];
