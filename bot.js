@@ -551,12 +551,12 @@ function searchDTG(message, term) {
 										},*/
 										footer: {
 											text: 'DeepTownGuide.com',
-											icon_url: 'attachment://deeptownguide.png'
+											icon_url: 'attachment://deeptownguide.ico'
 										}
 									},
 									files: [
 										{ attachment: itemImg, name: imgFilename },
-										{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.png'}
+										{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.ico'}
 									] 
 								}
 							)
