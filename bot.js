@@ -548,7 +548,9 @@ function searchDTG(message, term) {
 							
 							for (let panel of document.querySelectorAll('div.panel.panel-default')) {
 								//get panel title
-								let panelTitle = panel.querySelector('div.panel-heading > h4').textContent || null;
+								let panelH4 = panel.querySelector('div.panel-heading > h4');
+								if (!panelH4) continue;
+								let panelTitle = panelH4.textContent;
 								if (!panelTitle) continue;
 								//check if panel matches search
 								let thisTbl = null;
