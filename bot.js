@@ -544,7 +544,7 @@ function searchDTG(message, term) {
 									h4_name: 'Recipe',
 									onlyTitle: false,
 									excludeItems: /^Building Name$/i,
-									parse: /^`?Items Required`?\s*/mi,
+									parse: /^(`?Items Required`?)\s*/mi,
 									parseRepl: "\n",
 									inline: false
 								},
