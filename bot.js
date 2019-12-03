@@ -578,29 +578,25 @@ function searchDTG(message, term) {
 								let panelResult = [];
 								if (thisTbl.onlyTitle) { //only first row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type')) {
-										let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
-										if (thisTbl.parse) {
-											panelItemText = panelItemText.replace(thisTbl.parse, thisTbl.parseRepl);
-										}
-										panelResult.push(panelItemText);
+										panelResult.push((panelItem.textContent || '').replace(trimRE,'$1'));
 									}
 								} else { //from each row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
-											let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
-											if (thisTbl.parse) {
-												panelItemText = panelItemText.replace(thisTbl.parse, thisTbl.parseRepl);
-											}
-											panelResult.push('`' + dataTH + '` ' + panelItemText);
+											panelResult.push('`' + dataTH + '` ' + (panelItem.textContent || '').replace(trimRE,'$1'));
 										}
 									}
 								}
 								//add to result
 								if (panelResult.length) {
+									let fieldsResultText = panelResult.join(thisTbl.onlyTitle ? ', ' : "\n");
+									if (thisTbl.parse) {
+										fieldsResultText = fieldsResultText.replace(thisTbl.parse, thisTbl.parseRepl);
+									}
 									fieldsResult.push({
 										name: thisTbl.h4_name,
-										value: panelResult.join(thisTbl.onlyTitle ? ', ' : "\n"),
+										value: fieldsResultText,
 										inline: thisTbl.inline
 									});
 								}
