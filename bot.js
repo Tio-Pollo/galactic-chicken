@@ -590,6 +590,7 @@ function searchDTG(message, term) {
 								}
 								//add to result
 								if (panelResult.length) {
+									//format text in result
 									let fieldsResultText = panelResult.join(thisTbl.onlyTitle ? ', ' : "\n");
 									if (thisTbl.parse) {
 										fieldsResultText = fieldsResultText.replace(thisTbl.parse, thisTbl.parseRepl);
