@@ -527,7 +527,7 @@ function searchDTG(message, term) {
 							
 							//top of page
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
-								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1').trim() || '';
+								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1') || '';
 								if (txt_line.length > 0) {
 									txt = txt + txt_line + "\n";
 								}
@@ -535,33 +535,85 @@ function searchDTG(message, term) {
 							//clean
 							txt = txt.replace(/^(?:Type[\r\n]+(?:Raw|Crafted|Chemical|Organic)|Rarity[\r\n]+Common|Sell Price[\r\n]+0)$\n?/gim, '');
 							
-							message.channel.send(
+							//tables with info
+							const getTables = [
 								{
-									embed: {
-										color: borderColor,
-										/*author: { 
-											name: found.name, 
-											icon_url: itemImg
-										},*/
-										title: found.name,
-										url: itemUrl,
-										description: txt,
-										thumbnail: {
-											url: 'attachment://' + imgFilename,
-										},
-										/*image: {
-											url: 'attachment://' + imgFilename
-										},*/
-										footer: {
-											text: 'DeepTownGuide.com',
-											icon_url: 'https://i.stack.imgur.com/9icMf.png',
-											url: 'https://deeptownguide.com'
-										}
-									},
-									files: [
-										{ attachment: itemImg, name: imgFilename }
-									] 
+									h4_match: /is created from this recipe\s*$/ig,
+									h4_name: 'Recipe',
+									onlyTitle: false,
+									excludeItems: /^Building Name$/i
 								}
+							];
+							let fieldsResult = [];
+							
+							for (let panel of document.querySelectorAll('div.panel.panel-default')) {
+								//get panel title
+								let panelTitle = panel.querySelector('div.panel-heading > h4').textContent || null;
+								if !panelTitle continue;
+								//check if panel matches search
+								let thisTbl = null;
+								for (let aTbl of getTables) {
+									if (aTbl.h4_match && aTbl.h4_match.test(panelTitle)) {
+										thisTbl = aTbl;
+										break;
+									}
+								}
+								if (!thisTbl) continue;
+								//get the info
+								let panelResult = [];
+								if (thisTbl.onlyTitle) { //only first row
+									
+								} else { //from each row
+									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
+										let dataTH = panelItem.getAttribute('data-th');
+										if (!thisTbl.excludeItems.test(dataTH)) { //except excluded
+											panelResult.push('**' + dataTH + '**: ' + dataTH.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1');
+										}
+									}
+								}
+								//add to result
+								if (panelResult.length) {
+									fieldsResult.push({
+										name: thisTbl.h4_name,
+										value: panelResult.join("\n"),
+										inline: true
+									}
+								}
+							}
+							
+							//Create and send EMBED
+							const embedMsg = {
+								embed: {
+									color: borderColor,
+									/*author: { 
+										name: found.name, 
+										icon_url: itemImg
+									},*/
+									title: found.name,
+									url: itemUrl,
+									description: txt,
+									thumbnail: {
+										url: 'attachment://' + imgFilename,
+									},
+									/*image: {
+										url: 'attachment://' + imgFilename
+									},*/
+									footer: {
+										text: 'DeepTownGuide.com',
+										icon_url: 'https://i.stack.imgur.com/9icMf.png',
+										url: 'https://deeptownguide.com'
+									}
+								},
+								files: [
+									{ attachment: itemImg, name: imgFilename }
+								]
+							};
+								
+							if (fieldsResult.length) {
+								embedMsg.embed.fields = fieldsResult;
+							}
+							message.channel.send(
+								embedMsg
 							)
 							.catch((e)=>{console.error(e)});
 							
