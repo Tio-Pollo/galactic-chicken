@@ -545,7 +545,7 @@ function searchDTG(message, term) {
 									onlyTitle: false,
 									excludeItems: /^Building Name$/i,
 									parse: /^(`?Items Required`?)\s*/mi,
-									parseRepl: "\n",
+									parseRepl: "$1\n",
 									inline: false
 								},
 								{
