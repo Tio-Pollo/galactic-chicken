@@ -524,13 +524,16 @@ function searchDTG(message, term) {
 						if (data) {
 							const { document } = (new JSDOM(data)).window;
 							let txt = '';
+							
+							//top of page
 							for (let div of document.querySelectorAll('div.container-fluid.text-center>div:not(:first-child),div.container.text-center>div:not(:first-child)')) {
 								let txt_line = div.textContent.replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1').trim() || '';
 								if (txt_line.length > 0) {
 									txt = txt + txt_line + "\n";
 								}
 							}
-							
+							//clean
+							txt = txt.replace(/^(?:Type[\r\n]+(?:Raw|Crafted|Chemical|Organic)|Rarity[\r\n]+Common|Sell Price[\r\n]+0)$\n?/gim, '');
 							
 							message.channel.send(
 								{
@@ -550,13 +553,12 @@ function searchDTG(message, term) {
 											url: 'attachment://' + imgFilename
 										},*/
 										footer: {
-											text: 'https://DeepTownGuide.com',
-											icon_url: 'attachment://deeptownguide.ico'
+											text: 'DeepTownGuide.com',
+											icon_url: 'https://deeptownguide.com/favicon.ico'
 										}
 									},
 									files: [
-										{ attachment: itemImg, name: imgFilename },
-										{ attachment: 'https://deeptownguide.com/favicon.ico', name: 'deeptownguide.ico'}
+										{ attachment: itemImg, name: imgFilename }
 									] 
 								}
 							)
