@@ -552,8 +552,8 @@ function searchDTG(message, term) {
 									h4_match: /is used to create these items\s*$/i,
 									h4_name: 'Precursor to',
 									onlyTitle: true,
-									parse: /((?:^|, )([ \w]+) [IVX]{1,3}(?:, $1 [IVX]{1,3})+/g,
-									parseRepl: '$1 ##',
+									parse: /((?:^|, )([ \w)) [IVX]{1,3}(?:, $1 [IVX]{1,3})+/g,
+									parseRepl: '$2 ##',
 									inline: false
 								}
 							];
