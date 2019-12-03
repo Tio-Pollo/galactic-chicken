@@ -553,8 +553,9 @@ function searchDTG(message, term) {
 											url: 'attachment://' + imgFilename
 										},*/
 										footer: {
-											text: 'https://DeepTownGuide.com',
-											icon_url: 'https://i.stack.imgur.com/9icMf.png'
+											text: 'DeepTownGuide.com',
+											icon_url: 'https://i.stack.imgur.com/9icMf.png',
+											url: 'https://deeptownguide.com'
 										}
 									},
 									files: [
