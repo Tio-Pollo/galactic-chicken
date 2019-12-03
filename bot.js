@@ -541,12 +541,14 @@ function searchDTG(message, term) {
 									h4_match: /is created from this recipe\s*$/i,
 									h4_name: 'Recipe',
 									onlyTitle: false,
-									excludeItems: /^Building Name$/i
+									excludeItems: /^Building Name$/i,
+									inline: false
 								},
 								{
 									h4_match: /is used to create these items\s*$/i,
 									h4_name: 'Precursor to',
-									onlyTitle: true
+									onlyTitle: true,
+									inline: false
 								}
 							];
 							let fieldsResult = [];
@@ -585,7 +587,7 @@ function searchDTG(message, term) {
 									fieldsResult.push({
 										name: thisTbl.h4_name,
 										value: panelResult.join(thisTbl.onlyTitle ? ', ' : "\n"),
-										inline: true
+										inline: thisTbl.inline
 									});
 								}
 							}
