@@ -569,7 +569,7 @@ function searchDTG(message, term) {
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
-											panelResult.push('__' + dataTH + '__: ' + (panelItem.textContent || '').replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
+											panelResult.push('`' + dataTH + '`: ' + (panelItem.textContent || '').replace(/^[\s\xA0]+|[\s\xA0]+$|([\s\xA0])[\s\xA0]+/g,'$1'));
 										}
 									}
 								}
