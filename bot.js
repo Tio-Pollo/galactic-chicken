@@ -573,6 +573,8 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
 									joinBy: "\n",
+									parse: /`Items Needed` /i,
+									parseRepl: '',
 									inline: false
 								}
 							];
