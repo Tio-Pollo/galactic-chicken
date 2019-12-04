@@ -562,7 +562,7 @@ function searchDTG(message, term) {
 									h4_name: 'Builds/Upgrades',
 									onlyTitle: true,
 									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
-									joinBy: "\n"
+									joinBy: "\n",
 									inline: false
 								}
 							];
