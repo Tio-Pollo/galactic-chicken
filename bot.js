@@ -546,7 +546,7 @@ function searchDTG(message, term) {
 									excludeItems: /^Building Name$/i,
 									parse: /^(`?Items Required`?)\s*/mi,
 									parseRepl: "$1\n",
-									inline: false
+									inline: true
 								},
 								{
 									h4_match: /is used to create these items\s*$/i,
@@ -592,7 +592,7 @@ function searchDTG(message, term) {
 											if (parenTR) {
 												let parenthesisTextArray = [];
 												for (let parenthesisItem of thisTbl.parenthesis) {
-													let selTD = parenTR.querySelector(`td[data-th="{parenthesisItem}"]`),
+													let selTD = parenTR.querySelector(`td[data-th={parenthesisItem}]`),
 														selTDtext;
 													if (selTD && (selTDtext = selTD.textContent)) {
 														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1'));
