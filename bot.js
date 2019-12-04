@@ -555,7 +555,14 @@ function searchDTG(message, term) {
 									sort: true,
 									parse: /((?:^|, )([ \w]+)) [IVX]{1,4}(?:, \2 [IVX]{1,4})+/g,
 									parseRepl: '$1 ##',
-									inline: false
+									inline: true
+								},
+								{
+									h4_match: /is used to construct\S* th[esi]+ buildings?\s*$/i,
+									h4_name: 'Builds/Upgrades',
+									onlyTitle: true,
+									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
+									inline: true
 								}
 							];
 							let fieldsResult = [];
@@ -579,7 +586,24 @@ function searchDTG(message, term) {
 								let panelResult = [];
 								if (thisTbl.onlyTitle) { //only first row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type')) {
-										panelResult.push((panelItem.textContent || '').replace(trimRE,'$1'));
+										let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
+										if (thisTbl.parenthesis) { //put extra cells in parens
+											let parenTR = panelItem.parentElement;
+											if (parenTR) {
+												let parenthesisTextArray = [];
+												for (let parenthesisItem of thisTbl.parenthesis) {
+													let selTD = parenTR.querySelector(`td[data-th="{parenthesisItem}"]`),
+														selTDtext;
+													if (selTD && (selTDtext = selTD.textContent)) {
+														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1'));
+													}
+												}
+												if (parenthesisTextArray.length) {
+													panelItemText = panelItemText + '(' + parenthesisTextArray.join(' ') +')';
+												}
+											}
+										}
+										panelResult.push(panelItemText);
 									}
 								} else { //from each row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
