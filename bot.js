@@ -592,7 +592,7 @@ function searchDTG(message, term) {
 											if (parenTR) {
 												let parenthesisTextArray = [];
 												for (let parenthesisItem of thisTbl.parenthesis) {
-													let selTD = parenTR.querySelector(`td[data-th={parenthesisItem}]`),
+													let selTD = parenTR.querySelector('td[data-th="' + parenthesisItem '"]'),
 														selTDtext;
 													if (selTD && (selTDtext = selTD.textContent)) {
 														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1'));
