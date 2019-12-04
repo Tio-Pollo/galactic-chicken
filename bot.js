@@ -562,6 +562,7 @@ function searchDTG(message, term) {
 									h4_name: 'Builds/Upgrades',
 									onlyTitle: true,
 									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
+									joinBy: "\n"
 									inline: false
 								}
 							];
@@ -595,11 +596,11 @@ function searchDTG(message, term) {
 													let selTD = parenTR.querySelector(':scope > td[data-th="' + parenthesisItem + '"]'),
 														selTDtext;
 													if (selTD && (selTDtext = selTD.textContent)) {
-														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1'));
+														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1').replace(/\s*\n\s*/g, ' '));
 													}
 												}
 												if (parenthesisTextArray.length) {
-													panelItemText = panelItemText + '(' + parenthesisTextArray.join(' ') +')';
+													panelItemText = panelItemText + ' (' + parenthesisTextArray.join(' ') +')';
 												}
 											}
 										}
@@ -617,7 +618,7 @@ function searchDTG(message, term) {
 								if (panelResult.length) {
 									//format text in result
 									if (thisTbl.sort) panelResult.sort();
-									let fieldsResultText = panelResult.join(thisTbl.onlyTitle ? ', ' : "\n");
+									let fieldsResultText = panelResult.join('joinBy' in thisTbl ? thisTbl.joinBy : (thisTbl.onlyTitle ? ', ' : "\n"));
 									if (thisTbl.parse) {
 										fieldsResultText = fieldsResultText.replace(thisTbl.parse, thisTbl.parseRepl);
 									}
