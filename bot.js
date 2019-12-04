@@ -563,7 +563,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
 									joinBy: "\n",
-									parse: /`Tier` 0 |Upgrade (?=Level`)/,
+									parse: /`Tier` 0 |Upgrade (?=Level`)/g,
 									parseRepl: '',
 									inline: false
 								},
@@ -573,7 +573,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` /i,
+									parse: /`Items Needed` /ig,
 									parseRepl: '',
 									inline: false
 								}
