@@ -563,6 +563,16 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
 									joinBy: "\n",
+									parse: /`Tier` 0 |Upgrade (?=Level`)/,
+									parseRepl: '';
+									inline: false
+								},
+								{
+									h4_match: /is used to reach th[esi]+ player levels?\s*$/i,
+									h4_name: 'Level up',
+									onlyTitle: true,
+									parenthesis: ['Items Needed'],
+									joinBy: "\n",
 									inline: false
 								}
 							];
