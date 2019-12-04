@@ -546,7 +546,7 @@ function searchDTG(message, term) {
 									excludeItems: /^Building Name$/i,
 									parse: /^(`?Items Required`?)\s*/mi,
 									parseRepl: "$1\n",
-									inline: true
+									inline: false
 								},
 								{
 									h4_match: /is used to create these items\s*$/i,
@@ -555,14 +555,14 @@ function searchDTG(message, term) {
 									sort: true,
 									parse: /((?:^|, )([ \w]+)) [IVX]{1,4}(?:, \2 [IVX]{1,4})+/g,
 									parseRepl: '$1 ##',
-									inline: true
+									inline: false
 								},
 								{
 									h4_match: /is used to construct\S* th[esi]+ buildings?\s*$/i,
 									h4_name: 'Builds/Upgrades',
 									onlyTitle: true,
 									parenthesis: ['Tier','Upgrade Level', 'Quantity'],
-									inline: true
+									inline: false
 								}
 							];
 							let fieldsResult = [];
@@ -592,7 +592,7 @@ function searchDTG(message, term) {
 											if (parenTR) {
 												let parenthesisTextArray = [];
 												for (let parenthesisItem of thisTbl.parenthesis) {
-													let selTD = parenTR.querySelector('td[data-th="' + parenthesisItem + '"]'),
+													let selTD = parenTR.querySelector(':scope > td[data-th="' + parenthesisItem + '"]'),
 														selTDtext;
 													if (selTD && (selTDtext = selTD.textContent)) {
 														parenthesisTextArray.push('`' + parenthesisItem + '` ' + selTDtext.replace(trimRE, '$1'));
