@@ -578,7 +578,7 @@ function searchDTG(message, term) {
 									inline: false
 								},
 								{
-									h4_match: /^Tier 0$/i,
+									h4_match: /^\s*Tier 0\s*$/i,
 									h4_name: 'Tier 0',
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
@@ -588,7 +588,7 @@ function searchDTG(message, term) {
 									inline: false
 								},
 								{
-									h4_match: /^Tier 1$/i,
+									h4_match: /^\s*Tier 1\s*$/i,
 									h4_name: 'Tier 1',
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
