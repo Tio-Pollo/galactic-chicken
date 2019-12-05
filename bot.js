@@ -581,9 +581,9 @@ function searchDTG(message, term) {
 									h4_match: /^\s*Tier 0\s*$/i,
 									h4_name: 'Upgrades (tier 0)',
 									onlyTitle: true,
-									parenthesis: ['Items Needed'],
+									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` /ig,
+									parse: /`Items Needed` |`Cost` (?:0  ?)?/ig,
 									parseRepl: '',
 									inline: false
 								},
@@ -591,9 +591,9 @@ function searchDTG(message, term) {
 									h4_match: /^\s*Tier 1\s*$/i,
 									h4_name: 'Upgrades (tier 1)',
 									onlyTitle: true,
-									parenthesis: ['Items Needed'],
+									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` /ig,
+									parse: /`Items Needed` |`Cost` (?:0  ?)?/ig,
 									parseRepl: '',
 									inline: false
 								}
