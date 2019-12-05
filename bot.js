@@ -583,7 +583,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` |`Cost` (?:0  ?)?| (?=\))/ig,
+									parse: /`Items Needed` |`Cost` (?:0 ?)?/ig,
 									parseRepl: '',
 									inline: false
 								},
@@ -593,7 +593,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` |`Cost` (?:0  ?)?| (?=\))/ig,
+									parse: /`Items Needed` |`Cost` (?:0 ?)?/ig,
 									parseRepl: '',
 									inline: false
 								}
