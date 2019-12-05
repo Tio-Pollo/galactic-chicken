@@ -618,7 +618,7 @@ function searchDTG(message, term) {
 								//get the info
 								let panelResult = [];
 								if (thisTbl.onlyTitle) { //only first row
-									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type')) {
+									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type,div.panel-body > div.container-fluid > div.row > table.table > tbody > tr > td:first-of-type')) {
 										let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
 										if (thisTbl.parenthesis) { //put extra cells in parens
 											let parenTR = panelItem.parentElement;
@@ -639,7 +639,7 @@ function searchDTG(message, term) {
 										panelResult.push(panelItemText);
 									}
 								} else { //from each row
-									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th]')) {
+									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th],div.panel-body > div.container-fluid > div.row > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
 											panelResult.push('`' + dataTH + '` ' + (panelItem.textContent || '').replace(trimRE,'$1'));
