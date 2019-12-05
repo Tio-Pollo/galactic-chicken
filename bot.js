@@ -579,7 +579,7 @@ function searchDTG(message, term) {
 								},
 								{
 									h4_match: /^\s*Tier 0\s*$/i,
-									h4_name: 'Tier 0',
+									h4_name: 'Upgrades (tier 0)',
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
 									joinBy: "\n",
@@ -589,7 +589,7 @@ function searchDTG(message, term) {
 								},
 								{
 									h4_match: /^\s*Tier 1\s*$/i,
-									h4_name: 'Tier 1',
+									h4_name: 'Upgrades (tier 1)',
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
 									joinBy: "\n",
@@ -602,7 +602,7 @@ function searchDTG(message, term) {
 							
 							for (let panel of document.querySelectorAll('div.panel.panel-default')) {
 								//get panel title
-								let panelH4 = panel.querySelector('div.panel-heading > h4');
+								let panelH4 = panel.querySelector('div.panel-heading > h4,div.panel-heading > h3');
 								if (!panelH4) continue;
 								let panelTitle = panelH4.textContent;
 								if (!panelTitle) continue;
