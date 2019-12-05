@@ -573,7 +573,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` |\s+(?=\))/ig,
+									parse: /`Items Needed` |\s+(?=\)|$)/igm,
 									parseRepl: '',
 									inline: false
 								},
@@ -583,7 +583,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\))/ig,
+									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\)|$)/igm,
 									parseRepl: '',
 									inline: false
 								},
@@ -593,7 +593,7 @@ function searchDTG(message, term) {
 									onlyTitle: true,
 									parenthesis: ['Cost', 'Items Needed'],
 									joinBy: "\n",
-									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\))/ig,
+									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\)|$)/ig,
 									parseRepl: '',
 									inline: false
 								}
