@@ -596,6 +596,26 @@ function searchDTG(message, term) {
 									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\)|$)/ig,
 									parseRepl: '',
 									inline: false
+								},
+								{
+									h4_match: /is found in th[esi]+ areas?\s*$/i,
+									h4_name: 'Areas',
+									onlySelectors: true,
+									selectors: [
+											{
+												sel: 'div.panel-body > div.table-responsive:nth-child(1) th:nth-child(2)',
+												name: 'First'
+											},
+											{
+												sel: 'div.panel-body > div.table-responsive:nth-child(2) th:nth-child(-n+6):nth-child(n+2)',
+												name: 'Top 5'
+											}
+										],
+									joinChildrenBy: ", ",
+									joinBy: "\n",
+									parse: /`Items Needed` |`Cost` (?:0 ?)?|\s+(?=\)|$)/ig,
+									parseRepl: '',
+									inline: false
 								}
 							];
 							let fieldsResult = [];
@@ -617,7 +637,19 @@ function searchDTG(message, term) {
 								if (!thisTbl) continue;
 								//get the info
 								let panelResult = [];
-								if (thisTbl.onlyTitle) { //only first row
+								if (thisTbl.onlySelectors) { //search each selector
+									for (let oneSelector of thisTbl.selectors) {
+										let oneText, allText = [];
+										for (let selectedItem of panel.querySelectorAll(oneSelector)) {
+											if (oneText = selectedItem.textContent) {
+												allText.push(oneText.replace(trimRE, '$1'));
+											}
+										}
+										if (allText.length) {
+											panelResult.push('`' + oneSelector.name + ':` ' + allText.join(thisTbl.joinChildrenBy));
+										}
+									}
+								} else if (thisTbl.onlyTitle) { //only first row
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td:first-of-type,div.panel-body > div.container-fluid > div.row > table.table > tbody > tr > td:first-of-type')) {
 										let panelItemText = (panelItem.textContent || '').replace(trimRE,'$1');
 										if (thisTbl.parenthesis) { //put extra cells in parens
