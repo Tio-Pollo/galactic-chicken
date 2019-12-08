@@ -603,15 +603,15 @@ function searchDTG(message, term) {
 									onlySelectors: true,
 									selectors: [
 											{
-												sel: 'div.panel-body > div.table-responsive:nth-child(1) th:nth-child(2)',
+												sel: 'div.panel-body > div.table-responsive:nth-child(1) thead > tr > th:nth-child(2)',
 												name: 'From'
 											},
 											{
-												sel: 'div.panel-body > div.table-responsive:nth-child(1) th:last-of-type',
+												sel: 'div.panel-body > div.table-responsive:nth-child(1) thead > tr > th:last-of-type',
 												name: 'To'
 											},
 											{
-												sel: 'div.panel-body > div.table-responsive:nth-child(2) th:nth-child(-n+6):nth-child(n+2)',
+												sel: 'div.panel-body > div.table-responsive:nth-child(2) thead > tr > th:nth-child(-n+6):nth-child(n+2)',
 												name: 'Top 5'
 											}
 										],
