@@ -607,6 +607,10 @@ function searchDTG(message, term) {
 												name: 'From'
 											},
 											{
+												sel: 'div.panel-body > div.table-responsive:nth-child(1) th:last-of-type',
+												name: 'To'
+											},
+											{
 												sel: 'div.panel-body > div.table-responsive:nth-child(2) th:nth-child(-n+6):nth-child(n+2)',
 												name: 'Top 5'
 											}
