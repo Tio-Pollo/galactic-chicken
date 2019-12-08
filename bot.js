@@ -640,6 +640,8 @@ function searchDTG(message, term) {
 								if (thisTbl.onlySelectors) { //search each selector
 									for (let oneSelector of thisTbl.selectors) {
 										let oneText, allText = [];
+										console.log('Selector.........');
+										console.log(oneSelector.sel);
 										for (let selectedItem of panel.querySelectorAll(oneSelector.sel)) {
 											if (oneText = selectedItem.textContent) {
 												allText.push(oneText.replace(trimRE, '$1'));
