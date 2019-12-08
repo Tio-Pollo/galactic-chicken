@@ -646,7 +646,7 @@ function searchDTG(message, term) {
 											}
 										}
 										if (allText.length) {
-											panelResult.push('`' + oneSelector.name + ':` ' + allText.join(thisTbl.joinChildrenBy));
+											panelResult.push('`' + oneSelector.name + '` ' + allText.join(thisTbl.joinChildrenBy));
 										}
 									}
 								} else if (thisTbl.onlyTitle) { //only first row
