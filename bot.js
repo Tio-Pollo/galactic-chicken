@@ -604,7 +604,7 @@ function searchDTG(message, term) {
 									selectors: [
 											{
 												sel: 'div.panel-body > div.table-responsive:nth-child(1) th:nth-child(2)',
-												name: 'First'
+												name: 'From'
 											},
 											{
 												sel: 'div.panel-body > div.table-responsive:nth-child(2) th:nth-child(-n+6):nth-child(n+2)',
@@ -640,8 +640,6 @@ function searchDTG(message, term) {
 								if (thisTbl.onlySelectors) { //search each selector
 									for (let oneSelector of thisTbl.selectors) {
 										let oneText, allText = [];
-										console.log('Selector.........');
-										console.log(oneSelector.sel);
 										for (let selectedItem of panel.querySelectorAll(oneSelector.sel)) {
 											if (oneText = selectedItem.textContent) {
 												allText.push(oneText.replace(trimRE, '$1'));
