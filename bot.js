@@ -376,7 +376,7 @@ function giphy(query, message) {
 							)
 							.catch(()=>{});
 						} else {
-							message.react(na);
+							message.react(tdown);
 						}
 					} else {
 						console.log("Giphy - No URL:\n" + JSON.stringify(data).substring(0,180));
@@ -501,7 +501,7 @@ function searchDTG(message, term) {
 			 || DTG.find(x => x.name.toLowerCase().includes(term))
 			 || DTG.find(x => x.name.replace(/\W+/g,'').toLowerCase().includes(term.replace(/\W+/g,'')));
 	if (!found) {
-		message.react(na);
+		message.react(tdown);
 	} else {
 		const itemUrl = baseUrl + found.href,
 			  itemImg = baseUrl + found.img,
@@ -545,6 +545,7 @@ function searchDTG(message, term) {
 									h4_name: 'Recipe',
 									onlyTitle: false,
 									excludeItems: /^Building Name$/i,
+                                                                        replaceBuildingNameIn: 'Time Required',
 									parse: /^(`?Items Required`?)\s*/mi,
 									parseRepl: "$1\n",
 									inline: false
@@ -680,7 +681,7 @@ function searchDTG(message, term) {
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th],div.panel-body > div.container-fluid > div.row > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
-                                                                                        if (dataTH == 'Time Required') {
+                                                                                        if (thisTbl.replaceBuildingNameIn && dataTH == thisTbl.replaceBuildingNameIn) {
                                                                                                 dataTH = buildingName;
                                                                                         }
 											panelResult.push('`' + dataTH + '` ' + (panelItem.textContent || '').replace(trimRE,'$1'));
