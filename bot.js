@@ -46,7 +46,8 @@ const re = {
 },
 chicken = '🐔',
 na = '⛔',
-wait = '⏳';
+wait = '⏳',
+tdown = '👎🏻';
 
 const help = [
 	{
@@ -640,7 +641,8 @@ function searchDTG(message, term) {
 								}
 								if (!thisTbl) continue;
 								//get the info
-								let panelResult = [];
+								let panelResult = [],
+                                                                    buildingName = 'Time Required';
 								if (thisTbl.onlySelectors) { //search each selector
 									for (let oneSelector of thisTbl.selectors) {
 										let oneText, allText = [];
@@ -678,8 +680,13 @@ function searchDTG(message, term) {
 									for (let panelItem of panel.querySelectorAll('div.panel-body > table.table > tbody > tr > td[data-th],div.panel-body > div.container-fluid > div.row > table.table > tbody > tr > td[data-th]')) {
 										let dataTH = panelItem.getAttribute('data-th');
 										if (dataTH && !thisTbl.excludeItems.test(dataTH)) { //except excluded
+                                                                                        if (dataTH == 'Time Required') {
+                                                                                                dataTH = buildingName;
+                                                                                        }
 											panelResult.push('`' + dataTH + '` ' + (panelItem.textContent || '').replace(trimRE,'$1'));
-										}
+										} else if (dataTH == 'Building Name') {
+                                                                                        buildingName = (panelItem.textContent || '').replace(trimRE,'$1')
+                                                                                }
 									}
 								}
 								//add to result
