@@ -643,7 +643,7 @@ function searchDTG(message, term) {
 								if (!thisTbl) continue;
 								//get the info
 								let panelResult = [],
-                                                                    buildingName = 'Time Required';
+                                                                    buildingName = (thisTbl.replaceBuildingNameIn || 'Time Required');
 								if (thisTbl.onlySelectors) { //search each selector
 									for (let oneSelector of thisTbl.selectors) {
 										let oneText, allText = [];
