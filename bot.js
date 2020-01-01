@@ -370,7 +370,7 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 						result = rows.map(line => 
 							{
 								let member = line.split(',');
-								return member[1] + ' ' member[7];
+								return member[1] + ' ' + member[7];
 							}
 						);
 						message.channel.send(
