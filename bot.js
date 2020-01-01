@@ -29,7 +29,7 @@ function initVars() {
 const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
-    lastevent: /^\W*last\W*events?(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2}))?\s*$/i,
+    lastevent: /^\W*last\W*events?(?: +@(\S+(?:\s+\S+){0,2}))?\s*$/i,
     daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
     guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
@@ -380,7 +380,7 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 									title: title
 								}
 							}*/
-							result.join(',').substring(0,180 /*MAX_LINE_LENGTH*/);
+							result.join(',').substring(0,180 /*MAX_LINE_LENGTH*/)
 						)
 						.catch(()=>{});
 					} else {
