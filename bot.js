@@ -6,6 +6,7 @@ const EndDay   = (parseInt(process.env.ACTIVE_ENDDAY,10) || 0);    // 32
 const BuildDay = new Date().getUTCDate();
 const haltOffset = 2;
 const DTG = [];
+const MAX_LINE_LENGTH = 2000;
 
 if (!activeBot(haltOffset)) {
 	console.log('Halting ' + EnvName + ' for inactive period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
@@ -362,6 +363,16 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 					console.log('!LastEvent response status:', res.statusCode);
 				} else {
 					if (data) {
+						let rows = data.split("\n"),
+							timestamp = rows.shift().split(",")[0],
+							headers = rows.shift(), //remove first 2 rows
+							result;
+						result = rows.map(line => 
+							{
+								let member = line.split(',');
+								return member[1] + ' ' member[7];
+							}
+						);
 						message.channel.send(
 							/*{
 								embed: {
@@ -369,7 +380,7 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 									title: title
 								}
 							}*/
-							data
+							result.join(',').substring(0,180 /*MAX_LINE_LENGTH*/);
 						)
 						.catch(()=>{});
 					} else {
