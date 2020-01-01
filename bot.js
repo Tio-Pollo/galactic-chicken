@@ -370,7 +370,7 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 						result = rows.map(line => 
 							{
 								let member = line.split(',');
-								return member[1] + ' ' + member[7];
+								return member[1] + ' ' + member[8];
 							}
 						);
 						message.channel.send(
@@ -380,7 +380,7 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 									title: title
 								}
 							}*/
-							result.join(',').substring(0,180 /*MAX_LINE_LENGTH*/)
+							result.join(',').substring(0,MAX_LINE_LENGTH)
 						)
 						.catch(()=>{});
 					} else {
