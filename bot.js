@@ -144,7 +144,6 @@ client.on('message', message => {
         jeroImg(process.env.JEROENR_ELIGIBLE, query, message, 'eligible', user);
     } else if (re.lastevent.test(msg)) {
 		// !lastevent
-console.log('matches lastevent'); // REMOVE!!!!
         getCSV(process.env.LASTEVENT, message, 'Last Event');
     } else if (re.daily.test(msg)) {
 	    //!daily
@@ -345,7 +344,6 @@ function getCSV(url, message, title) {
 		borderColor = 0xe0bc1b;
 	
 	try {
-console.log('Requesting', url); //REMOVE!!!
 		request.get(
 			{
 				url: url,
@@ -354,7 +352,6 @@ console.log('Requesting', url); //REMOVE!!!
 				headers: {'User-Agent': 'request'} */
 			}, 
 			(err, res, data) => {
-console.log('Response',res.statusCode,data); //REMOVE!!!
 				if (err) {
 					console.log('Error in !LastEvent request:', err);
 					if (message) message.react(na);
@@ -367,20 +364,25 @@ console.log('Response',res.statusCode,data); //REMOVE!!!
 							timestamp = rows.shift().split(",")[0],
 							headers = rows.shift(), //remove first 2 rows
 							result;
-						result = rows.map(line => 
-							{
-								let member = line.split(',');
-								return member[1] + ' ' + member[8];
-							}
-						);
+						result = rows
+							.map(line => {
+									let member = line.split(',');
+									return {
+										name: member[1],
+										value: parseInt(member[8],10) || 0,
+										inline: true
+									};
+								})
+							.sort((a,b) => a.value - b.value);
 						message.channel.send(
-							/*{
+							{
 								embed: {
 									color: borderColor,
-									title: title
+									title: title,
+									fields: result
 								}
-							}*/
-							result.join(',').substring(0,MAX_LINE_LENGTH)
+							}
+							/* result.join(',').substring(0,MAX_LINE_LENGTH)*/
 						)
 						.catch(()=>{});
 					} else {
