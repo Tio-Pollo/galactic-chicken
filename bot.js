@@ -370,7 +370,7 @@ function getCSV(url, message, title) {
 									return Array(member[1],parseInt(member[8],10) || 0);
 								})
 							.sort((a,b) => b[1] - a[1])
-							.map(line => line[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").padStart(9,' ') + '  ' + line[0]);
+							.map(line => line[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").padStart(9,"\xA0") + '  ' + line[0]);
 						message.channel.send(
 							{
 								embed: {
