@@ -367,22 +367,19 @@ function getCSV(url, message, title) {
 						result = rows
 							.map(line => {
 									let member = line.split(',');
-									return {
-										name: member[1],
-										value: parseInt(member[8],10) || 0,
-										inline: true
-									};
+									return Array(member[1],parseInt(member[8],10) || 0);
 								})
-							.sort((a,b) => a.value - b.value);
+							.sort((a,b) => b[1] - a[1])
+							.map(line => '`' + line[0] + '` ' + line[1];
 						message.channel.send(
-							{
+							/*{
 								embed: {
 									color: borderColor,
 									title: title,
 									fields: result
 								}
-							}
-							/* result.join(',').substring(0,MAX_LINE_LENGTH)*/
+							}*/
+							result.join(',').substring(0,MAX_LINE_LENGTH)
 						)
 						.catch(()=>{});
 					} else {
