@@ -376,7 +376,8 @@ function getCSV(url, message, title) {
 								embed: {
 									color: borderColor,
 									title: title,
-									description: result.join(',').substring(0,MAX_LINE_LENGTH)
+									description: result.join("\n").substring(0,MAX_LINE_LENGTH),
+									footer: {text: 'Updated ' + timestamp}
 								}
 							}
 						)
