@@ -28,6 +28,7 @@ function initVars() {
 const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
+    lastevent: /^\W*last\W*events?(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
     guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
@@ -67,6 +68,12 @@ const help = [
 		trigger: '!eligible [*optional* user]',
 		desc: "Eligibility score to become the next focus for fireballing (i.e. receiving solar panels to max energy),\nIn order to prevent leeching, only users with a score > 50 become eligible.\nCheck <#443293220605263873> and make sure to have your info updated in the sheet.",
 		react: '🛰'
+	},
+	{
+		name: 'lastevent',
+		trigger: '!lastevent',
+		desc: "Ammount of donations to last event.",
+		react: '🏅'
 	},
 	{
 		name: 'daily',
@@ -134,6 +141,9 @@ client.on('message', message => {
 			query = message.guild.member(user).nickname || query;
 		}
         jeroImg(process.env.JEROENR_ELIGIBLE, query, message, 'eligible', user);
+    } else if ((m = re.lastevent.exec(msg)) !== null) {
+		// !lastevent
+        getCSV(process.env.LASTEVENT, message, "Last Event");
     } else if (re.daily.test(msg)) {
 	    //!daily
 	    let quests = [
@@ -325,6 +335,52 @@ function jeroImg(baseUrl, query, message, prefix='', withThumb = false) {
 	message.channel
 	.send(embed)
 	.catch(() => {});
+}
+
+function getCSV(url, message, title) {
+	const
+		request = require('request'),
+		borderColor = 0xe0bc1b;
+	
+	try {
+		request.get(
+			{
+				url: url,
+				json: false
+				/*,
+				headers: {'User-Agent': 'request'} */
+			}, 
+			(err, res, data) => {
+				if (err) {
+					console.log('Error in !LastEvent request:', err);
+					if (message) message.react(na);
+				} else if (res.statusCode !== 200) {
+					if (message) message.react(res.statusCode == 429 ? wait : na);
+					console.log('!LastEvent response status:', res.statusCode);
+				} else {
+					// data is already parsed as JSON:
+					if (data) {
+						message.channel.send(
+							/*{
+								embed: {
+									color: borderColor,
+									title: title
+								}
+							}*/
+							data
+						)
+						.catch(()=>{});
+					} else {
+						console.log("!LastEvent - no data:\n" + JSON.stringify(data).substring(0,180));
+						message.react(tdown);
+					}
+				}
+			}
+		);
+	} catch (err) {
+		console.log('!LastEvent error', err);
+		message.react(wait);
+	}
 }
 
 function giphy(query, message) {
