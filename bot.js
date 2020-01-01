@@ -370,16 +370,15 @@ function getCSV(url, message, title) {
 									return Array(member[1],parseInt(member[8],10) || 0);
 								})
 							.sort((a,b) => b[1] - a[1])
-							.map(line => '`' + line[0] + '` ' + line[1];
+							.map(line => '`' + line[0] + '` ' + line[1]);
 						message.channel.send(
-							/*{
+							{
 								embed: {
 									color: borderColor,
 									title: title,
-									fields: result
+									description: result.join(',').substring(0,MAX_LINE_LENGTH)
 								}
-							}*/
-							result.join(',').substring(0,MAX_LINE_LENGTH)
+							}
 						)
 						.catch(()=>{});
 					} else {
