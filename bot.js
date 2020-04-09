@@ -113,7 +113,7 @@ client.on('message', message => {
 		return;
 	
 	//ignored users
-	if (message.member && message.member.roles && message.member.roles.find(role => /\bSquib\b/i.test(role.name)))
+	if (message.member && message.member.roles && message.member.roles.cache.some(role => /\bSquib\b/i.test(role.name)))
 		return;
 
     let m, nick;
@@ -926,7 +926,7 @@ client.once('ready', () => {
 	
     const buildMsg = 'Cluck cluck! :chicken: ' + EnvName;
 	try {
-		const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
+		const channel = client.channels.cache.find(ch => ch.name === process.env.TEST_CHAN);
 		if (channel) {
 			channel.send(buildMsg);
 		} else {
