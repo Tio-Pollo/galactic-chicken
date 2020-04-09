@@ -30,7 +30,7 @@ const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     lastevent: /^\W*last\W*events?(?: +@(\S+(?:\s+\S+){0,2}))?\s*$/i,
-    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily$/i,
+    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([+!2])?)\s*$/i,
     guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
@@ -145,30 +145,13 @@ client.on('message', message => {
     } else if (re.lastevent.test(msg)) {
 		// !lastevent
         getCSV(process.env.LASTEVENT, message, 'Last Event');
-    } else if (re.daily.test(msg)) {
+    } else if ((m = re.daily.test(msg)) !== null) {
 	    //!daily
-	    let quests = [
-			'80 circuits',
-			'200 lamps',
-			'800 batteries',
-			'1500 gold bars',
-			'1 million coins',
-			'3000 amber insulation',
-			'550 insulated wire',
-			'800 graphite'
-		],
-	    len = quests.length,
-	    alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
-	    index  = Math.floor(alaska.getUTCDate()) % len,
-	    index2 = Math.floor(addDays(alaska, 1).getUTCDate()) % len,
-	    index3 = Math.floor(addDays(alaska, 2).getUTCDate()) % len,
-	    dow = alaska.getUTCDay(),
-	    sep = ' | ';
-            message.channel.send(
-			'**`🕛 ' + weekDay(dow  ) + '`**  ' + quests[index ] + sep +
-			'**`🕛 ' + weekDay(dow+1) + '`**  ' + quests[index2] + sep +
-			'**`🕛 ' + weekDay(dow+2) + '`**  ' + quests[index3]
-		);
+		let sep = ' | ',
+			strDaily = getDaily(m[1] ? 10 : undefined)
+						.map(x => '**`🕛 ' + x.weekDay + '`**  ' + x.quest)
+						.join(sep);
+        message.channel.send(strDaily);
 	} else if ((m = re.giphy.exec(msg)) !== null) {
 		//  !giphy  | !have
 		
@@ -834,6 +817,30 @@ function addDays(date, days) {
   let result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
+}
+
+function getDaily(numDays = 3) {
+	let quests = [
+		'80 circuits',
+		'200 lamps',
+		'800 batteries',
+		'1500 gold bars',
+		'1 million coins',
+		'3000 amber insulation',
+		'550 insulated wire',
+		'800 graphite'
+	],
+	len = quests.length,
+	alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
+	dow = alaska.getUTCDay(),
+	ret = [];
+	for (let i = 0; i < numDays; i++) {
+		ret.push({
+			weekDay: weekDay(dow + i),
+			quest: quests[Math.floor(addDays(alaska, i).getUTCDate()) % len]
+		});
+	}
+	return ret
 }
 
 function helpCmd(index) {
