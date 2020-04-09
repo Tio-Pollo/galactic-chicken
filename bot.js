@@ -925,11 +925,15 @@ client.once('ready', () => {
 	if (!activeBot()) return;
 	
     const buildMsg = 'Cluck cluck! :chicken: ' + EnvName;
-	const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
-	if (channel) {
-		channel.send(buildMsg);
-	} else {
-		console.log(buildMsg);
+	try {
+		const channel = client.channels.find(ch => ch.name === process.env.TEST_CHAN);
+		if (channel) {
+			channel.send(buildMsg);
+		} else {
+			console.log(buildMsg);
+		}
+	} catch (err) {
+		console.error(err);
 	}
 	
 	const now = new Date();
