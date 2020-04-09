@@ -30,7 +30,7 @@ const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     lastevent: /^\W*last\W*events?(?: +@(\S+(?:\s+\S+){0,2}))?\s*$/i,
-    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([+!2])?)\s*$/i,
+    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([+!2]))?\s*$/i,
     guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
@@ -149,7 +149,7 @@ client.on('message', message => {
 	    //!daily
 		let sep = ' | ',
 			strDaily = getDaily(m[1] ? 10 : undefined)
-						.map(x => '**`🕛 ' + x.weekDay + '`**  ' + x.quest)
+						.map((x) => {return '**`🕛 ' + x.weekDay + '`**  ' + x.quest})
 						.join(sep);
         message.channel.send(strDaily);
 	} else if ((m = re.giphy.exec(msg)) !== null) {
@@ -821,26 +821,26 @@ function addDays(date, days) {
 
 function getDaily(numDays = 3) {
 	let quests = [
-		'80 circuits',
-		'200 lamps',
-		'800 batteries',
-		'1500 gold bars',
-		'1 million coins',
-		'3000 amber insulation',
-		'550 insulated wire',
-		'800 graphite'
-	],
-	len = quests.length,
-	alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
-	dow = alaska.getUTCDay(),
-	ret = [];
+			'80 circuits',
+			'200 lamps',
+			'800 batteries',
+			'1500 gold bars',
+			'1 million coins',
+			'3000 amber insulation',
+			'550 insulated wire',
+			'800 graphite'
+		],
+		len = quests.length,
+		alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
+		dow = alaska.getUTCDay(),
+		ret = [];
 	for (let i = 0; i < numDays; i++) {
 		ret.push({
 			weekDay: weekDay(dow + i),
 			quest: quests[Math.floor(addDays(alaska, i).getUTCDate()) % len]
 		});
 	}
-	return ret
+	return ret;
 }
 
 function helpCmd(index) {
