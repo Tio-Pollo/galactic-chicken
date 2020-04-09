@@ -113,7 +113,7 @@ client.on('message', message => {
 		return;
 	
 	//ignored users
-	if (message.member && message.member.roles && message.member.roles.some(role => /\bSquib\b/i.test(role.name)))
+	if (message.member && message.member.roles && message.member.roles.some && message.member.roles.some(role => /\bSquib\b/i.test(role.name)))
 		return;
 
     let m, nick;
