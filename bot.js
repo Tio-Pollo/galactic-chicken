@@ -30,7 +30,7 @@ const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     lastevent: /^\W*last\W*events?(?: +@(\S+(?:\s+\S+){0,2}))?\s*$/i,
-    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([+!2]))?\s*$/i,
+    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([!2+]))?\s*$/i,
     guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
     help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
@@ -145,7 +145,7 @@ client.on('message', message => {
     } else if (re.lastevent.test(msg)) {
 		// !lastevent
         getCSV(process.env.LASTEVENT, message, 'Last Event');
-    } else if ((m = re.daily.test(msg)) !== null) {
+    } else if ((m = re.daily.exec(msg)) !== null) {
 	    //!daily
 		let sep = ' | ',
 			strDaily = getDaily(m[1] ? 10 : undefined)
