@@ -152,7 +152,7 @@ client.on('message', message => {
 			strDaily = getDaily(simple ? undefined : 14)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
-									: '*`' + x.weekDay + ' ' + x.day + '/' + x.month + '`* ' + x.quest
+									: '**`' + x.weekDay + ' ' + x.day + '`**  ' + x.quest
 								   )
 						)
 						.join(sep);
@@ -824,8 +824,9 @@ function addDays(date, days) {
   return result;
 }
 
-function getDaily(numDays = 3) {
-	let quests = [
+function getDaily(numDays = 3, icons = true) {
+	let quests = ( icons
+		? [
 			'80 circuits',
 			'200 lamps',
 			'800 batteries',
@@ -834,7 +835,17 @@ function getDaily(numDays = 3) {
 			'3000 amber insulation',
 			'550 insulated wire',
 			'800 graphite'
-		],
+		]
+		: [
+			':Circuit: x 80',
+			':Lamp: x 200',
+			':Battery: x 800',
+			':Gold: x 1500',
+			':moneybag: x 1 million',
+			':AmberInsulation: x 3000',
+			':InsulatedWire: x 550',
+			':Graphite: x 800'
+		]),
 		len = quests.length,
 		alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
 		dow = alaska.getUTCDay(),
