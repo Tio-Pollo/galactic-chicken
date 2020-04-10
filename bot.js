@@ -149,7 +149,7 @@ client.on('message', message => {
 	    //!daily
 		let simple = !m[1],
 			sep = (simple ? ' | ' : "\n"),
-			strDaily = getDaily(simple ? undefined : 14)
+			strDaily = getDaily(simple ? undefined : 14, message.guild.emojis)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
 									: '**`' + x.weekDay + ' ' + x.day + '`**  ' + x.quest
@@ -824,17 +824,22 @@ function addDays(date, days) {
   return result;
 }
 
-function getDaily(numDays = 3, icons = true) {
-	let quests = ( icons
+function getEmoji(emojis, name) { // (message.guild.emojis, "Lamp")
+	const e = emojis.find(x => x.name == name);
+	return e ? e : name;
+}
+
+function getDaily(numDays = 3, emojis) {
+	let quests = ( emojis
 		? [
-			':Circuit~1: x 80',
-			':Lamp~1: x 200',
-			':Battery~1: x 800',
-			':Gold~1: x 1500',
+			getEmoji(emojis,'Circuit') + ' x 80',
+			getEmoji(emojis,'Lamp') + ' x 200',
+			getEmoji(emojis,'Battery') + ' x 800',
+			getEmoji(emojis,'Gold') + ' x 1500',
 			':moneybag: x 1 million',
-			':AmberInsulation~1: x 3000',
-			':InsulatedWire~1: x 550',
-			':Graphite~1: x 800'
+			getEmoji(emojis,'AmberInsulation') + ' x 3000',
+			getEmoji(emojis,'InsulatedWire') + ' x 550',
+			getEmoji(emojis,'Graphite') + ' x 800'
 		]
 		: [
 			'80 circuits',
