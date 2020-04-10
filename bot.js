@@ -906,7 +906,7 @@ client.on('raw', async raw => {
 	const user = client.users.cache.get(data.user_id);
 	const channel = client.channels.cache.get(data.channel_id) || await user.createDM();
 	
-	if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
+	if (channel.messages.cache.has(data.message_id)) return; //prevent if we have cached as on normal event to react
 	
 	const message = await channel.messages.fetch(data.message_id);
 	const emojiKey = data.emoji.id ? data.emoji.name + ':' + data.emoji.id : data.emoji.name;
