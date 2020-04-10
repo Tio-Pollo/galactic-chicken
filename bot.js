@@ -40,7 +40,7 @@ const re = {
     openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
     beerfireball: /^Sorry no beer here[\s\S]*I only drink Valvoline Valtorque C4 Transmission Fluid/,
     thankyou: /^(?:\W*<@!?[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@!?[\dA-F]+>\W*)?$/i,
-    coffee: /^(?:\W*<@!?[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@!?[\dA-F]+>\W*)*$/i,
+    coffee: /^(?:\W*<@!?[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*c(?:of+e+|af+[ei]+n+e?)?\W*(?:please\W*|<@!?[\dA-F]+>\W*)*$/i,
     purgebot: /^\W*(?:<@!?[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
     chicken_env: /^\W*chicken[^a-z]*env\w*\W*$/i,
     logline: /^\W\W*log (.+)/i,
@@ -147,9 +147,14 @@ client.on('message', message => {
         getCSV(process.env.LASTEVENT, message, 'Last Event');
     } else if ((m = re.daily.exec(msg)) !== null) {
 	    //!daily
-		let sep = ' | ',
-			strDaily = getDaily(m[1] ? 10 : undefined)
-						.map((x) => {return '**`🕛 ' + x.weekDay + '`**  ' + x.quest})
+		let simple = !m[1],
+			sep = ' | ',
+			strDaily = getDaily(simple ? undefined : 14)
+						.map(x => (simple
+									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
+									: '*`' + x.weekDay + ' ' + x.day + '/' + x.month + '`* ' + x.quest
+								   )
+						)
 						.join(sep);
         message.channel.send(strDaily);
 	} else if ((m = re.giphy.exec(msg)) !== null) {
@@ -835,9 +840,13 @@ function getDaily(numDays = 3) {
 		dow = alaska.getUTCDay(),
 		ret = [];
 	for (let i = 0; i < numDays; i++) {
+		let thisDate = addDays(alaska, i);
 		ret.push({
+			date: thisDate,
+			day: thisDate.getUTCDate(),
+			month: thisDate.getUTCMonth(),
 			weekDay: weekDay(dow + i),
-			quest: quests[Math.floor(addDays(alaska, i).getUTCDate()) % len]
+			quest: quests[Math.floor(thisDate.getUTCDate()) % len]
 		});
 	}
 	return ret;
