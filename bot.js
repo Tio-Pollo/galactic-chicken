@@ -245,7 +245,8 @@ client.on('message', message => {
     } else if (re.chicken_env.test(msg)) {
 		message.channel.send(EnvName + (botIsActive ? '' : ' on hold and waiting ') +' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.mentions.has(client.user) || re.chicken.test(msg)) {
-        message.react(getEmoji(message,'GalacticChicken', chicken));
+		const galactic = message.guild.emojis.cache.find(x => x.name == 'GalacticChicken');
+        message.react(galactic ? galactic : chicken);
     } else if (/^\W*getdtg/i.test(msg)) {
 		getDTG(message);
 	}
