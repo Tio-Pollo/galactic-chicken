@@ -827,14 +827,14 @@ function addDays(date, days) {
 function getDaily(numDays = 3, icons = true) {
 	let quests = ( icons
 		? [
-			':Circuit: x 80',
-			':Lamp: x 200',
-			':Battery: x 800',
-			':Gold: x 1500',
+			':Circuit~1: x 80',
+			':Lamp~1: x 200',
+			':Battery~1: x 800',
+			':Gold~1: x 1500',
 			':moneybag: x 1 million',
-			':AmberInsulation: x 3000',
-			':InsulatedWire: x 550',
-			':Graphite: x 800'
+			':AmberInsulation~1: x 3000',
+			':InsulatedWire~1: x 550',
+			':Graphite~1: x 800'
 		]
 		: [
 			'80 circuits',
