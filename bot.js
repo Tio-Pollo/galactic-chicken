@@ -117,16 +117,6 @@ client.on('message', message => {
 		return;
 
     let m, nick;
-	
-	if (message.mentions.has(client.user)) {
-		console.log('ok, has mentiones client.user');
-		if (re.thankyou.test(message.content)) {
-			console.log('ok, has "thank you"');
-		} else {
-			console.log('doesnt match');
-			console.log(message.content);
-		}
-	}
     
     if ((m = re.ratio.exec(msg)) !== null) {
 		// !ratio
