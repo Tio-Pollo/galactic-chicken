@@ -826,7 +826,7 @@ function addDays(date, days) {
 
 function getEmoji(emojis, name) { // (message.guild.emojis, "Lamp")
 	const e = emojis.cache.find(x => x.name == name);
-	return e ? e : name;
+	return e ? e.toString() : name;
 }
 
 function getDaily(numDays = 3, emojis) {
