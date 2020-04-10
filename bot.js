@@ -903,7 +903,7 @@ client.on('raw', async raw => {
 	if (!rawEvents.hasOwnProperty(raw.t)) return;
 	
 	const {d: data} = raw;
-	const user = client.users.get(data.user_id);
+	const user = client.users.cache.get(data.user_id);
 	const channel = client.channels.get(data.channel_id) || await user.createDM();
 	
 	if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
