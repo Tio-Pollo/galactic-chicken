@@ -209,7 +209,7 @@ client.on('message', message => {
         message.channel.send("I'm hidding behind Fireball!");
     } else if (re.coffee.test(message.content)) {
         message.channel.send(':coffee:');
-    } else if (message.isMentioned(client.user) && re.thankyou.test(message.content)) {
+    } else if (message.mentions.has(client.user) && re.thankyou.test(message.content)) {
 		// Thank you @bot
 		let arrAnswer = [
 				'no problem!', "don't mention it :thumbsup:", "you're welcome!", 'anytime! :ok_hand:',
