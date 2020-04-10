@@ -149,7 +149,7 @@ client.on('message', message => {
 	    //!daily
 		let simple = !m[1],
 			sep = (simple ? ' | ' : "\n"),
-			strDaily = getDaily(simple ? undefined : 16, message.guild.emojis)
+			strDaily = getDaily(simple ? undefined : 16, message)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
 									: '**`' + x.weekDay + ' ' + x.day + '`**  ' + x.quest
@@ -245,11 +245,17 @@ client.on('message', message => {
     } else if (re.chicken_env.test(msg)) {
 		message.channel.send(EnvName + (botIsActive ? '' : ' on hold and waiting ') +' from ' + BuildDay + ' (active from ' + StartDay + ' to ' + (EndDay - 1) + ')');
     } else if (message.mentions.has(client.user) || re.chicken.test(msg)) {
-        message.react(chicken);
+        message.react(getEmoji(message,'GalacticChicken', chicken));
     } else if (/^\W*getdtg/i.test(msg)) {
 		getDTG(message);
 	}
 });
+
+
+function getEmoji(message, name, otherwise) { // (message.guild.emojis, "Lamp", '🐔')
+	const e = message.guild.emojis.cache.find(x => x.name == name);
+	return e ? e.toString() : (otherwise ? otherwise : name);
+}
 
 function getNick(message) {
 	let nick = '{nick}'
@@ -822,11 +828,6 @@ function addDays(date, days) {
   let result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
-}
-
-function getEmoji(emojis, name) { // (message.guild.emojis, "Lamp")
-	const e = emojis.cache.find(x => x.name == name);
-	return e ? e.toString() : name;
 }
 
 function getDaily(numDays = 3, emojis) {
