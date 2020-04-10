@@ -149,7 +149,7 @@ client.on('message', message => {
 	    //!daily
 		let simple = !m[1],
 			sep = (simple ? ' | ' : "\n"),
-			strDaily = getDaily(simple ? undefined : 14, message.guild.emojis)
+			strDaily = getDaily(simple ? undefined : 16, message.guild.emojis)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
 									: '**`' + x.weekDay + ' ' + x.day + '`**  ' + x.quest
