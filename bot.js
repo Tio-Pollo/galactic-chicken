@@ -827,16 +827,6 @@ function addDays(date, days) {
 function getDaily(numDays = 3, icons = true) {
 	let quests = ( icons
 		? [
-			'80 circuits',
-			'200 lamps',
-			'800 batteries',
-			'1500 gold bars',
-			'1 million coins',
-			'3000 amber insulation',
-			'550 insulated wire',
-			'800 graphite'
-		]
-		: [
 			':Circuit: x 80',
 			':Lamp: x 200',
 			':Battery: x 800',
@@ -845,6 +835,16 @@ function getDaily(numDays = 3, icons = true) {
 			':AmberInsulation: x 3000',
 			':InsulatedWire: x 550',
 			':Graphite: x 800'
+		]
+		: [
+			'80 circuits',
+			'200 lamps',
+			'800 batteries',
+			'1500 gold bars',
+			'1 million coins',
+			'3000 amber insulation',
+			'550 insulated wire',
+			'800 graphite'
 		]),
 		len = quests.length,
 		alaska = new Date(new Date().toLocaleString("en-US", {timeZone: 'America/Los_Angeles'})),
