@@ -148,7 +148,7 @@ client.on('message', message => {
     } else if ((m = re.daily.exec(msg)) !== null) {
 	    //!daily
 		let simple = !m[1],
-			sep = ' | ',
+			sep = simple ? ' | ' : "\n",
 			strDaily = getDaily(simple ? undefined : 14)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
