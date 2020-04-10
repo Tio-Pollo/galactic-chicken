@@ -30,18 +30,18 @@ const re = {
     ratio: /^\W*ratio(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     eligible: /^\W*eligib(?:le|ility)(?:(?!.*updated?\W*$) +@?(\S+(?:\s+\S+){0,2})\s*)?$/i,
     lastevent: /^\W*last\W*events?(?: +@(\S+(?:\s+\S+){0,2}))?\s*$/i,
-    daily: /^\W*(?:<@[\dA-F]+>\W*)?daily(?: ?([!2+]))?\s*$/i,
-    guide: /^\W*(?:<@[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
+    daily: /^\W*(?:<@!?[\dA-F]+>\W*)?daily(?: ?([!2+]))?\s*$/i,
+    guide: /^\W*(?:<@!?[\dA-F]+>\W*)?(?:(?:d(?:eep)?)?(?:t(?:own)?)?guide|dtg)\s+((?:\w\W*){3}.*)/i,
     giphy: /^\W*[^\w\s]\W*(?:giphy|have)\s+(?:(?:a|the|one|some|this)\s+)*(\S.*)/i,
-    help: /^(?:\W*(?:[^\w\s]|(<@[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
+    help: /^(?:\W*(?:[^\w\s]|(<@!?[\dA-F]+>))\W*)help(?:\s+(\S+))?$/i,
     sendmsg: /^! ?sendmsg +(\S+) (.+)/i,
     headoff: /^\W*off with his head\b/i,
     ruokhal: /\bI know everything has\W*n\W*t been quite \w* ?right with me\b/i,
     openthebay: /\bI know (?:that )?you and \w+\W.{0,2}re plan+ing to discon+e/i,
     beerfireball: /^Sorry no beer here[\s\S]*I only drink Valvoline Valtorque C4 Transmission Fluid/,
-    thankyou: /^(?:\W*<@[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@[\dA-F]+>\W*)?$/i,
-    coffee: /^(?:\W*<@[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@[\dA-F]+>\W*)*$/i,
-    purgebot: /^\W*(?:<@[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
+    thankyou: /^(?:\W*<@!?[\dA-F]+>)?\W*t(?:hank[ syoua]*| *y[ aou]*)(?:lot|(?:very )?much|ton|mil+(?:ion)|bunch)?\W*(?:<@!?[\dA-F]+>\W*)?$/i,
+    coffee: /^(?:\W*<@!?[\dA-F]+>)?(?:\W*I?(?:'?[ld]+)?\W*(?:need|want|like|(?:got ?t[ao] )?(?:get|give)(?: \S+)?) (?:a |some )?)?\W*cof+e+\W*(?:please\W*|<@!?[\dA-F]+>\W*)*$/i,
+    purgebot: /^\W*(?:<@!?[\dA-F]+>\W*)?purge(bot|me)(?: (\d+))?$/i,
     chicken_env: /^\W*chicken[^a-z]*env\w*\W*$/i,
     logline: /^\W\W*log (.+)/i,
     chicken: /\bchicken\b/i
@@ -135,7 +135,7 @@ client.on('message', message => {
 		
 		if (!query) {
 			user = message.author;
-		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@!?[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
 		}
@@ -147,7 +147,7 @@ client.on('message', message => {
 		
 		if (!query) {
 			user = message.author;
-		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@[\dA-F]+>\s*$/i.test(m[1])) {
+		} else if (((m = re.ratio.exec(message.content)) !== null) && /^<@!?[\dA-F]+>\s*$/i.test(m[1])) {
 			user = message.mentions.users.first() || false;
 			query = message.guild.member(user).nickname || query;
 		}
