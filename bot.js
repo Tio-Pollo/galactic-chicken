@@ -274,8 +274,8 @@ async function reactInOrder(message, arrReactions) {
 
 function purgeMsg(channel, user, limit) {
 	const max = 100; //max allowed limit without a MessageCollector
-	channel
-	.fetchMessages({limit: max})
+	channel.messages
+	.fetch({limit: max})
 	.then(chanMsg => {
 		if (user === true) {
 			chanMsg = chanMsg.filter(m => m.author.bot).array().slice(0, (limit||max));
@@ -908,14 +908,14 @@ client.on('raw', async raw => {
 	
 	if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
 	
-	const message = await channel.fetchMessage(data.message_id);
+	const message = await channel.messages.fetch(data.message_id);
 	const emojiKey = data.emoji.id ? data.emoji.name + ':' + data.emoji.id : data.emoji.name;
 	let reaction;
 	if (message.reactions) { 
-		reaction = message.reactions.get(emojiKey) || message.reactions.add(data);
+		reaction = message.reactions.cache.get(emojiKey) || message.reactions.add(data);
 	}
 	if (!reaction) { //if last reaction removed
-		const emoji = new Emoji(client.guilds.get(data.guild_id), data.emoji);
+		const emoji = new Emoji(client.guilds.cache.get(data.guild_id), data.emoji);
 		reaction = new MessageReaction(message, emoji, 1, data.user_id === client.user.id);
 	}
 	client.emit(rawEvents[raw.t], reaction, user);
