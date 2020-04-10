@@ -261,7 +261,7 @@ function quote(user) {
 }
 
 function findChan(str) {
-	return client.channels.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
+	return client.channels.cache.find(ch => ch.name.toLowerCase().startsWith(str.toLowerCase()));
 }
 
 async function reactInOrder(message, arrReactions) {
@@ -904,7 +904,7 @@ client.on('raw', async raw => {
 	
 	const {d: data} = raw;
 	const user = client.users.cache.get(data.user_id);
-	const channel = client.channels.get(data.channel_id) || await user.createDM();
+	const channel = client.channels.cache.get(data.channel_id) || await user.createDM();
 	
 	if (channel.messages.has(data.message_id)) return; //prevent if we have cached as on normal event to react
 	
