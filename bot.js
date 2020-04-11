@@ -152,7 +152,7 @@ client.on('message', message => {
 			strDaily = getDaily(simple ? undefined : 16, message)
 						.map(x => (simple
 									? '**`🕛 ' + x.weekDay + '`**  ' + x.quest
-									: '**`' + x.weekDay + ' ' + x.day + '`**  ' + x.quest
+									: '**`' + x.weekDay + ' ' + x.day.toString().padStart(2, '0') + '`**  ' + x.quest
 								   )
 						)
 						.join(sep);
