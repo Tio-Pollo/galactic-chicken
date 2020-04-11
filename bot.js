@@ -822,7 +822,7 @@ function searchDTG(message, term) {
 
 
 function weekDay(dayNum) {
-  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'][dayNum%7];
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayNum%7];
 }
 
 function addDays(date, days) {
