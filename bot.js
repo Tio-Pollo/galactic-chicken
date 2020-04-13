@@ -79,7 +79,7 @@ const help = [
 	{
 		name: 'daily',
 		trigger: '?daily',
-		desc: "Items required on the daily event with current dates.",
+		desc: "Items required on the daily event with current dates.\nUse `Daily+` for an extended list.",
 		react: '📆'
 	},
 	{
