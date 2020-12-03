@@ -803,7 +803,8 @@ function searchDTG(message, term) {
 								embedMsg.embed.fields = fieldsResult;
 							}
 							message.channel.send(
-								embedMsg
+								embedMsg,
+								{ split: true }
 							)
 							.catch((e)=>{console.error(e)});
 							
