@@ -16,7 +16,7 @@ if (!activeBot(haltOffset)) {
 		console.log('Ducking ' + EnvName + ' during grace period (only active from day ' + StartDay + ' to day ' + (EndDay-1) + ')');
 	}
 
-	const { Client, Attachment } = require('discord.js');
+	const { Client, Attachment, Util } = require('discord.js');
 	client = new Client();
 	
 	
