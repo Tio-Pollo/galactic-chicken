@@ -765,7 +765,7 @@ function searchDTG(message, term) {
 									}
 									fieldsResult.push({
 										name: thisTbl.h4_name,
-										value: fieldsResultText,
+										value: fieldsResultText.substring(0,1024),
 										inline: thisTbl.inline
 									});
 								}
