@@ -796,15 +796,15 @@ function searchDTG(message, term) {
 								},
 								files: [
 									{ attachment: itemImg, name: imgFilename }
-								]
+								],
+								split: true
 							};
 								
 							if (fieldsResult.length) {
 								embedMsg.embed.fields = fieldsResult;
 							}
 							message.channel.send(
-								embedMsg,
-								{ split: true }
+								embedMsg
 							)
 							.catch((e)=>{console.error(e)});
 							
