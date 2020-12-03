@@ -771,6 +771,9 @@ function searchDTG(message, term) {
 								}
 							}
 							
+							//Split message description if it exceeds 4096
+							const [first_txt, ...rest_txt] = Util.splitMessage(txt, { maxLength: 4096 });
+							
 							//Create and send EMBED
 							const embedMsg = {
 								embed: {
@@ -781,7 +784,7 @@ function searchDTG(message, term) {
 									},*/
 									title: found.name,
 									url: itemUrl,
-									description: txt,
+									description: first_txt,
 									thumbnail: {
 										url: 'attachment://' + imgFilename,
 									},
@@ -796,17 +799,37 @@ function searchDTG(message, term) {
 								},
 								files: [
 									{ attachment: itemImg, name: imgFilename }
-								],
-								split: true
+								]
 							};
 								
 							if (fieldsResult.length) {
 								embedMsg.embed.fields = fieldsResult;
 							}
-							message.channel.send(
-								embedMsg
-							)
-							.catch((e)=>{console.error(e)});
+							
+							if (!rest_txt.length) { //only 1 part in msg
+								message.channel.send(
+									embedMsg
+								)
+								.catch((e)=>{console.error(e)});
+							} else {
+								let pageNum = 0;
+								
+								embedMsg.embed.title = found.name + ' (page ' + ++pageNum + ')';
+								await message.channel.send( //first part
+									embedMsg
+								)
+								.catch((e)=>{console.error(e)});
+								
+								
+								for (let part_txt of rest_txt) { //each of the following parts
+									embedMsg.embed.description = part_txt;
+									embedMsg.embed.title = found.name + ' (page ' + ++pageNum + ')';
+									await message.channel.send( //first part
+										embedMsg
+									)
+									.catch((e)=>{console.error(e)});
+								}
+							}
 							
 							
 						} else {
