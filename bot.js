@@ -763,11 +763,13 @@ function searchDTG(message, term) {
 									if (thisTbl.parse) {
 										fieldsResultText = fieldsResultText.replace(thisTbl.parse, thisTbl.parseRepl);
 									}
-									fieldsResult.push({
-										name: thisTbl.h4_name,
-										value: fieldsResultText.substring(0,1024),
-										inline: thisTbl.inline
-									});
+									for (let fieldsResultText_part of fieldsResultText.match(/.{1,1024}(?:\n|$)|.{1,1024}(?:[ ;]|$)/sg).map(x=>x.trim())) {
+										fieldsResult.push({
+											name: thisTbl.h4_name,
+											value: fieldsResultText_part,
+											inline: thisTbl.inline
+										});
+									}
 								}
 							}
 							
