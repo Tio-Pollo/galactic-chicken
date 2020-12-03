@@ -772,7 +772,7 @@ function searchDTG(message, term) {
 							}
 							
 							//Split message description if it exceeds 4096
-							const [first_txt, ...rest_txt] = Util.splitMessage(txt, { maxLength: 4096 });
+							const [first_txt, ...rest_txt] = txt.match(/.{1,4096}(?:\n|$)|.{1,4096}(?:[ ;]|$)/sg).map(x=>x.trim());
 							
 							//Create and send EMBED
 							const embedMsg = {
