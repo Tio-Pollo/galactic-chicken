@@ -815,7 +815,7 @@ function searchDTG(message, term) {
 								let pageNum = 0;
 								
 								embedMsg.embed.title = found.name + ' (page ' + ++pageNum + ')';
-								await message.channel.send( //first part
+								message.channel.send( //first part
 									embedMsg
 								)
 								.catch((e)=>{console.error(e)});
@@ -824,7 +824,7 @@ function searchDTG(message, term) {
 								for (let part_txt of rest_txt) { //each of the following parts
 									embedMsg.embed.description = part_txt;
 									embedMsg.embed.title = found.name + ' (page ' + ++pageNum + ')';
-									await message.channel.send( //first part
+									message.channel.send( //first part
 										embedMsg
 									)
 									.catch((e)=>{console.error(e)});
